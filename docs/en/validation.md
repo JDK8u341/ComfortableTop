@@ -67,3 +67,11 @@ The final 90 frames have empty diffs. At 140×42, CPU render+encode P95 in the
 resource transitions 33.857→11.611ms; modal exit 27.904→13.900ms. Process counts and
 machine load vary; these measurements do not promise presentation FPS or every frame
 below 16.7ms. See [reproduction steps](motion.md).
+
+These performance samples use the base motion commit 2b4ea47. The pinned 40a4b45
+additionally releases retired snapshots and native occlusion at the first zero crossing.
+Final [Windows GPU](../validation/standalone/motion-retirement-windows-gpu.json),
+[X11](../validation/standalone/motion-retirement-linux-x11.json) and
+[Wayland](../validation/standalone/motion-retirement-linux-wayland.json) rechecks each
+passed ten checks. Library tests remain 220 passed on Windows, 204 passed and five
+skipped on WSL2.

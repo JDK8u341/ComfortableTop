@@ -61,3 +61,9 @@ Windows 应用 27 项测试、WSL2 26 项测试（1 项跳过）通过。安装�
 编码采样：资源页 P95 33.857→11.611ms，弹窗退场 27.904→13.900ms。机器负载和
 进程数会变化；这是单机采样，不能称为终端呈现 FPS 或保证所有帧低于 16.7ms。
 复现步骤见[动效文档](motion.md)。
+
+上述性能采样使用基础动效提交 2b4ea47；当前依赖 40a4b45 进一步在退场首次归零时
+释放不可见快照和原生画布遮挡。[Windows GPU](validation/standalone/motion-retirement-windows-gpu.json)、
+[X11](validation/standalone/motion-retirement-linux-x11.json)、
+[Wayland](validation/standalone/motion-retirement-linux-wayland.json) 各十项最终复查通过，
+库测试仍为 Windows 220、WSL2 204 项通过（5 项跳过）。
