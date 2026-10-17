@@ -89,3 +89,18 @@ CEF 与持续采样，每轮换焦点／切页／开关弹窗，剔除前 3 秒�
 [WSL2 Wayland](validation/standalone/pacing-linux-wayland.json)各十项混合模式复查通过。
 应用测试 Windows 27 项通过；WSL2 26 项通过、1 项跳过。库分别 225 项通过、
 208 项通过及 6 项平台跳过。Ruff 与两份手册的 MkDocs strict 通过。
+
+## v0.1.1 发布包验证
+
+应用与依赖版本均为 0.1.1，应用声明至少需要 ComfortableTUI 0.1.1，避免保留旧库而
+遗漏帧调度修正。通用 wheel 从 Git 提交的干净源码构建；另提供 Windows x64
+CPython 3.12 的可选 GPU/C++ wheel，不包含 CEF 或应用原生运行时。
+
+[Windows](validation/standalone/release-0.1.1-installed-windows.json) 和
+[WSL2 Linux](validation/standalone/release-0.1.1-installed-linux.json) 的独立 venv
+均通过五项发布包检查，包括普通 wheel 导入、Apache 许可证、CLI 版本和中英文
+真实采样。新依赖还通过 [Windows GPU](validation/standalone/release-0.1.1-windows-gpu.json)
+混合模式十项检查；安装发布 wheel 后的
+[X11](validation/standalone/release-0.1.1-linux-x11.json) 和
+[Wayland](validation/standalone/release-0.1.1-linux-wayland.json)分别十项通过。
+应用 27 项单元测试、Ruff 和严格文档构建通过；库发布提交 CI 全绿。

@@ -100,3 +100,19 @@ for reproduction and limitations.
 integration checks. App tests: 27 passed on Windows; 26 passed and one skipped on WSL2.
 Library tests: 225 passed on Windows; 208 passed and six platform skips on WSL2.
 Ruff and strict MkDocs builds for both manuals passed.
+
+## v0.1.1 distribution verification
+
+Both packages are version 0.1.1. The app requires ComfortableTUI 0.1.1 or newer so an
+old library cannot silently omit the pacing correction. Universal wheels are built
+from clean Git source snapshots. An optional Windows x64 CPython 3.12 GPU/C++ wheel
+is also provided; it includes neither CEF nor the application's native runtime.
+
+Fresh venv checks passed on [Windows](../validation/standalone/release-0.1.1-installed-windows.json)
+and [WSL2 Linux](../validation/standalone/release-0.1.1-installed-linux.json): five checks
+cover ordinary wheel imports, Apache notices, CLI version and live snapshots in both
+languages. The new dependency also passed ten [Windows GPU](../validation/standalone/release-0.1.1-windows-gpu.json)
+hybrid checks. Installed release wheels passed ten checks each under
+[X11](../validation/standalone/release-0.1.1-linux-x11.json) and
+[Wayland](../validation/standalone/release-0.1.1-linux-wayland.json).
+All 27 app unit tests, Ruff and strict documentation builds passed; library release CI is green.

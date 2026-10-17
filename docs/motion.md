@@ -16,7 +16,7 @@ CPU 数字立即更新，不延后采样、不向数据注入过冲。键盘和�
 
 源码更新用户先按[安装](installation.md)更新依赖。仍使用旧版 wheel 时，更新
 应用源码不会自动更新底层动效；bootstrap/requirements 已锁定带动效的库提交。
-本次代码位于两个仓库的 `codex/expressive-motion` 分支。
+本次代码已合并到两个仓库的 `main`，并包含在 v0.1.1 发布包中。
 
 ```powershell
 # 本机已有依赖源码时重新安装，保留 GPU 扩展与既有浏览器运行时：

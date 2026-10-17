@@ -17,7 +17,7 @@ The local Windows `.venv` already has the new library wheel installed:
 
 For another source installation, follow [installation](installation.md). Updating only
 the application does not replace an installed library wheel. The lock files now pin
-the motion implementation. Both repositories use branch `codex/expressive-motion`.
+the motion implementation. Both repositories merged it into `main`; v0.1.1 includes it.
 
 ```powershell
 .\.venv\Scripts\python.exe tools/bootstrap.py --tui-source ..\tui --gpu
