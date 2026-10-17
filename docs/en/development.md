@@ -38,9 +38,14 @@ this app and its local message bridge. Choose a new report path:
 
 ```powershell
 python -m comfortable_top.verify_windows --mode hybrid --canvas gpu --report .build/verify-windows.json
+python -m comfortable_top.verify_pacing --fps 60 --report .build/pacing-check-60.json
+python -m comfortable_top.verify_pacing --fps 120 --report .build/pacing-check-120.json
 ```
 
-Test Linux sessions separately:
+verify_pacing measures actual App.run scheduling for 12 seconds by default, excluding
+the first three. It complements headless verify_motion CPU timings; producer cadence
+is still not screen presentation FPS. It requires Windows Terminal, and its default
+hybrid mode needs GPU and browser runtimes.
 
 The headless motion verifier exercises the actual Monitor and installed library with
 live samples, rapid reversals, dialogs, notifications and empty settled diffs. It also

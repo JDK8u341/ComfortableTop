@@ -27,6 +27,31 @@ CPU 数字立即更新，不延后采样、不向数据注入过冲。键盘和�
 原生/浏览器的 C++ 协议没有改变，无需重建 CEF。GitHub 旧 v0.1.0 发布包不包含本次
 依赖更新，测试结果针对锁定提交安装的 wheel，不代表旧发布附件。
 
+## 帧调度优化（2026-10-18）
+
+本机 Windows Python 3.12 的 monotonic 使用 GetTickCount64，粒度约 15.625ms。
+此前的等待条件把目标 60/120 FPS 分别限制在约 32/64 FPS。底层库现使用
+perf_counter 的高精度截止时间，保持连续帧节奏，并缓存短文本的字形和样式。
+原有回弹参数不变。原因参见 [CPython 时钟修改](https://github.com/python/cpython/pull/116781)。
+
+真实 Windows Terminal、GPU 图表和 CEF 混合模式测试中，60 FPS 目标的循环频率
+从 32.00 升至 59.67，120 FPS 从 64.01 升至 117.77。帧间隔 P95 分别从
+32.744→17.259ms、17.492→8.984ms。它们是实际生产循环节奏，不是显示器呈现
+帧率或输入到显示延迟；终端写入偶尔仍会阻塞。
+
+本机已安装修正后的 wheel，退出旧进程再启动即可。默认 60 FPS 保持不变，
+需要时可用 `--fps 120`。验证工具会新建自己的 Windows Terminal 并持续采样：
+
+```powershell
+.\.venv\Scripts\python.exe -m comfortable_top.verify_pacing --fps 60 --report .build/pacing-new-60.json
+.\.venv\Scripts\python.exe -m comfortable_top.verify_pacing --fps 120 --report .build/pacing-new-120.json
+```
+
+使用不存在的报告路径；默认运行 12 秒并剔除前 3 秒。它记录实际循环间隔及
+tick/render/encode/write/overlay 耗时，覆盖连续换焦点、切页和弹窗。
+`passed` 表示采集了足够的有效帧和系统样本，不表示达到机器无关的 FPS 保证。
+原始数据与平台复查见[验证记录](validation.md#2026-10-18)。
+
 ## 手动体验
 
 1. 用 Tab / Shift+Tab 在搜索、排序、暂停和用户筛选之间快速来回，观察高亮拉伸及回弹。

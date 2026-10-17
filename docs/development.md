@@ -36,9 +36,14 @@ Windows 集成测试创建自己的 Terminal，14 秒内结束，仅操作本应
 
 ```powershell
 python -m comfortable_top.verify_windows --mode hybrid --canvas gpu --report .build/verify-windows.json
+python -m comfortable_top.verify_pacing --fps 60 --report .build/pacing-check-60.json
+python -m comfortable_top.verify_pacing --fps 120 --report .build/pacing-check-120.json
 ```
 
-报告须为新路径。Linux 分别执行：
+报告须为新路径。verify_pacing 默认用 12 秒测试实际 App.run 调度，剔除前 3 秒，
+与离屏 verify_motion 的 CPU 耗时互补；生产循环频率仍不等于屏幕呈现 FPS。
+该工具要求 Windows Terminal，默认混合模式包含 GPU 和浏览器运行时。
+Linux 分别执行：
 
 ```bash
 comfortable-top --mode hybrid --platform x11 --self-test --smoke-seconds 14 --report .build/x11.json

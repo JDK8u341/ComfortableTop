@@ -5,7 +5,7 @@
 ## Terminal mode
 
 Requires Python 3.10+ on Windows or Linux, psutil and ComfortableTUI. The tested dependency
-is pinned to commit `40a4b45ba31d1d108e61e145da3d0711b76beab0` in both bootstrap and
+is pinned to commit `b701465f2139b85f85029c40e647008bfd39b5c8` in both bootstrap and
 requirements-tui.txt. Do not assume it is published on PyPI. Access to its private GitHub
 source requires local Git credentials; no tokens are stored in this project.
 

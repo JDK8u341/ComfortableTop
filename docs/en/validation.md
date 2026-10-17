@@ -68,10 +68,35 @@ resource transitions 33.857→11.611ms; modal exit 27.904→13.900ms. Process co
 machine load vary; these measurements do not promise presentation FPS or every frame
 below 16.7ms. See [reproduction steps](motion.md).
 
-These performance samples use the base motion commit 2b4ea47. The pinned 40a4b45
+These performance samples use the base motion commit 2b4ea47. The then-pinned 40a4b45
 additionally releases retired snapshots and native occlusion at the first zero crossing.
 Final [Windows GPU](../validation/standalone/motion-retirement-windows-gpu.json),
 [X11](../validation/standalone/motion-retirement-linux-x11.json) and
 [Wayland](../validation/standalone/motion-retirement-linux-wayland.json) rechecks each
 passed ten checks. Library tests remain 220 passed on Windows, 204 passed and five
 skipped on WSL2.
+
+## Frame pacing correction, 2026-10-18
+
+Windows Python 3.12's coarse monotonic clock quantized frame deadlines. The dependency
+now uses perf_counter, preserves frame phase and caches short text drawing. The control
+already included the same text caches, retaining only the old clock to isolate scheduling.
+Each run used an installed ordinary wheel, real Terminal, GPU charts, CEF and live
+sampling, with focus/tab/dialog changes and the first three seconds excluded:
+
+| Target | Control loop FPS | Corrected loop FPS | Interval P95 before / after |
+| --- | --- | --- | --- |
+| 60 | [32.00](../validation/standalone/pacing-coarse-60.json) | [59.67](../validation/standalone/pacing-after-60.json) | 32.744 / 17.259ms |
+| 120 | [64.01](../validation/standalone/pacing-coarse-120.json) | [117.77](../validation/standalone/pacing-after-120.json) | 17.492 / 8.984ms |
+
+The corrected 60 FPS run had one of 538 intervals exceed 1.5 times the budget; at 120,
+13 of 1060 exceeded it. Neither run had an interval above 50ms. These are actual loop
+timings, not monitor presentation FPS or end-to-end latency. See [motion](motion.md)
+for reproduction and limitations.
+
+[Windows GPU](../validation/standalone/pacing-windows-gpu.json),
+[WSL2 X11](../validation/standalone/pacing-linux-x11.json) and
+[WSL2 Wayland](../validation/standalone/pacing-linux-wayland.json) each passed ten hybrid
+integration checks. App tests: 27 passed on Windows; 26 passed and one skipped on WSL2.
+Library tests: 225 passed on Windows; 208 passed and six platform skips on WSL2.
+Ruff and strict MkDocs builds for both manuals passed.

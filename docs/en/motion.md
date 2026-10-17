@@ -26,6 +26,33 @@ the motion implementation. Both repositories use branch `codex/expressive-motion
 Use `--terminal-only` without native requirements. Existing CEF and frame protocols
 are unchanged. The old v0.1.0 release attachments do not include this dependency update.
 
+## Frame pacing update, 2026-10-18
+
+On this Windows Python 3.12 installation, monotonic uses GetTickCount64 with roughly
+15.625ms resolution. The old wait condition limited 60/120 FPS targets to about
+32/64 FPS. The library now uses perf_counter deadlines, preserves frame phase and
+caches short text runs and styles. Spring parameters are unchanged. See the
+[CPython clock change](https://github.com/python/cpython/pull/116781).
+
+Real Windows Terminal tests with GPU charts and CEF measured producer loop cadence
+of 32.00→59.67 FPS at a 60 FPS target, and 64.01→117.77 at 120. Interval P95 improved
+from 32.744→17.259ms and 17.492→8.984ms respectively. These are actual loop timings,
+not display presentation FPS or input-to-photon latency. Terminal writes can still block.
+
+The local wheel is updated; restart an existing app process. The default stays at 60 FPS;
+optionally select `--fps 120`. The Windows probe opens its own Terminal with live sampling:
+
+```powershell
+.\.venv\Scripts\python.exe -m comfortable_top.verify_pacing --fps 60 --report .build/pacing-new-60.json
+.\.venv\Scripts\python.exe -m comfortable_top.verify_pacing --fps 120 --report .build/pacing-new-120.json
+```
+
+Use new report paths. The default is 12 seconds, excluding the first three. It records
+loop intervals and tick/render/encode/write/overlay phases while changing focus, tabs
+and dialogs. A passed result means enough valid frames and system samples were
+collected, not a machine-independent FPS guarantee. See [validation](validation.md)
+for raw data and platform rechecks.
+
 ## Try the interactions
 
 Use Tab/Shift+Tab to quickly reverse focus; F6 and arrows to reverse tab transitions;

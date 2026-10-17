@@ -62,8 +62,30 @@ Windows 应用 27 项测试、WSL2 26 项测试（1 项跳过）通过。安装�
 进程数会变化；这是单机采样，不能称为终端呈现 FPS 或保证所有帧低于 16.7ms。
 复现步骤见[动效文档](motion.md)。
 
-上述性能采样使用基础动效提交 2b4ea47；当前依赖 40a4b45 进一步在退场首次归零时
+上述性能采样使用基础动效提交 2b4ea47；当时依赖 40a4b45 进一步在退场首次归零时
 释放不可见快照和原生画布遮挡。[Windows GPU](validation/standalone/motion-retirement-windows-gpu.json)、
 [X11](validation/standalone/motion-retirement-linux-x11.json)、
 [Wayland](validation/standalone/motion-retirement-linux-wayland.json) 各十项最终复查通过，
 库测试仍为 Windows 220、WSL2 204 项通过（5 项跳过）。
+
+## 2026-10-18 帧调度修正
+
+Windows Python 3.12 的粗 monotonic 时钟导致截止时间量化；依赖改用高精度
+perf_counter、保持连续截止时间，并缓存短文本绘制。对照已启用相同文本缓存，
+仅保留旧时钟，从而隔离调度因素。真实 Terminal、已安装普通 wheel、GPU 图表、
+CEF 与持续采样，每轮换焦点／切页／开关弹窗，剔除前 3 秒：
+
+| 目标 | 对照循环 FPS | 修正后循环 FPS | 间隔 P95 前／后 |
+| --- | --- | --- | --- |
+| 60 | [32.00](validation/standalone/pacing-coarse-60.json) | [59.67](validation/standalone/pacing-after-60.json) | 32.744／17.259ms |
+| 120 | [64.01](validation/standalone/pacing-coarse-120.json) | [117.77](validation/standalone/pacing-after-120.json) | 17.492／8.984ms |
+
+60 FPS 修正后 538 个采样仅 1 个超过 1.5 倍帧预算；120 FPS 的 1060 个采样中
+有 13 个超过。两轮都没有超过 50ms 的间隔。这是实际循环节奏，不能称为显示器
+呈现 FPS 或端到端输入延迟。复现工具与限制见[动效文档](motion.md)。
+
+[Windows GPU](validation/standalone/pacing-windows-gpu.json)、
+[WSL2 X11](validation/standalone/pacing-linux-x11.json)、
+[WSL2 Wayland](validation/standalone/pacing-linux-wayland.json)各十项混合模式复查通过。
+应用测试 Windows 27 项通过；WSL2 26 项通过、1 项跳过。库分别 225 项通过、
+208 项通过及 6 项平台跳过。Ruff 与两份手册的 MkDocs strict 通过。
