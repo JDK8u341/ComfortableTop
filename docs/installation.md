@@ -5,7 +5,7 @@
 ## 基础要求
 
 Python 3.10+，Windows 或 Linux。终端模式需要 psutil 与 ComfortableTUI。
-测试基线为 ComfortableTUI 提交 `208c8230937abf589e660d0b97f6ab3a96481185`，
+测试基线为 ComfortableTUI 提交 `40a4b45ba31d1d108e61e145da3d0711b76beab0`，
 bootstrap 和 requirements-tui.txt 均锁定此版本；不会假设 PyPI 上已存在该依赖。
 GitHub 私有依赖需有访问权限，Git 凭证由本机 Git／gh 管理，项目不保存令牌。
 
@@ -68,7 +68,7 @@ Ubuntu 22.04 示例：
 ```bash
 sudo apt-get update
 sudo apt-get install -y build-essential cmake ninja-build python3-venv python3-dev \
-  qt6-base-dev qt6-wayland libgtk-3-dev libnss3 libgbm1 libasound2 \
+  qt6-base-dev qt6-wayland libgl1-mesa-dev libopengl-dev libgtk-3-dev libnss3 libgbm1 libasound2 \
   libatk-bridge2.0-0 libxkbcommon-x11-0
 python3 -m venv .venv
 .venv/bin/python tools/bootstrap.py --tui-source /path/to/ComfortableTUI

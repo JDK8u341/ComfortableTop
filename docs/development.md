@@ -29,6 +29,7 @@ comfortable-top --snapshot --interval .25 --lang en
 comfortable-top --snapshot --interval .25 --lang zh
 python -m comfortable_top.verify_native --canvas cpu
 python -m comfortable_top.verify_native --canvas gpu
+python -m comfortable_top.verify_motion --report .build/motion-check.json
 ```
 
 Windows 集成测试创建自己的 Terminal，14 秒内结束，仅操作本应用控件和消息桥：
@@ -45,6 +46,9 @@ comfortable-top --mode hybrid --platform wayland --self-test --smoke-seconds 14 
 ```
 
 真实显示验证不以 offscreen/minimal 结果代替。生产者 GIL 检查不是屏幕 FPS。
+动效工具使用真实 Monitor 与已安装的库，支持 `--motion subtle` 和 `--reduced-motion`；
+暂停采样后验证快速重定向、弹窗、通知和空闲差分，CPU 耗时不代表显示帧率。
+操作说明见[动效与验证](motion.md)。
 也应测试 wheel 在独立 venv、仓库之外的工作目录中启动，确认资源与导入独立。
 
 ```powershell

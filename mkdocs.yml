@@ -7,6 +7,7 @@ nav:
     - 安装与构建: installation.md
     - 使用指南: guide.md
     - 中英文切换: localization.md
+    - 弹性动效与测试: motion.md
     - 架构: architecture.md
     - 开发与打包: development.md
     - 故障排查: troubleshooting.md
@@ -17,6 +18,7 @@ nav:
     - Installation: en/installation.md
     - User guide: en/guide.md
     - Language settings: en/localization.md
+    - Motion and tests: en/motion.md
     - Architecture: en/architecture.md
     - Development: en/development.md
     - Troubleshooting: en/troubleshooting.md

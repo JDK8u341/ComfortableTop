@@ -30,6 +30,7 @@ comfortable-top --snapshot --interval .25 --lang en
 comfortable-top --snapshot --interval .25 --lang zh
 python -m comfortable_top.verify_native --canvas cpu
 python -m comfortable_top.verify_native --canvas gpu
+python -m comfortable_top.verify_motion --report .build/motion-check.json
 ```
 
 Windows integration opens its own Terminal and finishes in 14 seconds, operating only
@@ -40,6 +41,11 @@ python -m comfortable_top.verify_windows --mode hybrid --canvas gpu --report .bu
 ```
 
 Test Linux sessions separately:
+
+The headless motion verifier exercises the actual Monitor and installed library with
+live samples, rapid reversals, dialogs, notifications and empty settled diffs. It also
+accepts `--motion subtle` and `--reduced-motion`. Its CPU timings are not screen FPS.
+See [motion and verification](motion.md).
 
 ```bash
 comfortable-top --mode hybrid --platform x11 --self-test --smoke-seconds 14 --report .build/x11.json

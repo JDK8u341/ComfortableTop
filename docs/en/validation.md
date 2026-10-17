@@ -49,3 +49,21 @@ reads UTF-8 explicitly. One Wayland recheck reached the fixed four-second checkp
 before two samples were ready; an independent recheck passed. Integration checks still
 use fixed timing, so busy machines or cold starts can hit that startup assertion.
 These results are not a screen FPS guarantee.
+
+## Expressive motion dependency update, 2026-10-17
+
+Application tests passed: 27 on Windows; 26 passed and one skipped on WSL2. The library
+was installed as an ordinary wheel. [Windows GPU](../validation/standalone/motion-windows-gpu.json),
+[X11](../validation/standalone/motion-linux-x11.json) and
+[Wayland](../validation/standalone/motion-linux-wayland.json) each passed ten real-display
+integration checks, including embedded-browser focus, messages, language and canvas size.
+
+[Expressive](../validation/standalone/motion-expressive.json),
+[Subtle](../validation/standalone/motion-subtle.json) and
+[Reduced motion](../validation/standalone/motion-reduced.json) use live system snapshots
+and exercise rapid tab/focus reversal, controls, dialogs, notifications and PageStack.
+The final 90 frames have empty diffs. At 140×42, CPU render+encode P95 in the
+[old baseline](../validation/standalone/motion-baseline.json) versus the new snapshot:
+resource transitions 33.857→11.611ms; modal exit 27.904→13.900ms. Process counts and
+machine load vary; these measurements do not promise presentation FPS or every frame
+below 16.7ms. See [reproduction steps](motion.md).

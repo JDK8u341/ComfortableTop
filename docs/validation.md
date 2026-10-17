@@ -46,3 +46,18 @@ CEF 152.0.14、psutil 7.2.2、pybind11 3.1.0；Windows MSVC 19.44，Linux GCC 11
 旧验证工具在 Windows 默认 GBK 下读取含中文网页曾报解码错误，现已显式使用 UTF-8。
 一次 Wayland 复查在启动四秒时尚未完成两次采样，触发自测预热断言；独立复查已通过。
 该自测使用固定时间点，机器繁忙或冷启动时仍需留意启动时序；这些检查不代表帧率保证。
+
+## 2026-10-17 弹性动效依赖更新
+
+Windows 应用 27 项测试、WSL2 26 项测试（1 项跳过）通过。安装锁定库的普通 wheel，
+未改为引用库源码。实际组合：[Windows GPU](validation/standalone/motion-windows-gpu.json)、
+[X11](validation/standalone/motion-linux-x11.json)、[Wayland](validation/standalone/motion-linux-wayland.json)
+各十项检查通过，继续验证内嵌网页焦点、业务消息、语言和画布尺寸。
+
+[Expressive](validation/standalone/motion-expressive.json)、[Subtle](validation/standalone/motion-subtle.json)、
+[减少动效](validation/standalone/motion-reduced.json)使用真实进程快照，覆盖快速切页和
+换焦点、开关、滑块、弹窗、通知及 PageStack；最后 90 帧差分为空。
+[旧依赖基线](validation/standalone/motion-baseline.json)与新版均为 140×42 的 CPU 渲染/
+编码采样：资源页 P95 33.857→11.611ms，弹窗退场 27.904→13.900ms。机器负载和
+进程数会变化；这是单机采样，不能称为终端呈现 FPS 或保证所有帧低于 16.7ms。
+复现步骤见[动效文档](motion.md)。

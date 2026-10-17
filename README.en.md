@@ -60,6 +60,7 @@ Ctrl+1…5 pages, Ctrl+E export, Ctrl+Q exit. Recommended terminal size: 120×38
 - [Installation and native runtime](docs/en/installation.md)
 - [User guide and metric semantics](docs/en/guide.md)
 - [Language settings](docs/en/localization.md)
+- [Expressive motion and verification](docs/en/motion.md)
 - [Architecture and services](docs/en/architecture.md)
 - [Development and distribution](docs/en/development.md)
 - [Troubleshooting](docs/en/troubleshooting.md)

@@ -5,7 +5,7 @@
 ## Terminal mode
 
 Requires Python 3.10+ on Windows or Linux, psutil and ComfortableTUI. The tested dependency
-is pinned to commit `208c8230937abf589e660d0b97f6ab3a96481185` in both bootstrap and
+is pinned to commit `40a4b45ba31d1d108e61e145da3d0711b76beab0` in both bootstrap and
 requirements-tui.txt. Do not assume it is published on PyPI. Access to its private GitHub
 source requires local Git credentials; no tokens are stored in this project.
 
@@ -70,7 +70,7 @@ CEF also requires system graphics libraries. For Ubuntu 22.04:
 ```bash
 sudo apt-get update
 sudo apt-get install -y build-essential cmake ninja-build python3-venv python3-dev \
-  qt6-base-dev qt6-wayland libgtk-3-dev libnss3 libgbm1 libasound2 \
+  qt6-base-dev qt6-wayland libgl1-mesa-dev libopengl-dev libgtk-3-dev libnss3 libgbm1 libasound2 \
   libatk-bridge2.0-0 libxkbcommon-x11-0
 python3 -m venv .venv
 .venv/bin/python tools/bootstrap.py --tui-source /path/to/ComfortableTUI

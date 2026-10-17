@@ -59,6 +59,7 @@ Ctrl+1…5 切页、Ctrl+E 导出、Ctrl+Q 退出。建议终端至少 120×38�
 - [安装、依赖与原生运行时](docs/installation.md)
 - [使用指南、指标与快捷键](docs/guide.md)
 - [中英文切换与偏好保存](docs/localization.md)
+- [弹性动效、体验与验证](docs/motion.md)
 - [架构、图像传输与网页服务](docs/architecture.md)
 - [开发、测试和打包](docs/development.md)
 - [故障排查](docs/troubleshooting.md)
