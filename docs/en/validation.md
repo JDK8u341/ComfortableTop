@@ -116,3 +116,18 @@ hybrid checks. Installed release wheels passed ten checks each under
 [X11](../validation/standalone/release-0.1.1-linux-x11.json) and
 [Wayland](../validation/standalone/release-0.1.1-linux-wayland.json).
 All 27 app unit tests, Ruff and strict documentation builds passed; library release CI is green.
+
+## v0.1.2 selected-process chart resizing
+
+The selected CPU chart now fills its panel directly instead of using a fixed 24×5-cell
+inline Text layout. New regression coverage exercises terminal and native canvases
+through five viewport sizes, narrow-sidebar hiding and restoration. Windows: 29 tests
+passed; WSL2: 28 passed and one platform skip.
+
+Real Windows Terminal [GPU](../validation/standalone/resize-windows-gpu.json) and
+[CPU](../validation/standalone/resize-windows-cpu.json) checks passed seven stages:
+initial, maximized, Alt+Enter fullscreen, leaving fullscreen, smaller, larger and restored.
+Each checks panel interior bounds, physical overlay pixels and stretch transforms.
+Chart heights were 184, 368, 483, 368, 46, 230 and 184px respectively.
+All ten [GPU/CEF hybrid checks](../validation/standalone/resize-hybrid.json) also passed.
+Run tools/verify_chart_resize.py to reproduce; see [development](development.md).

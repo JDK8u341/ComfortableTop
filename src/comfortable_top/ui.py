@@ -8,7 +8,7 @@ import time
 
 from comfortable_tui import (App, BarChart, Button, Checkbox, Collapsible, DataTable, DirectoryTree,
     Grid, HBox, Input, Label, ListView, Log, PageStack, Panel, Paragraph, ProgressBar, RadioGroup,
-    Rule, ScrollView, Select, SelectionList, Slider, Sparkline, Spinner, Switch, Tabs, Text,
+    Rule, ScrollView, Select, SelectionList, Slider, Sparkline, Spinner, Switch, Tabs,
     TextArea, Tree, TreeNode, VBox)
 
 from .i18n import Localizer, save_language
@@ -123,7 +123,9 @@ class Monitor:
         self.selected_chart = self.charts.get("selected")
         self.cpu_chart = self.charts.get("cpu")
         self.table = ProcessTable(self)
-        sidebar = VBox(self.details, self.i18n.make(Panel, Text("CPU ", self.selected_chart.widget(width=24, height=5)), "Selected CPU · 0..100%"),
+        self.selected_chart_view = self.selected_chart.widget()
+        self.selected_chart_panel = self.i18n.make(Panel, self.selected_chart_view, "Selected CPU · 0..100%")
+        sidebar = VBox(self.details, self.selected_chart_panel,
             HBox(self.i18n.make(Button, "Inspect", self.inspect), self.i18n.make(Button, "Pin/unpin", self.pin), height=1, gap=1), gap=1, width=32)
         processes = ResponsiveSplit(self.i18n.make(Panel, self.table, "Processes · arrows scroll · Enter inspect"), sidebar, gap=1)
 

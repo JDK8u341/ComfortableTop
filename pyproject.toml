@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "comfortable-top"
-version = "0.1.1"
+version = "0.1.2"
 description = "A hybrid system monitor with a spring-driven TUI, native charts and isolated browser analytics"
 readme = "README.md"
 requires-python = ">=3.10"

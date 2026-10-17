@@ -38,9 +38,13 @@ Windows 集成测试创建自己的 Terminal，14 秒内结束，仅操作本应
 python -m comfortable_top.verify_windows --mode hybrid --canvas gpu --report .build/verify-windows.json
 python -m comfortable_top.verify_pacing --fps 60 --report .build/pacing-check-60.json
 python -m comfortable_top.verify_pacing --fps 120 --report .build/pacing-check-120.json
+python tools/verify_chart_resize.py --canvas gpu --report .build/resize-check.json
 ```
 
-报告须为新路径。verify_pacing 默认用 12 秒测试实际 App.run 调度，剔除前 3 秒，
+报告须为新路径。verify_chart_resize 会打开自己的 Windows Terminal，最大化、
+通过 Alt+Enter 进入／退出全屏、改变尺寸再恢复，核对图表填充与物理像素变换。
+需有足够宽的桌面显示侧栏及已构建的原生运行时，也支持 `--canvas cpu`。
+verify_pacing 默认用 12 秒测试实际 App.run 调度，剔除前 3 秒，
 与离屏 verify_motion 的 CPU 耗时互补；生产循环频率仍不等于屏幕呈现 FPS。
 该工具要求 Windows Terminal，默认混合模式包含 GPU 和浏览器运行时。
 Linux 分别执行：
@@ -57,7 +61,7 @@ comfortable-top --mode hybrid --platform wayland --self-test --smoke-seconds 14 
 也应测试 wheel 在独立 venv、仓库之外的工作目录中启动，确认资源与导入独立。
 
 ```powershell
-python tools/verify_distribution.py --wheel dist/comfortable_top-0.1.1-py3-none-any.whl --tui-wheel PATH/comfortable_tui-WHEEL.whl --report .build/wheel-check.json
+python tools/verify_distribution.py --wheel dist/comfortable_top-0.1.2-py3-none-any.whl --tui-wheel PATH/comfortable_tui-WHEEL.whl --report .build/wheel-check.json
 ```
 
 这个检查会创建独立测试 venv，在空工作目录中验证包／网页／许可证和命令行，并真实

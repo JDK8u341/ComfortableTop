@@ -4,17 +4,18 @@
 
 ## Terminal mode
 
-For v0.1.1 terminal mode, download both universal wheels from the
-[release page](https://github.com/JDK8u341/ComfortableTop/releases/tag/v0.1.1), then run
+For v0.1.2 terminal mode, download both universal wheels from the
+[release page](https://github.com/JDK8u341/ComfortableTop/releases/tag/v0.1.2), then run
 in the download directory:
 
 ```powershell
-python -m pip install --upgrade ./comfortable_tui-0.1.1-py3-none-any.whl ./comfortable_top-0.1.1-py3-none-any.whl
+python -m pip install --upgrade ./comfortable_tui-0.1.1-py3-none-any.whl ./comfortable_top-0.1.2-py3-none-any.whl
 comfortable-top --version
 comfortable-top
 ```
 
-The version should read `ComfortableTop 0.1.1`. Update both packages. GPU/browser modes
+The version should read `ComfortableTop 0.1.2`. The library requires 0.1.1 or newer;
+an installed 0.1.1 need not be reinstalled. GPU/browser modes
 still require the native runtimes described below; the universal wheel contains neither
 GPU extensions nor CEF. The offline documentation zip includes both languages.
 

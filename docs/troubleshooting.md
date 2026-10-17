@@ -2,6 +2,13 @@
 
 简体中文 | [English](en/troubleshooting.md)
 
+## 进程详情图表不随面板缩放
+
+v0.1.2 修复了“选中进程 CPU”图表的固定 24×5 字符内嵌尺寸。现在画布直接填充
+面板内部，最大化、Alt+Enter 全屏、恢复、连续缩放时同步调整。窗口过窄时侧栏
+按原规则隐藏，放宽后重新填充。此修正只需更新 Top 并重启；TUI 0.1.1 和已有
+GPU／CEF 运行时不需要重建。列表和表格中有意固定尺寸的内嵌画布不受影响。
+
 ## pip 找不到 comfortable-tui
 
 该依赖未假设存在 PyPI 发行版。使用 `tools/bootstrap.py`、requirements-tui.txt，

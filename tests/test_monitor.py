@@ -14,6 +14,40 @@ from comfortable_top.ui import Monitor
 from comfortable_tui import Key
 
 
+@pytest.mark.parametrize("native", [False, True])
+def test_selected_chart_fills_panel_after_resize_and_hidden_sidebar(native):
+    from comfortable_tui import FrameBuffer, OverlayCanvas
+
+    collector, charts = Collector(FakePsutil()), Charts("terminal")
+    buffer = FrameBuffer(640, 192) if native else None
+    if native:
+        charts.get("selected").source = buffer
+    monitor = Monitor(collector, charts, language="en")
+    try:
+        with monitor.app as app:
+            monitor.accept(sample(process()))
+            sizes = [(120, 33), (170, 48), (80, 24), (156, 36), (120, 33)]
+            heights = []
+            for width, height in sizes:
+                frame = app.render(width, height, dt=0)
+                panel, chart = monitor.selected_chart_panel, monitor.selected_chart_view
+                if width < 100:
+                    assert not panel.parent.visible
+                    assert not frame.overlays
+                    continue
+                assert chart.rect == panel.rect.inset(1)
+                assert chart.rect.width > 24 and chart.rect.height > 0
+                heights.append(chart.rect.height)
+                if native:
+                    assert isinstance(chart, OverlayCanvas)
+                    assert frame.overlays[id(chart)][1:] == (chart.rect, chart.rect)
+            assert heights[1] > heights[0]
+            assert heights[-1] == heights[0]
+    finally:
+        collector.close()
+        charts.close()
+
+
 def process(pid=10, created=1., cpu=25., name="python"):
     return Process(pid, created, 1, name, "tester", "running", cpu, 1000000, 2)
 

@@ -40,7 +40,13 @@ this app and its local message bridge. Choose a new report path:
 python -m comfortable_top.verify_windows --mode hybrid --canvas gpu --report .build/verify-windows.json
 python -m comfortable_top.verify_pacing --fps 60 --report .build/pacing-check-60.json
 python -m comfortable_top.verify_pacing --fps 120 --report .build/pacing-check-120.json
+python tools/verify_chart_resize.py --canvas gpu --report .build/resize-check.json
 ```
+
+verify_chart_resize opens a dedicated Windows Terminal, maximizes, enters/leaves
+Alt+Enter fullscreen, resizes and restores it, checking panel fill and physical-pixel
+transforms. It requires a desktop wide enough to show the sidebar and built native
+runtimes; `--canvas cpu` is also supported.
 
 verify_pacing measures actual App.run scheduling for 12 seconds by default, excluding
 the first three. It complements headless verify_motion CPU timings; producer cadence
@@ -65,7 +71,7 @@ Producer frame counts in the GIL test do not represent screen FPS.
 Validate a built wheel in a fresh environment outside the checkout:
 
 ```powershell
-python tools/verify_distribution.py --wheel dist/comfortable_top-0.1.1-py3-none-any.whl --tui-wheel PATH/comfortable_tui-WHEEL.whl --report .build/wheel-check.json
+python tools/verify_distribution.py --wheel dist/comfortable_top-0.1.2-py3-none-any.whl --tui-wheel PATH/comfortable_tui-WHEEL.whl --report .build/wheel-check.json
 ```
 
 This creates a separate venv, verifies package imports, web assets, Apache notices,

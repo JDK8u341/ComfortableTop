@@ -104,3 +104,16 @@ CPython 3.12 的可选 GPU/C++ wheel，不包含 CEF 或应用原生运行时。
 [X11](validation/standalone/release-0.1.1-linux-x11.json) 和
 [Wayland](validation/standalone/release-0.1.1-linux-wayland.json)分别十项通过。
 应用 27 项单元测试、Ruff 和严格文档构建通过；库发布提交 CI 全绿。
+
+## v0.1.2 选中进程图表缩放修正
+
+删除所选 CPU 图表固定 24×5 字符的 Text 内嵌布局，直接填充面板内部。
+新增回归覆盖终端画布与原生画布在五次尺寸切换中的填充、窄屏隐藏和恢复。
+Windows 29 项单元测试通过；WSL2 28 项通过、1 项平台跳过。
+
+真实 Windows Terminal 的 [GPU](validation/standalone/resize-windows-gpu.json) 和
+[CPU](validation/standalone/resize-windows-cpu.json) 均通过初始、最大化、Alt+Enter
+全屏、退出全屏、缩小、放大、恢复七阶段检查，逐次核对面板内部尺寸、附加层
+物理像素与 stretch 变换。图表高度依次为 184、368、483、368、46、230、184px。
+[完整 GPU/CEF 混合模式](validation/standalone/resize-hybrid.json)十项复查通过。
+可用 tools/verify_chart_resize.py 复现，详见[开发文档](development.md)。

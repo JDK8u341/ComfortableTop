@@ -2,6 +2,14 @@
 
 [简体中文](../troubleshooting.md) | English
 
+## Selected-process chart does not follow panel size
+
+v0.1.2 removes the selected CPU chart's fixed 24×5-cell inline sizing. Its canvas now
+fills the panel interior after maximize, Alt+Enter fullscreen, restore and resizing.
+The sidebar still hides in narrow windows and fills again when shown. Update Top
+and restart; TUI 0.1.1 and existing GPU/CEF runtimes need no rebuild. Intentionally
+fixed inline canvases in lists and tables retain their existing behavior.
+
 ## pip cannot find comfortable-tui
 
 Do not assume the dependency exists on PyPI. Use bootstrap, requirements-tui.txt or
