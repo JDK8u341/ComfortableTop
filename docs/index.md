@@ -1,5 +1,7 @@
 # ComfortableTop 文档
 
+简体中文 | [English](en/index.md)
+
 ComfortableTop 是独立 Python 应用，使用 ComfortableTUI 控件和通用图像 SDK。
 本手册对应 0.1.0，Windows x64／Linux 为当前范围，不支持 macOS。
 
@@ -9,3 +11,6 @@ ComfortableTop 是独立 Python 应用，使用 ComfortableTUI 控件和通用�
 
 独立入口为 `comfortable-top` 和 `python -m comfortable_top`。
 独立协议文件为仓库根目录 LICENSE 与 NOTICE；此站点可用 MkDocs 离线构建。
+
+按 **F9** 或在“设置 → Language / 语言”实时切换中英文；启动参数 `--lang zh/en/auto`。
+详见[语言设置](localization.md)，本手册各页均提供英文对应版本。

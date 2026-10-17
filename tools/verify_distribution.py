@@ -37,7 +37,7 @@ def main():
     script = ("import pathlib,sys,comfortable_top,comfortable_tui;from importlib.resources import files;"
               "assert pathlib.Path(comfortable_top.__file__).is_relative_to(pathlib.Path(sys.prefix));"
               "assert pathlib.Path(comfortable_tui.__file__).is_relative_to(pathlib.Path(sys.prefix));"
-              "assert files('comfortable_top').joinpath('web','analytics.js').read_text();"
+              "assert files('comfortable_top').joinpath('web','analytics.js').read_text(encoding='utf-8');"
               "print('independent wheel imports verified')")
     subprocess.run([str(python), "-c", script], check=True, cwd=work, env=environment)
     result["checks"].append("both_packages_are_installed_wheels_outside_checkout")
@@ -45,13 +45,18 @@ def main():
     command = python.parent / ("comfortable-top.exe" if os.name == "nt" else "comfortable-top")
     subprocess.run([str(command), "--help"], check=True, cwd=work, env=environment, stdout=subprocess.DEVNULL)
     result["checks"].append("module_and_console_entrypoints")
-    snapshot_report = target / "snapshot.json"
-    with (target / "snapshot.txt").open("w", encoding="utf-8") as output:
-        subprocess.run([str(command), "--snapshot", "--interval", ".25", "--report", str(snapshot_report)],
-                       check=True, cwd=work, env=environment, stdout=output)
-    snapshot = json.loads(snapshot_report.read_text(encoding="utf-8"))
-    assert snapshot["result"] == "passed" and snapshot["samples"] >= 2
+    for language, expected in (("en", "Processes"), ("zh", "进程")):
+        snapshot_report = target / f"snapshot-{language}.json"
+        snapshot_text = target / f"snapshot-{language}.txt"
+        with snapshot_text.open("w", encoding="utf-8") as output:
+            subprocess.run([str(command), "--snapshot", "--interval", ".25", "--lang", language,
+                            "--report", str(snapshot_report)],
+                           check=True, cwd=work, env=environment, stdout=output)
+        snapshot = json.loads(snapshot_report.read_text(encoding="utf-8"))
+        assert snapshot["result"] == "passed" and snapshot["samples"] >= 2 and snapshot["language"] == language
+        assert expected in snapshot_text.read_text(encoding="utf-8")
     result["checks"].append("real_sampling_and_snapshot_from_installed_wheel")
+    result["checks"].append("english_and_chinese_snapshots_from_installed_wheel")
     result["result"] = "passed"
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")

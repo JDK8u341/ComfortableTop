@@ -1,5 +1,7 @@
 # 研究依据与继承范围
 
+简体中文 | [English](en/research.md)
+
 本应用最初从 ComfortableTUI 示例拆分，基线提交
 `84f37b15645b78e1a07b4dd769fee4941a5d568a`，来源声明见仓库 NOTICE。
 原示例使用 Exa 调研，以下资料支撑当前交互和指标语义：

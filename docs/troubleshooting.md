@@ -1,5 +1,7 @@
 # 故障排查
 
+简体中文 | [English](en/troubleshooting.md)
+
 ## pip 找不到 comfortable-tui
 
 该依赖未假设存在 PyPI 发行版。使用 `tools/bootstrap.py`、requirements-tui.txt，
@@ -9,7 +11,7 @@
 ## 找不到 _ctui_top_native
 
 先运行 `tools/build_runtime.py`，并确认编译用 Python 与启动应用的 Python 相同。
-默认模块位于 `.runtime/native`；普通 wheel 安装可通过 COMFORTABLE_TOP_RUNTIME
+默认模块位于 `.runtime/<platform>/native`；普通 wheel 安装可通过 COMFORTABLE_TOP_RUNTIME
 设置完整运行时根，或通过 `--native-module DIR` 指定扩展目录。
 Py3.12 的 .pyd 不能给 Py3.10 使用，Windows .pyd 不能用于 Linux。
 
@@ -50,3 +52,10 @@ WSL 中读取的是 Linux 子系统的进程和资源。
 服务保留 no-first-run 策略与应用私有 profile。不要自动接受外部网站协议。
 本项目页面保留严格 CSP；自测通过 probe/proof 主题确认布局和消息，不调用动态 eval。
 若手动在 page.evaluate() 中求值，CEF 服务的执行方式仍受页面 CSP 约束。
+
+## 语言偏好无法保存
+
+配置目录不可写时，F9 仍会切换当前语言，并显示保存失败提示。检查[配置路径](localization.md)，
+或用 COMFORTABLE_TOP_CONFIG 指向可写文件。`--lang zh/en` 会覆盖本次启动语言，
+不改写偏好。笔记、进程名、原始详情和历史日志属于数据，保持原样。中文缺字时
+请安装支持 CJK 的终端字体。

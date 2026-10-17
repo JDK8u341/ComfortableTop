@@ -1,5 +1,7 @@
 # 使用指南
 
+简体中文 | [English](en/guide.md)
+
 安装后执行 `comfortable-top` 或 `python -m comfortable_top`。
 完整安装步骤见 [安装](installation.md)。建议至少 120×38，窄窗口会隐藏详情侧栏；表格可水平滚动。
 
@@ -7,11 +9,11 @@
 
 | 页面 | 用途和组合功能 |
 | --- | --- |
-| Processes | 实时虚拟 DataTable、内嵌 Sparkline、筛选排序、用户过滤、身份跟踪、后台详情弹窗；Text 混排趋势画布 |
-| Resources | CPU 曲线、逐核 BarChart、内存 ProgressBar、网卡／磁盘吞吐表，以及交互式网页分析 |
-| Compare | 四个固定进程；Virtual List 内嵌画布、DataTable 内嵌独立 WebView；可展开的真实进程树 |
-| Workspace | Unicode TextArea 笔记、Log、DirectoryTree、SelectionList 导出字段、后台 JSON 导出、PageStack 预览 |
-| Settings | Slider 采样频率、RadioGroup 排序方向、Collapsible 指标说明、ScrollView 和帮助弹窗 |
+| 进程 / Processes | 实时虚拟 DataTable、内嵌 Sparkline、筛选排序、用户过滤、身份跟踪、后台详情弹窗；Text 混排趋势画布 |
+| 资源 / Resources | CPU 曲线、逐核 BarChart、内存 ProgressBar、网卡／磁盘吞吐表，以及交互式网页分析 |
+| 对比 / Compare | 四个固定进程；Virtual List 内嵌画布、DataTable 内嵌独立 WebView；可展开的真实进程树 |
+| 工作区 / Workspace | Unicode TextArea 笔记、Log、DirectoryTree、SelectionList 导出字段、后台 JSON 导出、PageStack 预览 |
+| 设置 / Settings | 中英文语言选择、Slider 采样频率、RadioGroup 排序方向、Collapsible 指标说明、ScrollView 和帮助弹窗 |
 
 顶栏还使用 Input、Select、Switch、Checkbox、Spinner、Rule；Tabs、焦点和进度条
 沿用库的动画。只读取进程，不提供结束系统进程等操作。
@@ -20,6 +22,7 @@
 | --- | --- |
 | F1 / F2 | 帮助 / 搜索；匹配 PID、名称、用户和状态，空格分隔的词须全部匹配 |
 | F3 / F4 | 循环 CPU／内存／PID／名称排序；固定／取消固定选中进程 |
+| F9 | 切换中文／英文并保存偏好 |
 | F7 / F8 | 暂停采样／恢复；后台读取当前进程详情 |
 | Ctrl+1…5 | 切换主要页面 |
 | Ctrl+E | 导出当前快照和笔记到界面指定目录，生成新 JSON 文件 |
@@ -34,7 +37,7 @@
 
 每个固定项的网页单独调用 `BrowserService.open()`，DOM、滚动位置、图表范围独立。
 这些页属于本应用私有的临时 `local-analytics` profile。联动使用明确授权的
-`monitor.sample/select` 主题；`monitor.probe/proof` 用于消息桥验证。
+`monitor.sample/select` 主题；语言通过 `monitor.locale` 独立同步，暂停时也能切换；`monitor.probe/proof` 用于消息桥验证。
 网页保留 CSP，验证不使用动态 eval。最多五页，取消固定后关闭对应页面。
 分析页按画布的完整逻辑像素尺寸重新布局（物理尺寸除以 DPI），不再把固定比例网页
 缩成小图；图表随剩余空间铺开，矮面板使用紧凑工具栏。拖动调整大小时等待 120ms
@@ -44,6 +47,8 @@
 
 
 ## 参数和架构
+
+`--lang zh/en/auto` 控制启动语言，按 F9 随时切换，详见[语言设置](localization.md)。
 
 `--interval .25..5` 控制采样秒数，默认 1；`--fps 1..240` 控制 UI 目标，默认 60。
 `--output DIR` 预填导出目录；`--snapshot` 真实采样两次后输出终端帧。

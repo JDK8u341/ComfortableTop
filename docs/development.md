@@ -1,10 +1,12 @@
 # 开发、测试和发布
 
+简体中文 | [English](en/development.md)
+
 ## 独立源码布局
 
 | 路径 | 内容 |
 | --- | --- |
-| src/comfortable_top | 应用包、入口、采集、模型和界面 |
+| src/comfortable_top | 应用包、入口、采集、模型、界面与本地化 |
 | src/comfortable_top/web | 随 wheel 打包的 HTML/CSS/JS |
 | native | 本应用图表 C++ 生产者，通过 find_package 链接外部 SDK |
 | tools | 依赖 bootstrap、原生构建／运行时复制 |
@@ -23,7 +25,8 @@ python -m pip install -e ".[dev,docs]"
 python -m pytest -q
 python -m ruff check .
 python -m mkdocs build --strict
-comfortable-top --snapshot --interval .25
+comfortable-top --snapshot --interval .25 --lang en
+comfortable-top --snapshot --interval .25 --lang zh
 python -m comfortable_top.verify_native --canvas cpu
 python -m comfortable_top.verify_native --canvas gpu
 ```
@@ -69,3 +72,9 @@ python -m build --no-isolation
 Git 标签与版本号应一致，先通过测试和独立 wheel 安装，再创建 GitHub release。
 原项目许可证与来源保留在 NOTICE。变更应用时不需要修改库；若要求改动控件／帧
 协议，应在 ComfortableTUI 中独立处理并更新依赖提交，不复制一份库进本项目。
+
+## 双语维护
+
+更新中文手册时同步维护 `docs/en/` 的对应页面、页首语言链接与 MkDocs 导航。
+中英文 UI 文案见 `i18n.py` 和 `web/analytics.js`。集成自测会在暂停采样后切换
+中文，再切回英文，确认所有网页同步且页面未重建；测试不保存用户语言偏好。

@@ -60,13 +60,18 @@ def install_checks(monitor, report):
             return
         key = next(p.key for p in model.rows()[:40] if p.key != model.selected)
         report["expected_selection"] = key
-        monitor.web.publish(model)
         monitor.web.probe("comfortable-top-self-test", key)
 
     def message_received():
         if monitor.web:
             assert len(monitor.web.probes) == len(monitor.web.pages)
             assert all(p["token"] == "comfortable-top-self-test" and p["received"] for p in monitor.web.probes.values())
+            assert all(p["language"] == "zh" for p in monitor.web.probes.values())
+            overview = monitor.web.probes[monitor.web.pages["overview"].id]
+            assert overview["title"] == "资源历史"
+            assert monitor.paused and monitor.count == report.pop("language_paused_count")
+            assert monitor.tabs.titles[0] == "进程"
+            report["checks"].append("chinese_tui_and_all_pages_while_sampling_paused")
             viewports = {}
             for key, page in monitor.web.pages.items():
                 viewport = monitor.web.probes[page.id]["viewport"]
@@ -83,9 +88,33 @@ def install_checks(monitor, report):
             report["checks"].append("browser_viewport_reflows_and_chart_fills_panel")
             assert model.selected == tuple(report.pop("expected_selection"))
             report["checks"].append("browser_telemetry_received_and_selection_roundtrip")
+            monitor.set_language("en", persist=False)
+            monitor.web.probe("comfortable-top-english", model.selected)
+
+    def chinese():
+        monitor.pause_changed(True)
+        report["language_paused_count"] = monitor.count
+        report["browser_page_ids"] = [page.id for page in monitor.web.pages.values()] if monitor.web else []
+        monitor.set_language("zh", persist=False)
+        assert monitor.tabs.titles[0] == "进程"
+        if not monitor.web:
+            monitor.set_language("en", persist=False)
+            report["checks"].append("bilingual_tui_preserves_paused_snapshot")
+
+    def english():
+        if monitor.web:
+            assert len(monitor.web.probes) == len(monitor.web.pages)
+            assert all(p["language"] == "en" and p["token"] == "comfortable-top-english"
+                       for p in monitor.web.probes.values())
+            assert report.pop("browser_page_ids") == [page.id for page in monitor.web.pages.values()]
+            assert monitor.tabs.titles[0] == "Processes"
+            assert monitor.web.probes[monitor.web.pages["overview"].id]["title"] == "Resource history"
+            report["checks"].append("english_switch_preserves_native_browser_pages")
 
     app.call_later(4, start)
     app.call_later(7, compare)
     app.call_later(10, settings)
+    app.call_later(11, chinese)
     app.call_later(12, message_send)
     app.call_later(13, message_received)
+    app.call_later(13.7, english)

@@ -1,5 +1,7 @@
 # 安装、依赖与运行时
 
+简体中文 | [English](en/installation.md)
+
 ## 基础要求
 
 Python 3.10+，Windows 或 Linux。终端模式需要 psutil 与 ComfortableTUI。
@@ -95,3 +97,8 @@ WSL 显示 Linux 子系统的进程，非 Windows 宿主进程；构建输出和
 `COMFORTABLE_TUI_BROWSER_EXECUTABLE`／`COMFORTABLE_TUI_LINUX_HOST_EXECUTABLE` 保持优先。
 `<platform>` 在已验证环境中为 windows-x64 或 linux-x64；SDK 和构建缓存也按平台
 分目录，Windows 与 WSL 可共享同一源码目录。运行时不按兄弟目录名查找原 TUI 项目。
+
+## 界面语言
+
+`comfortable-top --lang zh` 启动中文，`--lang en` 启动英文；默认 `auto` 读取已保存偏好，
+否则检测系统语言。F9 或设置页可实时切换并保存。[配置与数据边界](localization.md)。

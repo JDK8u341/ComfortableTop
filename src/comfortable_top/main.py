@@ -13,11 +13,14 @@ from .collector import Collector
 from .rendering import Charts
 from .ui import Monitor
 from .paths import configure_runtime
+from .i18n import resolve_language
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--version", action="version", version="ComfortableTop 0.1.0")
+    parser.add_argument("--lang", choices=("auto", "zh", "en"), default="auto",
+                        help="UI language (auto: saved preference, then system locale); F9 switches live")
     parser.add_argument("--mode", choices=("terminal", "native", "hybrid"), default="terminal")
     parser.add_argument("--canvas", choices=("cpu", "gpu"), default="cpu")
     parser.add_argument("--platform", choices=("x11", "wayland"))
@@ -30,6 +33,7 @@ def main():
     parser.add_argument("--report", type=Path, help="Write aggregate validation results, without process names")
     parser.add_argument("--self-test", action="store_true", help="Exercise filter/pin/tabs/browser interaction on own UI")
     args = parser.parse_args()
+    language = resolve_language(args.lang)
     configure_runtime()
     if args.snapshot and hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
@@ -54,12 +58,12 @@ def main():
             web = None
             if args.mode == "hybrid":
                 from .web import WebPanels
-                web = WebPanels(args.platform, temporary=args.self_test)
+                web = WebPanels(args.platform, temporary=args.self_test, language=language)
                 stack.callback(web.close)
             collector = Collector(psutil)
             stack.callback(collector.close)
             monitor = Monitor(collector, charts, web=web, interval=args.interval, fps=args.fps,
-                              output=args.output, user=psutil.Process().username())
+                              output=args.output, user=psutil.Process().username(), language=language)
             stack.enter_context(monitor.app)
             if args.snapshot:
                 collector.request()
@@ -86,7 +90,7 @@ def main():
                     with WindowHost(monitor.app, display_platform=args.platform) as host:
                         report["host"] = host.capabilities
                         host.run()
-            report.update(samples=monitor.count, processes=len(monitor.model.sample.processes) if monitor.model.sample else 0,
+            report.update(language=monitor.i18n.language, samples=monitor.count, processes=len(monitor.model.sample.processes) if monitor.model.sample else 0,
                 sampler_errors=monitor.failures,
                 native_frames={str(k): v.provider.frames for k, v in charts.items.items() if v.provider},
                 native_errors={str(k): v.provider.error for k, v in charts.items.items() if v.provider and v.provider.error},
@@ -94,7 +98,7 @@ def main():
                 browser_pages=len(web.pages) if web else 0)
             if report["native_errors"] or monitor.failures:
                 raise RuntimeError("Sampler or native renderer reported an error")
-            if args.self_test and len(report["checks"]) < (8 if web else 6):
+            if args.self_test and len(report["checks"]) < (10 if web else 7):
                 raise RuntimeError("Self-test did not finish; allow at least 14 smoke seconds")
             report["result"] = "passed"
     except BaseException as error:

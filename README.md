@@ -1,5 +1,7 @@
 # ComfortableTop
 
+简体中文 | [English](README.en.md)
+
 一个独立的混合系统监视器：实时进程表、资源趋势、固定对比、进程树、调查笔记，
 以及可选 C++ CPU/GPU 画布和独立浏览器分析页。支持 Windows 与 Linux；Apache-2.0。
 
@@ -44,14 +46,19 @@ Linux 使用 `--mode hybrid --platform x11` 或 `--platform wayland`；默认终
 - C++ 线程绘图，经共享 CPU 帧或 Windows D3D11 纹理显示；Python 不逐帧传像素。
 - 调查笔记、活动日志、文件树、后台快照导出与预览。
 - DPI 感知的网页视口，窄／矮面板重新布局，保留原有 TUI 焦点和菜单操作。
+- 中英文实时切换，同步所有分析网页，保留当前工作状态，并保存语言偏好。
 
-F1 帮助、F2 搜索、F3 排序、F4 固定、F7 暂停采样、F8 详情、F6 菜单、
+F1 帮助、F2 搜索、F3 排序、F4 固定、F7 暂停采样、F8 详情、F9 中/En、F6 菜单、
 Ctrl+1…5 切页、Ctrl+E 导出、Ctrl+Q 退出。建议终端至少 120×38。
+
+也可在“设置 → Language / 语言”切换；`--lang zh/en/auto` 指定启动语言。
+默认优先使用已保存偏好，然后检测系统语言。详见[语言设置](docs/localization.md)。
 
 ## 独立文档
 
 - [安装、依赖与原生运行时](docs/installation.md)
 - [使用指南、指标与快捷键](docs/guide.md)
+- [中英文切换与偏好保存](docs/localization.md)
 - [架构、图像传输与网页服务](docs/architecture.md)
 - [开发、测试和打包](docs/development.md)
 - [故障排查](docs/troubleshooting.md)
@@ -60,6 +67,7 @@ Ctrl+1…5 切页、Ctrl+E 导出、Ctrl+Q 退出。建议终端至少 120×38�
 
 本地文档站点：`python -m pip install -e ".[docs]"` 后执行 `mkdocs serve`；
 离线站点构建命令为 `mkdocs build --strict`。
+所有手册均提供[英文版本](docs/en/index.md)，页面顶部可切换语言。
 
 ## 协议与来源
 

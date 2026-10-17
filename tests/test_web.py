@@ -18,6 +18,7 @@ class FakeProcess:
         pass
 
     def request(self, op, **kwargs):
+        self.messages.append((op, kwargs))
         return {}
 
     def send(self, op, **kwargs):
@@ -91,3 +92,32 @@ def test_top_browser_defers_hidden_resize_and_preserves_attached_source(browser_
         app.render(40, 12, dt=1)
         assert page.source is current
         view._session = None
+
+
+def test_browser_language_sync_does_not_recreate_pages_or_depend_on_sampling(browser_service, monkeypatch):
+    from urllib.parse import parse_qs, urlparse
+    from comfortable_top import web
+    monkeypatch.setattr(web, "BrowserService", lambda *args, **kwargs: browser_service)
+    panels = web.WebPanels(language="zh")
+    try:
+        view = panels.widget()
+        page, buffer = view.page, view.buffer
+        opened = [data for op, data in browser_service._rpc.messages if op == "open"][-1]
+        assert parse_qs(urlparse(opened["url"]).query)["lang"] == ["zh"]
+        assert "monitor.locale" in opened["subscribe_topics"]
+        browser_service._rpc.messages.clear()
+        panels.set_language("en")
+        assert panels.pages["overview"] is page and view.buffer is buffer
+        messages = browser_service._rpc.messages
+        assert any(data.get("topic") == "monitor.locale" and data.get("payload") == {"language": "en"}
+                   for op, data in messages)
+        # A page that finished loading late receives the current language.
+        messages.clear()
+        panels._event({"event": "loaded", "view": page.id})
+        assert any(data.get("payload") == {"language": "en"} for op, data in messages)
+        panels.widget((12, 1.))
+        opened = [data for op, data in browser_service._rpc.messages if op == "open"][-1]
+        assert parse_qs(urlparse(opened["url"]).query)["lang"] == ["en"]
+        assert panels.pages["overview"] is page
+    finally:
+        panels.close()

@@ -1,5 +1,7 @@
 # 验证范围
 
+简体中文 | [English](en/validation.md)
+
 独立项目的检查包括模型／采集、网页自适应、命令行、包资源和运行时发现。
 构建并在独立 venv 安装应用 wheel，从仓库之外启动；确认依赖来自普通 ComfortableTUI
 wheel，而非原项目的 editable 路径。原生模块通过安装后的 SDK 构建，不引用原 examples。
@@ -31,3 +33,16 @@ Windows 使用真实 Terminal，Linux 分别使用 WSL2 X11 与 native Wayland W
 CEF 152.0.14、psutil 7.2.2、pybind11 3.1.0；Windows MSVC 19.44，Linux GCC 11.4。
 应用构建／安装与运行时位于 ComfortableTop 目录，原 TUI 仓库仅在准备依赖时读取，
 原项目工作区没有改动。历史来源报告与独立验证报告分目录保存。
+
+
+## 2026-10-17 中英文更新验证
+
+- Windows：27 项单元测试通过；WSL2：26 项通过、1 项 Win32 测试跳过。
+- [Windows GPU](validation/standalone/i18n-windows-gpu.json)、[WSL2 X11](validation/standalone/i18n-linux-x11.json)、[WSL2 Wayland](validation/standalone/i18n-linux-wayland.json)：各十项混合模式检查通过，包含暂停时中文同步、英文切回、所有浏览器页身份保留，以及实际网页标题确认。
+- [独立 wheel](validation/standalone/i18n-installed-wheel.json)：仓库外的安装包中，中英文分别真实采样两次、输出对应语言终端帧。
+- 单元测试覆盖三种窗口尺寸、两个初始语言、下拉菜单和已打开弹窗、Unicode 菜单宽度、状态保留、配置优先级／无效配置／保存失败、弱引用回收与加载较慢的网页同步。
+- 双语手册均通过 MkDocs strict，Ruff 通过。库中已删除的示例相关测试已由独立项目负责；库剩余 203 项测试通过。
+
+旧验证工具在 Windows 默认 GBK 下读取含中文网页曾报解码错误，现已显式使用 UTF-8。
+一次 Wayland 复查在启动四秒时尚未完成两次采样，触发自测预热断言；独立复查已通过。
+该自测使用固定时间点，机器繁忙或冷启动时仍需留意启动时序；这些检查不代表帧率保证。

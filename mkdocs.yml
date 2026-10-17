@@ -2,14 +2,26 @@ site_name: ComfortableTop
 site_description: 独立混合系统监视器
 repo_url: https://github.com/JDK8u341/ComfortableTop
 nav:
-  - 首页: index.md
-  - 安装与构建: installation.md
-  - 使用指南: guide.md
-  - 架构: architecture.md
-  - 开发与打包: development.md
-  - 故障排查: troubleshooting.md
-  - 验证记录: validation.md
-  - 研究依据: research.md
+  - 简体中文:
+    - 首页: index.md
+    - 安装与构建: installation.md
+    - 使用指南: guide.md
+    - 中英文切换: localization.md
+    - 架构: architecture.md
+    - 开发与打包: development.md
+    - 故障排查: troubleshooting.md
+    - 验证记录: validation.md
+    - 研究依据: research.md
+  - English:
+    - Home: en/index.md
+    - Installation: en/installation.md
+    - User guide: en/guide.md
+    - Language settings: en/localization.md
+    - Architecture: en/architecture.md
+    - Development: en/development.md
+    - Troubleshooting: en/troubleshooting.md
+    - Validation: en/validation.md
+    - Research: en/research.md
 theme:
   name: readthedocs
 exclude_docs: |

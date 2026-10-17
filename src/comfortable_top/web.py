@@ -45,7 +45,8 @@ class ResponsiveWebView(WebView):
 class WebPanels:
     group = "comfortable-top-analytics"
 
-    def __init__(self, platform=None, *, temporary=False):
+    def __init__(self, platform=None, *, temporary=False, language="en"):
+        self.language = language
         class Handler(SimpleHTTPRequestHandler):
             def log_message(self, *_):
                 pass
@@ -71,16 +72,19 @@ class WebPanels:
         if key not in self.pages:
             query = {"mode": "overview"} if key == "overview" else {
                 "mode": "process", "pid": key[0], "created": key[1]}
+            query["lang"] = self.language
             origin = f"http://127.0.0.1:{self.server.server_port}"
             self.pages[key] = self.service.open(origin + "/analytics.html?" + urlencode(query),
                 profile=self.profile, width=720, height=400, fps=60, origins=[origin],
-                subscribe_topics=["monitor.sample", "monitor.probe"],
+                subscribe_topics=["monitor.sample", "monitor.probe", "monitor.locale"],
                 publish_topics=["monitor.select", "monitor.proof"], message_group=self.group)
         return ResponsiveWebView(self.pages[key])
 
     def _event(self, event):
         if event["event"] == "loaded":
             self.loaded.add(event["view"])
+            # Also covers a language switch while a new/hidden page was loading.
+            self.set_language(self.language)
         if event["event"] == "message" and event.get("data", {}).get("topic") == "monitor.select":
             data = event["data"].get("payload", {})
             if isinstance(data, dict) and type(data.get("pid")) is int and isinstance(data.get("created"), (int, float)):
@@ -98,9 +102,17 @@ class WebPanels:
 
     def publish(self, model):
         payload = model.payload()
+        payload["language"] = self.language
         payload["watched"] = [{"pid": k[0], "created": k[1], "history": list(model.history.get(k, ())),
                                "process": vars(model.process(k)) if model.process(k) else None} for k in model.pins]
         self.service.publish("monitor.sample", payload, profile=self.profile, message_group=self.group)
+
+    def set_language(self, language):
+        if language not in ("en", "zh"):
+            raise ValueError("language must be en or zh")
+        self.language = language
+        self.service.publish("monitor.locale", {"language": language},
+                             profile=self.profile, message_group=self.group)
 
     def close(self):
         if self.service:
