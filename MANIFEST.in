@@ -1,0 +1,6 @@
+include LICENSE NOTICE README.md mkdocs.yml requirements-tui.txt
+recursive-include src/comfortable_top/web *.html *.css *.js
+recursive-include native *.cpp CMakeLists.txt
+recursive-include tools *.py
+recursive-include tests *.py
+recursive-include docs *.md *.json

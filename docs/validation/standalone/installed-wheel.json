@@ -1,0 +1,9 @@
+{
+  "checks": [
+    "wheel_contains_web_assets_and_apache_notices",
+    "both_packages_are_installed_wheels_outside_checkout",
+    "module_and_console_entrypoints",
+    "real_sampling_and_snapshot_from_installed_wheel"
+  ],
+  "result": "passed"
+}

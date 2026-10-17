@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "comfortable-top"
+version = "0.1.0"
+description = "A hybrid system monitor with a spring-driven TUI, native charts and isolated browser analytics"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+authors = [{name = "ComfortableTop contributors"}]
+dependencies = ["comfortable-tui>=0.1.0,<0.2", "psutil>=5.9"]
+classifiers = [
+  "Development Status :: 3 - Alpha", "Environment :: Console",
+  "Programming Language :: Python :: 3", "Operating System :: Microsoft :: Windows",
+  "Operating System :: POSIX :: Linux",
+]
+
+[project.optional-dependencies]
+overlay = ["comfortable-tui[overlay]>=0.1.0,<0.2"]
+dev = ["pytest>=8", "ruff>=0.9", "build>=1", "pybind11>=2.13", "setuptools>=77", "wheel>=0.43"]
+docs = ["mkdocs>=1.6"]
+
+[project.scripts]
+comfortable-top = "comfortable_top.main:main"
+
+[project.urls]
+Homepage = "https://github.com/JDK8u341/ComfortableTop"
+Documentation = "https://github.com/JDK8u341/ComfortableTop/tree/main/docs"
+Issues = "https://github.com/JDK8u341/ComfortableTop/issues"
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.setuptools.packages.find]
+where = ["src"]
+namespaces = false
+
+[tool.setuptools.package-data]
+comfortable_top = ["web/*.html", "web/*.css", "web/*.js"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]

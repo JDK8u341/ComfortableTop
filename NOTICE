@@ -1,0 +1,13 @@
+ComfortableTop
+Copyright 2026 ComfortableTop contributors
+Licensed under the Apache License, Version 2.0.
+
+This project derives its initial monitor implementation from the ComfortableTUI
+example examples/comfortable_top at commit
+84f37b15645b78e1a07b4dd769fee4941a5d568a.
+https://github.com/JDK8u341/ComfortableTUI
+
+Original notice:
+ComfortableTUI
+Copyright 2026 ComfortableTUI contributors
+Licensed under the Apache License, Version 2.0.

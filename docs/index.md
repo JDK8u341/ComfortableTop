@@ -1,0 +1,11 @@
+# ComfortableTop 文档
+
+ComfortableTop 是独立 Python 应用，使用 ComfortableTUI 控件和通用图像 SDK。
+本手册对应 0.1.0，Windows x64／Linux 为当前范围，不支持 macOS。
+
+从 [安装与构建](installation.md) 开始；日常操作见 [使用指南](guide.md)。
+无需原生编译的终端模式即可读取真实指标；native 模式添加 C++ 图表，hybrid 模式
+添加本机网页分析和显式消息联动。源码包包含完整网页资源，安装后支持从任意目录启动。
+
+独立入口为 `comfortable-top` 和 `python -m comfortable_top`。
+独立协议文件为仓库根目录 LICENSE 与 NOTICE；此站点可用 MkDocs 离线构建。
