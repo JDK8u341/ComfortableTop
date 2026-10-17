@@ -5,7 +5,7 @@
 ## 基础要求
 
 Python 3.10+，Windows 或 Linux。终端模式需要 psutil 与 ComfortableTUI。
-测试基线为 ComfortableTUI 提交 `84f37b15645b78e1a07b4dd769fee4941a5d568a`，
+测试基线为 ComfortableTUI 提交 `208c8230937abf589e660d0b97f6ab3a96481185`，
 bootstrap 和 requirements-tui.txt 均锁定此版本；不会假设 PyPI 上已存在该依赖。
 GitHub 私有依赖需有访问权限，Git 凭证由本机 Git／gh 管理，项目不保存令牌。
 

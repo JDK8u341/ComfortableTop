@@ -36,6 +36,23 @@ web assets. Reflow occurs approximately 120ms after resizing settles; clipping a
 does not change the full page size. Enlarge small terminals to the recommended dimensions.
 Report DPI, terminal size, mode and runtime version, without cookies or full command lines.
 
+## `[<35;87;1M` appears at the shell prompt after exit
+
+This is the visible part of an SGR mouse report: `35` is motion with no button held,
+and `87;1` is the terminal column and row. The older dependency disabled reports
+after overlay teardown and left queued input unread. The shell could inherit it.
+The currently pinned dependency stops reports before teardown, then drains input
+while still in raw mode, waiting for 50ms of quiet with a 100ms total limit.
+No widget callbacks run during this drain.
+
+Reinstall an updated ComfortableTUI wheel and restart the app; updating web assets
+alone does not apply this fix. For source installation, rerun bootstrap as described
+in the installation guide. If the cached `.deps/comfortable-tui-src` revision differs,
+explicitly update it with `git -C .deps/comfortable-tui-src fetch origin` followed by
+`git -C .deps/comfortable-tui-src checkout --detach 208c8230937abf589e660d0b97f6ab3a96481185`.
+After the app has exited, Ctrl+C clears the current shell input. Forced termination
+and high-latency remote connections can still prevent complete cleanup.
+
 ## Fewer rows than the system process count
 
 Protected Windows processes without readable creation times count as unavailable to

@@ -34,6 +34,20 @@ Py3.12 的 .pyd 不能给 Py3.10 使用，Windows .pyd 不能用于 Linux。
 120ms 执行重新布局。画布裁剪不会改变完整网页尺寸；小窗口请放大至建议范围。
 需要报告问题时提供 DPI、终端尺寸、模式和运行时版本，不必提供 Cookie 或完整命令行。
 
+## 退出后输入框出现 `[<35;87;1M`
+
+这是终端 SGR 鼠标报告的可见部分：`35` 表示无按键的移动，`87;1` 为终端列、行。
+旧依赖在关闭叠加层之后才关闭鼠标上报，且没有读取退出时已排队的输入，
+因此 PowerShell 有时会读到残留报告。当前锁定的依赖已提前停止报告，并在恢复
+宿主输入模式前等待 50ms 无输入、最多 100ms 来读取残留事件，不触发控件回调。
+
+已有环境需重新安装更新后的 ComfortableTUI wheel，再重新启动应用；只更新网页资源
+无效。使用源码安装时，按安装文档重新运行 bootstrap；旧的 `.deps/comfortable-tui-src`
+如与新锁定提交不同，使用 `git -C .deps/comfortable-tui-src fetch origin` 和
+`git -C .deps/comfortable-tui-src checkout --detach 208c8230937abf589e660d0b97f6ab3a96481185`
+显式更新缓存后再运行 bootstrap。应用已经退出时，可用 Ctrl+C 清空当前提示符输入。
+强制终止进程和高延迟远程连接仍可能无法完成退出清理。
+
 ## 列表数少于系统进程总数
 
 Windows 无法读取创建时间的受保护进程计入 unavailable，避免错误地用 PID 关联
