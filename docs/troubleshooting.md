@@ -44,7 +44,7 @@ Py3.12 的 .pyd 不能给 Py3.10 使用，Windows .pyd 不能用于 Linux。
 已有环境需重新安装更新后的 ComfortableTUI wheel，再重新启动应用；只更新网页资源
 无效。使用源码安装时，按安装文档重新运行 bootstrap；旧的 `.deps/comfortable-tui-src`
 如与新锁定提交不同，使用 `git -C .deps/comfortable-tui-src fetch origin` 和
-`git -C .deps/comfortable-tui-src checkout --detach b701465f2139b85f85029c40e647008bfd39b5c8`
+`git -C .deps/comfortable-tui-src checkout --detach b7d88454007f67552c667f68c3fda2f32c727bc2`
 显式更新缓存后再运行 bootstrap。应用已经退出时，可用 Ctrl+C 清空当前提示符输入。
 强制终止进程和高延迟远程连接仍可能无法完成退出清理。
 

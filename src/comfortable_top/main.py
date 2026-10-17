@@ -14,11 +14,12 @@ from .rendering import Charts
 from .ui import Monitor
 from .paths import configure_runtime
 from .i18n import resolve_language
+from . import __version__
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--version", action="version", version="ComfortableTop 0.1.0")
+    parser.add_argument("--version", action="version", version=f"ComfortableTop {__version__}")
     parser.add_argument("--lang", choices=("auto", "zh", "en"), default="auto",
                         help="UI language (auto: saved preference, then system locale); F9 switches live")
     parser.add_argument("--mode", choices=("terminal", "native", "hybrid"), default="terminal")

@@ -3,7 +3,7 @@
 简体中文 | [English](en/index.md)
 
 ComfortableTop 是独立 Python 应用，使用 ComfortableTUI 控件和通用图像 SDK。
-本手册对应 0.1.0，Windows x64／Linux 为当前范围，不支持 macOS。
+本手册对应 0.1.1，Windows x64／Linux 为当前范围，不支持 macOS。
 
 从 [安装与构建](installation.md) 开始；日常操作见 [使用指南](guide.md)。
 无需原生编译的终端模式即可读取真实指标；native 模式添加 C++ 图表，hybrid 模式

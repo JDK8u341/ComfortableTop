@@ -4,8 +4,22 @@
 
 ## Terminal mode
 
+For v0.1.1 terminal mode, download both universal wheels from the
+[release page](https://github.com/JDK8u341/ComfortableTop/releases/tag/v0.1.1), then run
+in the download directory:
+
+```powershell
+python -m pip install --upgrade ./comfortable_tui-0.1.1-py3-none-any.whl ./comfortable_top-0.1.1-py3-none-any.whl
+comfortable-top --version
+comfortable-top
+```
+
+The version should read `ComfortableTop 0.1.1`. Update both packages. GPU/browser modes
+still require the native runtimes described below; the universal wheel contains neither
+GPU extensions nor CEF. The offline documentation zip includes both languages.
+
 Requires Python 3.10+ on Windows or Linux, psutil and ComfortableTUI. The tested dependency
-is pinned to commit `b701465f2139b85f85029c40e647008bfd39b5c8` in both bootstrap and
+is pinned to commit `b7d88454007f67552c667f68c3fda2f32c727bc2` in both bootstrap and
 requirements-tui.txt. Do not assume it is published on PyPI. Access to its private GitHub
 source requires local Git credentials; no tokens are stored in this project.
 

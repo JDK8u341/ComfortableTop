@@ -4,8 +4,20 @@
 
 ## 基础要求
 
+v0.1.1 的基础终端模式可直接从[发布页](https://github.com/JDK8u341/ComfortableTop/releases/tag/v0.1.1)
+下载两个通用 wheel，在下载目录中安装：
+
+```powershell
+python -m pip install --upgrade ./comfortable_tui-0.1.1-py3-none-any.whl ./comfortable_top-0.1.1-py3-none-any.whl
+comfortable-top --version
+comfortable-top
+```
+
+版本应显示 `ComfortableTop 0.1.1`。必须同时更新库和应用；GPU／浏览器模式仍需
+下面的原生运行时，通用 wheel 不包含 GPU 扩展或 CEF。离线手册 zip 同步提供中英文。
+
 Python 3.10+，Windows 或 Linux。终端模式需要 psutil 与 ComfortableTUI。
-测试基线为 ComfortableTUI 提交 `b701465f2139b85f85029c40e647008bfd39b5c8`，
+测试基线为 ComfortableTUI 提交 `b7d88454007f67552c667f68c3fda2f32c727bc2`，
 bootstrap 和 requirements-tui.txt 均锁定此版本；不会假设 PyPI 上已存在该依赖。
 GitHub 私有依赖需有访问权限，Git 凭证由本机 Git／gh 管理，项目不保存令牌。
 
