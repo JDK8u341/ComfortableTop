@@ -1,5 +1,10 @@
 # ComfortableTop
 
+This test branch enables GPU WebView output by default in Windows hybrid mode;
+use `--web-render-mode cpu` for comparison. It requires the matching new library
+and CEF helper; published v0.1.3 archives do not include this feature yet.
+See [installation](docs/en/installation.md).
+
 Version **0.1.3** requires **ComfortableTUI 0.1.2**. Hybrid-mode upgrades must also
 replace the complete browser runtime with a security-protocol-2 build. Matching
 runtime archives are available with the release; see the installation guide.

@@ -24,6 +24,8 @@ def main():
                         help="UI language (auto: saved preference, then system locale); F9 switches live")
     parser.add_argument("--mode", choices=("terminal", "native", "hybrid"), default="terminal")
     parser.add_argument("--canvas", choices=("cpu", "gpu"), default="cpu")
+    parser.add_argument("--web-render-mode", choices=("cpu", "gpu"),
+                        help="WebView frames in hybrid mode (default: Windows gpu, Linux cpu)")
     parser.add_argument("--platform", choices=("x11", "wayland"))
     parser.add_argument("--native-module", type=Path)
     parser.add_argument("--interval", type=float, default=1.)
@@ -42,6 +44,9 @@ def main():
         parser.error("interval must be .25..5, fps 1..240")
     if args.canvas == "gpu" and (os.name != "nt" or args.mode == "terminal"):
         parser.error("shared GPU charts require Windows --mode native or hybrid")
+    web_render_mode = args.web_render_mode or ("gpu" if os.name == "nt" else "cpu")
+    if args.mode == "hybrid" and web_render_mode == "gpu" and os.name != "nt":
+        parser.error("GPU WebView transport currently requires Windows; use --web-render-mode cpu")
     if args.snapshot and args.mode != "terminal":
         parser.error("--snapshot uses terminal mode; native surfaces need a real display")
     if os.name != "nt" and args.mode != "terminal" and not args.platform:
@@ -51,7 +56,8 @@ def main():
     except ImportError:
         parser.error('install the project dependencies: python -m pip install -e .')
 
-    report = {"mode": args.mode, "canvas": args.canvas, "platform": args.platform, "checks": []}
+    report = {"mode": args.mode, "canvas": args.canvas, "platform": args.platform, "checks": [],
+              "web_render_mode": web_render_mode if args.mode == "hybrid" else None}
     try:
         with ExitStack() as stack:
             charts = Charts(args.mode, gpu=args.canvas == "gpu", module_dir=args.native_module)
@@ -59,7 +65,8 @@ def main():
             web = None
             if args.mode == "hybrid":
                 from .web import WebPanels
-                web = WebPanels(args.platform, temporary=args.self_test, language=language)
+                web = WebPanels(args.platform, temporary=args.self_test, language=language,
+                                render_mode=web_render_mode)
                 stack.callback(web.close)
             collector = Collector(psutil)
             stack.callback(collector.close)
@@ -99,6 +106,16 @@ def main():
                 browser_pages=len(web.pages) if web else 0)
             if report["native_errors"] or monitor.failures:
                 raise RuntimeError("Sampler or native renderer reported an error")
+            if web and (args.self_test or args.report):
+                report["browser_frames"] = {str(key): page.frame_stats() for key, page in web.pages.items()}
+                if any(stats["error"] for stats in report["browser_frames"].values()):
+                    raise RuntimeError("Browser renderer reported an error")
+                if web_render_mode == "gpu" and any(
+                    stats["frame_backend"] != "native_gpu_d3d11" or stats["cpu_paints"] != 0 or
+                    (args.self_test and stats["accelerated_paints"] < 1)
+                    for stats in report["browser_frames"].values()
+                ):
+                    raise RuntimeError("Browser did not produce GPU-only frames")
             if args.self_test and len(report["checks"]) < (10 if web else 7):
                 raise RuntimeError("Self-test did not finish; allow at least 14 smoke seconds")
             report["result"] = "passed"

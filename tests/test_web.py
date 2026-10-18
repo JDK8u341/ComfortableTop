@@ -121,3 +121,38 @@ def test_browser_language_sync_does_not_recreate_pages_or_depend_on_sampling(bro
         assert panels.pages["overview"] is page
     finally:
         panels.close()
+
+
+def test_web_panels_pass_selected_transport_to_every_independent_page(monkeypatch):
+    from comfortable_top import web
+
+    opened = []
+
+    class Service:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def profile(self, *args, **kwargs):
+            return "profile"
+
+        def on_event(self, callback):
+            pass
+
+        def open(self, *args, **kwargs):
+            opened.append(kwargs)
+            return object()
+
+        def close(self):
+            pass
+
+    monkeypatch.setattr(web, "BrowserService", Service)
+    monkeypatch.setattr(web, "ResponsiveWebView", lambda page: page)
+    panels = web.WebPanels(render_mode="gpu")
+    try:
+        panels.widget()
+        panels.widget((42, 1.))
+        assert len(opened) == 2 and all(call["render_mode"] == "gpu" for call in opened)
+        with pytest.raises(RuntimeError, match="GPU import failed"):
+            panels._event({"event": "error", "data": {"message": "GPU import failed"}})
+    finally:
+        panels.close()

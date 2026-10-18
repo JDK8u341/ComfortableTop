@@ -8,7 +8,7 @@ import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-TUI_REVISION = "0480fe7bd62ab1bbc811bab7b46e95d324d4f610"
+TUI_REVISION = "e25f1f62c26ec99684f5b6e0ba1cf472930665f2"
 TUI_URL = "https://github.com/JDK8u341/ComfortableTUI.git"
 
 

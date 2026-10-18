@@ -2,6 +2,26 @@
 
 [简体中文](../installation.md) | English
 
+## Current branch: GPU WebView testing
+
+Windows hybrid mode now defaults to GPU WebView textures; Linux still defaults to CPU.
+`--canvas` selects native chart transport, while `--web-render-mode cpu|gpu` selects browser output.
+Published v0.1.3 / TUI 0.1.2 stable assets do not contain this new API. Use the current pinned
+TUI commit `e25f1f62c26ec99684f5b6e0ba1cf472930665f2` and rebuild/copy its complete CEF runtime.
+Security protocol 2 alone is insufficient; the helper must advertise `gpu_texture_transport=1`.
+
+The local project `.venv` and `.runtime/windows-x64/browser` have been updated:
+
+```powershell
+.\.venv\Scripts\comfortable-top.exe --mode hybrid --canvas gpu
+.\.venv\Scripts\comfortable-top.exe --mode hybrid --canvas gpu --web-render-mode cpu
+```
+
+No browser path or TUI build directory is needed at launch. An explicitly set old
+COMFORTABLE_TUI_BROWSER_EXECUTABLE overrides discovery; remove it from the launching shell
+if applicable. Unsupported GPU requests fail explicitly. Reports include actual per-page
+backends, accelerated paint and CPU paint counts. GPU copies and synchronization remain necessary.
+
 ## Terminal mode
 
 For v0.1.3 terminal mode, download both universal wheels from the
@@ -21,7 +41,7 @@ still require the native runtimes described below; the universal wheel contains 
 GPU extensions nor CEF. The offline documentation zip includes both languages.
 
 Requires Python 3.10+ on Windows or Linux, psutil and ComfortableTUI. The tested dependency
-is pinned to commit `0480fe7bd62ab1bbc811bab7b46e95d324d4f610` in both bootstrap and
+is pinned to commit `e25f1f62c26ec99684f5b6e0ba1cf472930665f2` in both bootstrap and
 requirements-tui.txt. Do not assume it is published on PyPI. Access to its private GitHub
 source requires local Git credentials; no tokens are stored in this project.
 
@@ -74,8 +94,9 @@ To reuse a complete CEF runtime:
 
 The runtime directory must include ctui_browser.exe, ctui_browser.dll, libcef.dll,
 pak files, locales, snapshots and CEF licenses. The tool copies the whole directory
-into `.runtime/<platform>/browser`; subsequent launches use that copy. CEF uses CPU
-shared frames even when GPU transport is selected for native charts.
+into `.runtime/<platform>/browser`; subsequent launches use that copy. This branch defaults
+to GPU browser frames on Windows, with `--web-render-mode cpu` for CPU comparison.
+Linux uses CPU frames. The separate `--canvas` flag controls charts only.
 
 To build CEF, the tested SDK version is
 `152.0.14+g8a0b5b9+chromium-152.0.7977.167`. Download it using the dependency's helper:

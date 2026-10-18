@@ -2,6 +2,27 @@
 
 简体中文 | [English](en/installation.md)
 
+## 当前分支：GPU WebView 测试
+
+当前源码在 Windows `--mode hybrid` 下默认使用 GPU 网页纹理；Linux 默认仍为 CPU。
+`--canvas gpu` 单独控制原生图表，网页通过 `--web-render-mode cpu|gpu` 选择。
+发布页的 v0.1.3 / TUI 0.1.2 稳定包没有这个新增接口；测试应使用当前分支锁定的
+TUI 提交 `e25f1f62c26ec99684f5b6e0ba1cf472930665f2` 并重新构建/复制完整 CEF helper。
+安全协议 2 本身不足以证明支持 GPU，helper 还需提供 `gpu_texture_transport=1`。
+
+本机已更新项目自己的 `.venv` 和 `.runtime/windows-x64/browser`，可直接运行：
+
+```powershell
+.\.venv\Scripts\comfortable-top.exe --mode hybrid --canvas gpu
+# 同一套新版运行时，网页切回 CPU 对照：
+.\.venv\Scripts\comfortable-top.exe --mode hybrid --canvas gpu --web-render-mode cpu
+```
+
+不需要传 `--browser` 或访问 TUI 构建目录。旧的 `COMFORTABLE_TUI_BROWSER_EXECUTABLE`
+环境变量会优先于自动发现；如果自己曾设置旧路径，请在当前终端删除该变量再启动。
+GPU 模式不能满足时会报错，不会静默回退。测试报告会记录每页的实际 frame_backend、
+加速回调和 CPU 绘制次数。GPU 模式仍包含 CEF 生命周期要求的 GPU 内部复制和同步。
+
 ## 基础要求
 
 v0.1.3 的基础终端模式可直接从[发布页](https://github.com/JDK8u341/ComfortableTop/releases/tag/v0.1.3)
@@ -18,7 +39,7 @@ comfortable-top
 下面的原生运行时，通用 wheel 不包含 GPU 扩展或 CEF。离线手册 zip 同步提供中英文。
 
 Python 3.10+，Windows 或 Linux。终端模式需要 psutil 与 ComfortableTUI。
-测试基线为 ComfortableTUI 提交 `0480fe7bd62ab1bbc811bab7b46e95d324d4f610`，
+当前源码测试基线为 ComfortableTUI 提交 `e25f1f62c26ec99684f5b6e0ba1cf472930665f2`，
 bootstrap 和 requirements-tui.txt 均锁定此版本；不会假设 PyPI 上已存在该依赖。
 GitHub 私有依赖需有访问权限，Git 凭证由本机 Git／gh 管理，项目不保存令牌。
 
@@ -69,7 +90,8 @@ CMake SDK，本项目只用 find_package 链接 SDK，不向原仓库 add_subdir
 
 目录必须包含 ctui_browser.exe、ctui_browser.dll、libcef.dll、pak、locale、快照及
 CEF 许可证。工具复制整个目录到 `.runtime/<platform>/browser`，不只复制 exe；启动不再访问
-原构建目录。浏览器使用 CEF CPU 共享帧，GPU 参数只改变趋势图的传输与呈现。
+原构建目录。当前分支的 Windows 网页默认使用 GPU；`--web-render-mode cpu` 使用 CPU
+共享帧，Linux 保留 CPU 路径。`--canvas` 只控制趋势图。
 
 从源码构建浏览器时，CEF 基线为
 `152.0.14+g8a0b5b9+chromium-152.0.7977.167`。依赖源码附带安全下载器：

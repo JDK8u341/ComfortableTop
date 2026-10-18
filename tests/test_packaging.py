@@ -19,7 +19,7 @@ def test_cli_works_outside_checkout(tmp_path):
     assert result.stdout.strip() == "ComfortableTop 0.1.3"
     result = subprocess.run([sys.executable, "-m", "comfortable_top", "--help"], cwd=tmp_path,
                             capture_output=True, text=True, check=True)
-    assert "--mode" in result.stdout and "--canvas" in result.stdout
+    assert "--mode" in result.stdout and "--canvas" in result.stdout and "--web-render-mode" in result.stdout
 
 
 def test_runtime_override_and_explicit_environment_precedence(tmp_path, monkeypatch):

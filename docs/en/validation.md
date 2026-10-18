@@ -2,6 +2,30 @@
 
 [简体中文](../validation.md) | English
 
+## Windows GPU WebView test branch
+
+This branch pins TUI `e25f1f62c26ec99684f5b6e0ba1cf472930665f2`. The ordinary Windows
+`.venv` uses its non-editable GPU wheel and the complete matching CEF runtime under
+this project's `.runtime/windows-x64`. The ordinary WSL environment also uses matching
+CPU wheels/helpers. Development overrides were cleared for automatic runtime discovery.
+
+- [Windows default GPU browser](../validation/standalone/webview-gpu.json): ten hybrid
+  checks passed; both independent pages reported native_gpu_d3d11, zero CPU paints and
+  actual accelerated frames.
+- [Windows explicit CPU comparison](../validation/standalone/webview-cpu.json): ten checks,
+  both pages using native_cpu.
+- [X11](../validation/standalone/webview-x11-cpu.json) and
+  [Wayland](../validation/standalone/webview-wayland-cpu.json): ten checks each, default CPU.
+  Linux GPU support was not added.
+- Windows: 30 unit tests passed. WSL: 29 passed, one platform skip. Ruff, strict docs
+  and pip check passed.
+
+These runs used the app's real CLI selection, without monkeypatching BrowserService.open,
+an editable TUI import or launch-time access to its build directory. The test launcher only
+clears development overrides and calls the normal app main with self-test options.
+The new browser_frames report checks negotiated GPU backends, zero CPU paints and nonzero
+accelerated callbacks. Published v0.1.3 assets do not yet include this test-branch feature.
+
 ## v0.1.3 / ComfortableTUI v0.1.2 release checks
 
 On 2026-10-18, both the ordinary Windows `.venv` and the WSL2 development environment

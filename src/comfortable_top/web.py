@@ -45,8 +45,8 @@ class ResponsiveWebView(WebView):
 class WebPanels:
     group = "comfortable-top-analytics"
 
-    def __init__(self, platform=None, *, temporary=False, language="en"):
-        self.language = language
+    def __init__(self, platform=None, *, temporary=False, language="en", render_mode="cpu"):
+        self.language, self.render_mode = language, render_mode
         class Handler(SimpleHTTPRequestHandler):
             def log_message(self, *_):
                 pass
@@ -75,12 +75,14 @@ class WebPanels:
             query["lang"] = self.language
             origin = f"http://127.0.0.1:{self.server.server_port}"
             self.pages[key] = self.service.open(origin + "/analytics.html?" + urlencode(query),
-                profile=self.profile, width=720, height=400, fps=60, origins=[origin],
+                profile=self.profile, width=720, height=400, fps=60, origins=[origin], render_mode=self.render_mode,
                 subscribe_topics=["monitor.sample", "monitor.probe", "monitor.locale"],
                 publish_topics=["monitor.select", "monitor.proof"], message_group=self.group)
         return ResponsiveWebView(self.pages[key])
 
     def _event(self, event):
+        if event["event"] in ("error", "crashed"):
+            raise RuntimeError("Browser renderer: " + event.get("data", {}).get("message", "render process exited"))
         if event["event"] == "loaded":
             self.loaded.add(event["view"])
             # Also covers a language switch while a new/hidden page was loading.

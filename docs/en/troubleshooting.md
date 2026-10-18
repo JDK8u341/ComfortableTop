@@ -65,7 +65,7 @@ Reinstall an updated ComfortableTUI wheel and restart the app; updating web asse
 alone does not apply this fix. For source installation, rerun bootstrap as described
 in the installation guide. If the cached `.deps/comfortable-tui-src` revision differs,
 explicitly update it with `git -C .deps/comfortable-tui-src fetch origin` followed by
-`git -C .deps/comfortable-tui-src checkout --detach 0480fe7bd62ab1bbc811bab7b46e95d324d4f610`.
+`git -C .deps/comfortable-tui-src checkout --detach e25f1f62c26ec99684f5b6e0ba1cf472930665f2`.
 After the app has exited, Ctrl+C clears the current shell input. Forced termination
 and high-latency remote connections can still prevent complete cleanup.
 

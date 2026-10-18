@@ -2,6 +2,10 @@
 
 简体中文 | [English](README.en.md)
 
+当前测试分支已接入 WebView GPU 输出：Windows 混合模式默认启用，
+`--web-render-mode cpu` 可切回 CPU 对照。需要匹配的新库与 CEF helper，
+已发布的 v0.1.3 归档尚不包含此功能，见[安装说明](docs/installation.md)。
+
 一个独立的混合系统监视器：实时进程表、资源趋势、固定对比、进程树、调查笔记，
 以及可选 C++ CPU/GPU 画布和独立浏览器分析页。支持 Windows 与 Linux；Apache-2.0。
 
