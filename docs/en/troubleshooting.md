@@ -1,5 +1,13 @@
 # Troubleshooting
 
+## Browser security-protocol error after upgrading
+
+Top 0.1.3 uses TUI 0.1.2 and requires a protocol-2 helper. Replace the complete
+`.runtime/<platform>/browser` directory as well as the Python wheels; copying only
+the executable is insufficient. Clear an old COMFORTABLE_TUI_BROWSER_EXECUTABLE
+override or point it at the new runtime. Use Top's own venv; the TUI checkout's
+development venv is not required.
+
 [简体中文](../troubleshooting.md) | English
 
 ## Selected-process chart does not follow panel size
@@ -57,7 +65,7 @@ Reinstall an updated ComfortableTUI wheel and restart the app; updating web asse
 alone does not apply this fix. For source installation, rerun bootstrap as described
 in the installation guide. If the cached `.deps/comfortable-tui-src` revision differs,
 explicitly update it with `git -C .deps/comfortable-tui-src fetch origin` followed by
-`git -C .deps/comfortable-tui-src checkout --detach b7d88454007f67552c667f68c3fda2f32c727bc2`.
+`git -C .deps/comfortable-tui-src checkout --detach 0480fe7bd62ab1bbc811bab7b46e95d324d4f610`.
 After the app has exited, Ctrl+C clears the current shell input. Forced termination
 and high-latency remote connections can still prevent complete cleanup.
 

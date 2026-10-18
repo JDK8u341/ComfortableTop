@@ -61,7 +61,7 @@ comfortable-top --mode hybrid --platform wayland --self-test --smoke-seconds 14 
 也应测试 wheel 在独立 venv、仓库之外的工作目录中启动，确认资源与导入独立。
 
 ```powershell
-python tools/verify_distribution.py --wheel dist/comfortable_top-0.1.2-py3-none-any.whl --tui-wheel PATH/comfortable_tui-WHEEL.whl --report .build/wheel-check.json
+python tools/verify_distribution.py --wheel dist/comfortable_top-0.1.3-py3-none-any.whl --tui-wheel PATH/comfortable_tui-WHEEL.whl --report .build/wheel-check.json
 ```
 
 这个检查会创建独立测试 venv，在空工作目录中验证包／网页／许可证和命令行，并真实

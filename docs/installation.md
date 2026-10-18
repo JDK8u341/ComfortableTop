@@ -4,20 +4,21 @@
 
 ## 基础要求
 
-v0.1.2 的基础终端模式可直接从[发布页](https://github.com/JDK8u341/ComfortableTop/releases/tag/v0.1.2)
+v0.1.3 的基础终端模式可直接从[发布页](https://github.com/JDK8u341/ComfortableTop/releases/tag/v0.1.3)
 下载两个通用 wheel，在下载目录中安装：
 
 ```powershell
-python -m pip install --upgrade ./comfortable_tui-0.1.1-py3-none-any.whl ./comfortable_top-0.1.2-py3-none-any.whl
+python -m pip install --upgrade ./comfortable_tui-0.1.2-py3-none-any.whl ./comfortable_top-0.1.3-py3-none-any.whl
 comfortable-top --version
 comfortable-top
 ```
 
-版本应显示 `ComfortableTop 0.1.2`。库至少需要 0.1.1，已安装此版时不必重装；GPU／浏览器模式仍需
+版本应显示 `ComfortableTop 0.1.3`。库至少需要 0.1.2；旧库和旧浏览器运行时需要一起更新。
+浏览器 helper 必须使用安全协议 2，不能仅更新 Python wheel 而保留旧 CEF helper。GPU／浏览器模式仍需
 下面的原生运行时，通用 wheel 不包含 GPU 扩展或 CEF。离线手册 zip 同步提供中英文。
 
 Python 3.10+，Windows 或 Linux。终端模式需要 psutil 与 ComfortableTUI。
-测试基线为 ComfortableTUI 提交 `b7d88454007f67552c667f68c3fda2f32c727bc2`，
+测试基线为 ComfortableTUI 提交 `0480fe7bd62ab1bbc811bab7b46e95d324d4f610`，
 bootstrap 和 requirements-tui.txt 均锁定此版本；不会假设 PyPI 上已存在该依赖。
 GitHub 私有依赖需有访问权限，Git 凭证由本机 Git／gh 管理，项目不保存令牌。
 
@@ -37,6 +38,16 @@ bootstrap 会在 `.deps/comfortable-tui-src` 获取依赖源码并安装非 edit
 先安装该 wheel，再安装 ComfortableTop wheel；不要同时依赖未发布的 PyPI 包名。
 
 ## Windows 原生与混合模式
+
+发布页提供 `comfortable_top-runtime-windows-x64-cp312-0.1.3.zip`，内含完整协议 2 CEF
+运行时、图表模块和许可证。先安装同页的 CPython 3.12 Windows x64 TUI 原生 wheel
+与 Top wheel，将 zip 解压到仓库的 `.runtime/windows-x64`（应直接出现 browser/native
+子目录），即可使用本节最后的启动命令。其他 Python 版本请从源码构建匹配模块。
+普通 wheel 安装者应解压到下文的默认运行时目录，或设置 COMFORTABLE_TOP_RUNTIME。
+
+```powershell
+python -m pip install --upgrade "./comfortable_tui-0.1.2-cp312-cp312-win_amd64.whl[overlay]" ./comfortable_top-0.1.3-py3-none-any.whl
+```
 
 需要 x64 Python、VS 2022 C++ 工具链、CMake；GPU 需要可用 D3D11.1。
 
@@ -73,6 +84,10 @@ CEF 构建需要 C++20，通用帧 SDK 和本项目图表模块用 C++17。浏�
 no-first-run 策略，不通过自动点击、放开 eval 或关闭沙箱来跳过初始化。
 
 ## Linux / WSL2
+
+发布页另提供 `comfortable_top-runtime-linux-x64-cp310-0.1.3.tar.gz`，基于 Ubuntu 22.04、
+CPython 3.10 构建，包含 CEF、CPU 图表与 Qt 窗口宿主。解压到 `.runtime/linux-x64`。
+Qt/GTK 等系统依赖仍需安装；其他 Python ABI/发行版按下面步骤重建，不保证二进制兼容。
 
 需要 GCC 11+、CMake、Qt 6 开发包与真实 X11／Wayland 会话；CEF 还需系统图形库。
 Ubuntu 22.04 示例：

@@ -2,6 +2,26 @@
 
 简体中文 | [English](en/validation.md)
 
+## v0.1.3 / ComfortableTUI v0.1.2 发布复测
+
+2026-10-18：Windows 普通 `.venv` 和 WSL2 普通开发环境均安装 TUI 0.1.2 非 editable
+wheel，并重建本应用的生产者、替换协议 2 CEF 运行时。清除开发路径覆盖后，依靠本项目
+`.runtime/<platform>` 自动发现运行时。
+
+- [Windows GPU](validation/standalone/release-0.1.3-windows-gpu.json)、
+  [X11](validation/standalone/release-0.1.3-linux-x11.json)、
+  [Wayland](validation/standalone/release-0.1.3-linux-wayland.json) 各十项混合模式检查通过。
+- 新建 venv、仓库外启动的 [Windows](validation/standalone/release-0.1.3-installed-windows.json)
+  和 [Linux](validation/standalone/release-0.1.3-installed-linux.json) 各五项 wheel 检查通过，
+  覆盖实际采样、中英文、资源和许可证。
+- Windows 29 项单元测试通过，Linux 28 项通过、1 项平台跳过；Ruff 与双语手册严格构建通过。
+- 首次 X11 冷启动在固定四秒预热检查时尚未完成采样，原测试未改动，重试通过；
+  此自测的固定时间点仍可能受机器负载影响。上述检查不构成帧率或任意 Linux compositor 兼容保证。
+
+发布包提供独立双语手册、匹配的 Windows CPython 3.12 / Linux CPython 3.10 运行时和
+SHA256 校验。浏览器权限由原生边界执行；宿主 Python 和原生生产者仍是受信任代码，
+不宣称将任意第三方原生插件安全隔离。详情见[安装](installation.md)和库的安全文档。
+
 独立项目的检查包括模型／采集、网页自适应、命令行、包资源和运行时发现。
 构建并在独立 venv 安装应用 wheel，从仓库之外启动；确认依赖来自普通 ComfortableTUI
 wheel，而非原项目的 editable 路径。原生模块通过安装后的 SDK 构建，不引用原 examples。

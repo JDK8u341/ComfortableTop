@@ -1,5 +1,9 @@
 # ComfortableTop
 
+Version **0.1.3** requires **ComfortableTUI 0.1.2**. Hybrid-mode upgrades must also
+replace the complete browser runtime with a security-protocol-2 build. Matching
+runtime archives are available with the release; see the installation guide.
+
 [简体中文](README.md) | English
 
 An independent hybrid system monitor: live processes, resource trends, pinned

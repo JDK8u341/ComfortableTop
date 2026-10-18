@@ -4,23 +4,24 @@
 
 ## Terminal mode
 
-For v0.1.2 terminal mode, download both universal wheels from the
-[release page](https://github.com/JDK8u341/ComfortableTop/releases/tag/v0.1.2), then run
+For v0.1.3 terminal mode, download both universal wheels from the
+[release page](https://github.com/JDK8u341/ComfortableTop/releases/tag/v0.1.3), then run
 in the download directory:
 
 ```powershell
-python -m pip install --upgrade ./comfortable_tui-0.1.1-py3-none-any.whl ./comfortable_top-0.1.2-py3-none-any.whl
+python -m pip install --upgrade ./comfortable_tui-0.1.2-py3-none-any.whl ./comfortable_top-0.1.3-py3-none-any.whl
 comfortable-top --version
 comfortable-top
 ```
 
-The version should read `ComfortableTop 0.1.2`. The library requires 0.1.1 or newer;
-an installed 0.1.1 need not be reinstalled. GPU/browser modes
+The version should read `ComfortableTop 0.1.3`. The library requires 0.1.2 or newer;
+upgrade both the library and the browser runtime. The helper must use security protocol 2;
+updating only Python wheels while retaining an old helper is insufficient. GPU/browser modes
 still require the native runtimes described below; the universal wheel contains neither
 GPU extensions nor CEF. The offline documentation zip includes both languages.
 
 Requires Python 3.10+ on Windows or Linux, psutil and ComfortableTUI. The tested dependency
-is pinned to commit `b7d88454007f67552c667f68c3fda2f32c727bc2` in both bootstrap and
+is pinned to commit `0480fe7bd62ab1bbc811bab7b46e95d324d4f610` in both bootstrap and
 requirements-tui.txt. Do not assume it is published on PyPI. Access to its private GitHub
 source requires local Git credentials; no tokens are stored in this project.
 
@@ -40,6 +41,17 @@ Alternatively, install the ComfortableTUI wheel supplied with the GitHub release
 then the ComfortableTop wheel. This enables terminal mode without private source access.
 
 ## Windows native and hybrid modes
+
+The release includes `comfortable_top-runtime-windows-x64-cp312-0.1.3.zip` with
+the complete protocol-2 CEF runtime, chart module and notices. Install the matching
+CPython 3.12 Windows x64 TUI native wheel and the Top wheel, then extract the archive
+into `.runtime/windows-x64` so it directly contains browser/native subdirectories.
+Other Python ABIs require rebuilding. Wheel-only installs should use the runtime
+location below or COMFORTABLE_TOP_RUNTIME.
+
+```powershell
+python -m pip install --upgrade "./comfortable_tui-0.1.2-cp312-cp312-win_amd64.whl[overlay]" ./comfortable_top-0.1.3-py3-none-any.whl
+```
 
 Requires x64 Python, VS 2022 C++ tools and CMake. GPU charts require D3D11.1 support.
 
@@ -78,6 +90,11 @@ and no-first-run policies remain enabled; setup does not click through external 
 allow unsafe eval, or disable the sandbox.
 
 ## Linux and WSL2
+
+`comfortable_top-runtime-linux-x64-cp310-0.1.3.tar.gz` targets Ubuntu 22.04 and
+CPython 3.10. Extract into `.runtime/linux-x64`; it contains CEF, the CPU chart module
+and the Qt host. System Qt/GTK dependencies are still required. Rebuild for other
+Python ABIs or distributions; arbitrary binary compatibility is not promised.
 
 Requires GCC 11+, CMake, Qt 6 development packages and a real X11 or Wayland session.
 CEF also requires system graphics libraries. For Ubuntu 22.04:

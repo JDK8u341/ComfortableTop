@@ -2,6 +2,31 @@
 
 [简体中文](../validation.md) | English
 
+## v0.1.3 / ComfortableTUI v0.1.2 release checks
+
+On 2026-10-18, both the ordinary Windows `.venv` and the WSL2 development environment
+were upgraded to a regular TUI 0.1.2 wheel, rebuilt app producers and the protocol 2
+CEF runtime. Development overrides were cleared; runtimes were discovered through
+this project's `.runtime/<platform>` directory.
+
+- Ten hybrid checks passed on [Windows GPU](../validation/standalone/release-0.1.3-windows-gpu.json),
+  [X11](../validation/standalone/release-0.1.3-linux-x11.json) and
+  [Wayland](../validation/standalone/release-0.1.3-linux-wayland.json).
+- Five fresh-venv wheel checks passed on [Windows](../validation/standalone/release-0.1.3-installed-windows.json)
+  and [Linux](../validation/standalone/release-0.1.3-installed-linux.json), launched outside
+  the checkout, covering real sampling, both languages, assets and licenses.
+- Windows: 29 unit tests passed. Linux: 28 passed, one platform skip. Ruff and strict
+  bilingual documentation builds passed.
+- The first cold X11 run had not completed sampling at the fixed four-second warmup
+  assertion; the unchanged test passed on retry. Fixed test timings remain sensitive
+  to host load. These checks do not guarantee frame rates or arbitrary compositor support.
+
+Release assets include an offline bilingual manual, matching Windows CPython 3.12 /
+Linux CPython 3.10 runtimes and SHA256 checksums. Browser restrictions are enforced
+at the native boundary; host Python and native producers remain trusted code, without
+an OS sandbox for arbitrary native plugins. See [installation](installation.md) and
+the library security documentation.
+
 Standalone validation builds/installs the app wheel into a separate venv and launches
 outside the repository. ComfortableTUI is imported from a regular installed wheel,
 not the original editable checkout. Native modules link the installed SDK and do not

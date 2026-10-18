@@ -10,7 +10,7 @@ class FakeProcess:
 
     def __init__(self, command, **kwargs):
         self.command = command
-        self.capabilities = {"startup_ui_suppressed": True}
+        self.capabilities = {"startup_ui_suppressed": True, "security_protocol": 2}
         self.messages = []
         self.calls.append(self)
 
@@ -19,7 +19,7 @@ class FakeProcess:
 
     def request(self, op, **kwargs):
         self.messages.append((op, kwargs))
-        return {}
+        return {"security": kwargs["security"]} if op == "open" else {}
 
     def send(self, op, **kwargs):
         self.messages.append((op, kwargs))
