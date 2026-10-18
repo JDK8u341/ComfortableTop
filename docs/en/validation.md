@@ -1,6 +1,8 @@
 # Validation scope and records
 
-> Current scope: Linux graphical modes are suspended; only terminal mode remains. Old X11/Wayland results describe the withdrawn app-owned window. See [installation](installation.md).
+> Release 0.1.4 is Windows-only. Historical Linux/performance results below retain their original versions; current release checks ship in release-validation.json.
+
+> Current scope: Top supports Windows only; the Linux distribution is withdrawn. Old X11/Wayland results describe the withdrawn app-owned window. See [installation](installation.md).
 
 [简体中文](../validation.md) | English
 

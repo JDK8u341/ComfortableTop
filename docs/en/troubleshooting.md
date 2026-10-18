@@ -1,10 +1,10 @@
 # Troubleshooting
 
-> Current scope: Linux graphical modes are suspended; only terminal mode remains. Old X11/Wayland results describe the withdrawn app-owned window. See [installation](installation.md).
+> Current scope: Top supports Windows only; the Linux distribution is withdrawn. Old X11/Wayland results describe the withdrawn app-owned window. See [installation](installation.md).
 
 ## Browser security-protocol error after upgrading
 
-Top 0.1.3 uses TUI 0.1.2 and requires a protocol-2 helper. Replace the complete
+Top 0.1.4 uses TUI 0.1.3 and requires a protocol-2 helper. Replace the complete
 `.runtime/<platform>/browser` directory as well as the Python wheels; copying only
 the executable is insufficient. Clear an old COMFORTABLE_TUI_BROWSER_EXECUTABLE
 override or point it at the new runtime. Use Top's own venv; the TUI checkout's
@@ -14,7 +14,7 @@ development venv is not required.
 
 ## Selected-process chart does not follow panel size
 
-v0.1.2 removes the selected CPU chart's fixed 24×5-cell inline sizing. Its canvas now
+v0.1.3 removes the selected CPU chart's fixed 24×5-cell inline sizing. Its canvas now
 fills the panel interior after maximize, Alt+Enter fullscreen, restore and resizing.
 The sidebar still hides in narrow windows and fills again when shown. Update Top
 and restart; TUI 0.1.1 and existing GPU/CEF runtimes need no rebuild. Intentionally

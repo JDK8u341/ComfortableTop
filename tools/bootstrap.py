@@ -8,7 +8,7 @@ import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-TUI_REVISION = "6069afed2934af9137fe7fe3fa12fc8b04e3acb8"
+TUI_REVISION = "15261c7156ea727947917dd7ccf3e1ecf8156e7c"
 TUI_URL = "https://github.com/JDK8u341/ComfortableTUI.git"
 
 
@@ -25,8 +25,8 @@ def main():
     parser.add_argument("--host-binary", type=Path, help="Withdrawn Linux WindowHost option")
     parser.add_argument("--cef-root", type=Path)
     args = parser.parse_args()
-    if os.name != "nt" and not args.terminal_only:
-        parser.error("Linux graphical support is suspended; install with --terminal-only")
+    if os.name != "nt":
+        parser.error("ComfortableTop currently supports Windows only; Linux distribution is withdrawn")
     if args.host_binary:
         parser.error("Linux WindowHost support has been withdrawn; --host-binary is no longer available")
     if args.gpu and (os.name != "nt" or args.terminal_only):

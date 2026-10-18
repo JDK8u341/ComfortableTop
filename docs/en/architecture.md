@@ -6,13 +6,13 @@
 
 ComfortableTop owns its Python package, command, web assets, C++ chart module, tests
 and documentation. ComfortableTUI is an external dependency supplying widgets,
-terminal rendering, the shared-frame SDK, Windows overlay and CEF service. Linux currently supports terminal mode only. Its installed wheel does not reference a source checkout. This app links
+terminal rendering, the shared-frame SDK, Windows overlay and CEF service. Top currently supports Windows only. Its installed wheel does not reference a source checkout. This app links
 the installed ComfortableFrames CMake package using `find_package`.
 
 Setup may read user-provided dependency source or fetch a pinned commit. It installs
 the wheel, SDK and hosts into this project's environment and ignored directories
 without resetting a user checkout. Copied browser runtimes contain the files needed
-by the Windows app; Linux terminal mode requires neither Qt nor CEF.
+by the Windows app; Linux is no longer supported by Top.
 
 ## Data paths
 
@@ -30,7 +30,7 @@ separate; Python does not acquire frame leases on every display frame.
 
 Web pages are an upper service. URLs, cookies, profiles and topics never enter the
 general frame protocol. `--web-render-mode` controls browser transport independently
-(Windows defaults to GPU; Linux graphical modes are suspended); `--canvas gpu` only affects native trend charts.
+(Windows defaults to GPU); `--canvas gpu` only affects native trend charts.
 
 ## Collection and identity
 

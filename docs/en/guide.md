@@ -3,8 +3,8 @@
 [简体中文](../guide.md) | English
 
 Run `comfortable-top` or `python -m comfortable_top` after [installation](installation.md).
-This test branch defaults to GPU browser frames in Windows hybrid mode; select
-`--web-render-mode cpu` for comparison. Linux graphical modes are suspended; use terminal mode. Native charts continue
+Version 0.1.4 defaults to GPU browser frames in Windows hybrid mode; select
+`--web-render-mode cpu` for comparison. Top no longer provides a Linux version. Native charts continue
 to use the independent `--canvas cpu|gpu` option. Matching new runtime files are required.
 A terminal of at least 120×38 is recommended. Narrow windows hide the detail sidebar;
 tables can scroll horizontally. Press **F9** or use **Settings → Language / 语言** to

@@ -18,7 +18,7 @@ def test_installed_web_assets():
 def test_cli_works_outside_checkout(tmp_path):
     result = subprocess.run([sys.executable, "-m", "comfortable_top", "--version"], cwd=tmp_path,
                             capture_output=True, text=True, check=True)
-    assert result.stdout.strip() == "ComfortableTop 0.1.3"
+    assert result.stdout.strip() == "ComfortableTop 0.1.4"
     result = subprocess.run([sys.executable, "-m", "comfortable_top", "--help"], cwd=tmp_path,
                             capture_output=True, text=True, check=True)
     assert "--mode" in result.stdout and "--canvas" in result.stdout and "--web-render-mode" in result.stdout
@@ -41,13 +41,13 @@ def test_runtime_override_and_explicit_environment_precedence(tmp_path, monkeypa
     assert os.environ["COMFORTABLE_TUI_BROWSER_EXECUTABLE"] == "explicit-own-host"
 
 
-@pytest.mark.skipif(os.name == "nt", reason="Linux graphical support boundary")
-def test_linux_rejects_graphical_modes_before_starting_runtime(tmp_path):
-    for mode in ("native", "hybrid"):
+@pytest.mark.skipif(os.name == "nt", reason="Windows-only application boundary")
+def test_non_windows_rejects_all_modes_before_starting_runtime(tmp_path):
+    for mode in ("terminal", "native", "hybrid"):
         result = subprocess.run([sys.executable, "-m", "comfortable_top", "--mode", mode],
                                 cwd=tmp_path, capture_output=True, text=True)
         assert result.returncode == 2
-        assert "Linux graphical support is suspended" in result.stderr
+        assert "supports Windows only" in result.stderr
 
 
 def test_removed_host_option_cannot_build_a_runtime(tmp_path):
@@ -56,7 +56,7 @@ def test_removed_host_option_cannot_build_a_runtime(tmp_path):
                              "--runtime", str(tmp_path / "runtime"), "--host-binary", "unused"],
                             capture_output=True, text=True)
     assert result.returncode == 2 and not (tmp_path / "runtime").exists()
-    assert "withdrawn" in result.stderr or "terminal mode only" in result.stderr
+    assert "withdrawn" in result.stderr
 
 
 def test_explicit_native_dir_has_priority(tmp_path, monkeypatch):

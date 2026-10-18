@@ -1,10 +1,10 @@
 # 故障排查
 
-> 当前范围：Linux 图形模式已暂停，仅保留终端模式。旧 X11/Wayland 结果对应已撤下的自有窗口，见[安装说明](installation.md)。
+> 当前范围：Top 仅支持 Windows，Linux 版本已停止提供。旧 X11/Wayland 结果对应已撤下的自有窗口，见[安装说明](installation.md)。
 
 ## 升级后浏览器提示 security protocol
 
-Top 0.1.3 使用 TUI 0.1.2，要求协议 2 helper。更新 Python wheel 后，旧的
+Top 0.1.4 使用 TUI 0.1.3，要求协议 2 helper。更新 Python wheel 后，旧的
 `.runtime/<platform>/browser` 也必须替换为完整的新运行时；不能只复制 exe。
 若曾设置 COMFORTABLE_TUI_BROWSER_EXECUTABLE，清除旧覆盖或改为新路径。
 此次发布不需要借用 `tui/.venv`；使用 Top 自己的 `.venv` 即可。
@@ -13,7 +13,7 @@ Top 0.1.3 使用 TUI 0.1.2，要求协议 2 helper。更新 Python wheel 后，�
 
 ## 进程详情图表不随面板缩放
 
-v0.1.2 修复了“选中进程 CPU”图表的固定 24×5 字符内嵌尺寸。现在画布直接填充
+v0.1.3 修复了“选中进程 CPU”图表的固定 24×5 字符内嵌尺寸。现在画布直接填充
 面板内部，最大化、Alt+Enter 全屏、恢复、连续缩放时同步调整。窗口过窄时侧栏
 按原规则隐藏，放宽后重新填充。此修正只需更新 Top 并重启；TUI 0.1.1 和已有
 GPU／CEF 运行时不需要重建。列表和表格中有意固定尺寸的内嵌画布不受影响。

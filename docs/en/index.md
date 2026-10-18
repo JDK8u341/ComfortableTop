@@ -3,8 +3,8 @@
 [简体中文](../index.md) | English
 
 ComfortableTop is an independent Python system monitor built on ComfortableTUI widgets
-and its general frame SDK. This manual covers version 0.1.3 with ComfortableTUI 0.1.2
-and a security-protocol-2 browser helper on Windows x64 and Linux.
+and its general frame SDK. This manual covers version 0.1.4 with ComfortableTUI 0.1.3
+and a security-protocol-2 browser helper on Windows x64 only. Linux distribution is withdrawn.
 macOS is outside the current scope.
 
 Start with [installation](installation.md), then read the [user guide](guide.md).

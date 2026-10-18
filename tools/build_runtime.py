@@ -53,7 +53,7 @@ def main(argv=None):
     parser.add_argument("--cef-root", type=Path, help="Build the browser using this extracted CEF SDK")
     args = parser.parse_args(argv)
     if os.name != "nt":
-        parser.error("Native/hybrid runtime builds currently require Windows; Linux supports terminal mode only")
+        parser.error("ComfortableTop currently supports Windows only; Linux distribution is withdrawn")
     if args.host_binary:
         parser.error("Linux WindowHost support has been withdrawn; --host-binary is no longer available")
     runtime, prefix = args.runtime.resolve(), args.sdk_prefix.resolve()

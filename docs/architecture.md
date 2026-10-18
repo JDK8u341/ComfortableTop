@@ -6,12 +6,12 @@
 
 ComfortableTop 拥有 `src/comfortable_top` Python 包、命令行入口、网页资源、C++ 图表
 模块、测试和文档。ComfortableTUI 是外部库依赖，提供控件、终端渲染、共享帧 SDK、
-Windows 附加层及 CEF 服务；Linux 仅保留终端模式。正常安装的库 wheel 不引用其源码
+Windows 附加层及 CEF 服务；Top 当前仅支持 Windows。正常安装的库 wheel 不引用其源码
 目录；本项目原生模块通过已安装的 ComfortableFrames CMake package 链接。
 
 安装脚本可读取任意位置的依赖源码或获取锁定 Git 提交，将 wheel、SDK、宿主分别
 安装到本项目环境／忽略目录。它不会重置用户提供的依赖仓库。复制后的运行时自包含
-应用所需的 Windows 浏览器文件；Linux 终端模式无需 Qt／CEF。
+应用所需的 Windows 浏览器文件；当前不提供 Linux 版本。
 
 ## 三条数据路径
 
@@ -27,7 +27,7 @@ native/hybrid 中 Python 只提交最多 180 个数值、握手描述符和布�
 窗口显示消费者与 C++ 生产者分离，不要求 Python 每帧获取租约。
 
 网页是图像层之上的服务，URL、Cookie、profile、主题不进入通用帧协议。
-`--web-render-mode` 单独控制浏览器传输（Windows 默认 GPU；Linux 图形模式已暂停），
+`--web-render-mode` 单独控制浏览器传输（Windows 默认 GPU），
 `--canvas gpu` 只改变本项目趋势图。
 
 ## 采样与身份

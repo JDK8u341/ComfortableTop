@@ -1,6 +1,8 @@
 # 验证范围
 
-> 当前范围：Linux 图形模式已暂停，仅保留终端模式。旧 X11/Wayland 结果对应已撤下的自有窗口，见[安装说明](installation.md)。
+> 0.1.4 当前发布只支持 Windows。以下旧 Linux 与旧版本性能记录保留原始版本号；本次发布的验证结果随 release-validation.json 提供。
+
+> 当前范围：Top 仅支持 Windows，Linux 版本已停止提供。旧 X11/Wayland 结果对应已撤下的自有窗口，见[安装说明](installation.md)。
 
 简体中文 | [English](en/validation.md)
 

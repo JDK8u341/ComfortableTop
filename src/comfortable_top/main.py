@@ -27,7 +27,7 @@ def main():
     parser.add_argument("--web-render-mode", choices=("cpu", "gpu"),
                         help="WebView frames in Windows hybrid mode (default: gpu)")
     parser.add_argument("--platform", choices=("x11", "wayland"),
-                        help="Retired Linux graphical option; only terminal mode is supported on Linux")
+                        help="Retired Linux option; ComfortableTop supports Windows only")
     parser.add_argument("--native-module", type=Path)
     parser.add_argument("--interval", type=float, default=1.)
     parser.add_argument("--fps", type=int, default=60)
@@ -37,9 +37,8 @@ def main():
     parser.add_argument("--report", type=Path, help="Write aggregate validation results, without process names")
     parser.add_argument("--self-test", action="store_true", help="Exercise filter/pin/tabs/browser interaction on own UI")
     args = parser.parse_args()
-    if os.name != "nt" and args.mode != "terminal":
-        parser.error("native/hybrid modes currently require Windows; Linux graphical support is suspended. "
-                     "Use --mode terminal")
+    if os.name != "nt":
+        parser.error("ComfortableTop currently supports Windows only; Linux distribution is withdrawn")
     if args.platform:
         parser.error("--platform belongs to the withdrawn Linux WindowHost; use --mode terminal without it")
     language = resolve_language(args.lang)

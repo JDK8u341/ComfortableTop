@@ -1,19 +1,14 @@
 # ComfortableTop
 
-This test branch enables GPU WebView output by default in Windows hybrid mode;
-use `--web-render-mode cpu` for comparison. It requires the matching new library
-and CEF helper; published v0.1.3 archives do not include this feature yet.
+Version **0.1.4** defaults to GPU WebViews on Windows and supports multiple Top
+instances. It requires ComfortableTUI **0.1.3** and the matching new Windows runtime.
 See [installation](docs/en/installation.md).
-
-Version **0.1.3** requires **ComfortableTUI 0.1.2**. Hybrid-mode upgrades must also
-replace the complete browser runtime with a security-protocol-2 build. Matching
-runtime archives are available with the release; see the installation guide.
 
 [简体中文](README.md) | English
 
 An independent hybrid system monitor: live processes, resource trends, pinned
 comparisons, process trees and investigation notes, with optional C++ CPU/GPU charts
-and isolated browser analytics. Full modes on Windows, terminal mode only on Linux; Apache-2.0.
+and isolated browser analytics. Windows only; Apache-2.0.
 
 ComfortableTop depends on ComfortableTUI, but not its examples, source location or
 old virtual environment. This repository owns its Python package, command, native
@@ -49,10 +44,8 @@ The browser runtime must include the executable, libcef.dll, assets, locales and
 licenses. It is copied into `.runtime/<platform>/browser`. Use `--cef-root` to build
 from an SDK instead. See [installation](docs/en/installation.md).
 
-Linux graphical modes are suspended. Use `--mode terminal` and install with
-`tools/bootstrap.py --terminal-only`. The former WindowHost was a separate Qt window,
-not integration with an existing terminal.
-macOS is not supported in the current scope.
+Current packages and runtimes target **Windows x64 only**. Linux distribution is
+withdrawn; macOS is not supported. ComfortableTUI's core platform scope is managed separately.
 
 ## Features
 

@@ -16,6 +16,8 @@ def main():
     parser.add_argument("--tui-wheel", type=Path, required=True)
     parser.add_argument("--report", type=Path, required=True)
     args = parser.parse_args()
+    if os.name != "nt":
+        parser.error("ComfortableTop distribution checks require Windows")
     target = ROOT / ".build" / ("wheel-check-windows" if os.name == "nt" else "wheel-check-linux")
     target.mkdir(parents=True, exist_ok=True)
     venv.EnvBuilder(with_pip=True).create(target / "venv")

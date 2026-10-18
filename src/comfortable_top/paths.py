@@ -33,7 +33,7 @@ def runtime_dir():
 
 def configure_runtime():
     if os.name != "nt":
-        return  # Linux is terminal-only; do not activate archived graphical runtimes.
+        return  # Top is Windows-only; never activate archived Linux runtimes.
     root = runtime_dir()
     browser = root / "browser" / "ctui_browser.exe"
     if browser.is_file():
