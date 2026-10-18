@@ -84,7 +84,9 @@ to their containers; browser interaction follows the normal focus rules.
 Process CPU is the user+system time delta divided by the actual monotonic sample interval;
 100% means one core and values may exceed 100%. System CPU averages all cores. Charts
 clip to 0…100%; tables keep exact values. Missing values leave gaps, not invented zeros.
-Sparklines and per-core bars scale relatively; adjacent numbers are actual percentages.
+Sparklines scale relatively. Per-core bars use a fixed 100% maximum: 58.6% fills about
+58.6% of the track regardless of other cores. Numbers show the latest actual percentage;
+bar lengths interpolate smoothly between samples.
 First readings, new processes, resets and unreadable fields show warmup/n/a, localized
 in Chinese. RSS is resident memory, not unique memory. System memory is total−available.
 Network includes loopback. Disk totals sum OS device counters and can double-count layers.

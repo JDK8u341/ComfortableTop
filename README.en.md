@@ -1,7 +1,7 @@
 # ComfortableTop
 
-Version **0.1.4** defaults to GPU WebViews on Windows and supports multiple Top
-instances. It requires ComfortableTUI **0.1.3** and the matching new Windows runtime.
+Version **0.1.5** defaults to GPU WebViews on Windows and supports multiple Top
+instances. It requires ComfortableTUI **0.1.4** and the matching new Windows runtime.
 See [installation](docs/en/installation.md).
 
 [简体中文](README.md) | English

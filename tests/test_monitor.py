@@ -57,6 +57,32 @@ def sample(*processes, timestamp=10):
                   tuple(processes))
 
 
+@pytest.mark.parametrize("language", ["en", "zh"])
+def test_core_bars_render_actual_percentages_instead_of_relative_peaks(language):
+    collector, charts = Collector(FakePsutil()), Charts("terminal")
+    monitor = Monitor(collector, charts, language=language)
+    try:
+        with monitor.app as app:
+            app.animator.reduced_motion = True
+            monitor.accept(replace(sample(process()), cores=(38.6, 22.9, 58.6)))
+            monitor.tabs.select(1)
+            app.render(140, 42, dt=0)
+            frame = app.render(140, 42, dt=0)
+            chart = monitor.core_chart
+            line = frame.plain().splitlines()[chart.rect.y + 2]
+            label_width = min(14, chart.rect.width // 3)
+            width = chart.rect.width - label_width - 8
+            start = chart.rect.x + label_width + 1
+            track = line[start:start + width]
+            fraction = sum(" ▏▎▍▌▋▊▉█".index(c) for c in track) / (8 * width)
+            assert fraction == pytest.approx(.586, abs=1 / (8 * width))
+            assert "58.6" in line[start + width:]
+            assert "0..100%" in frame.plain()
+    finally:
+        collector.close()
+        charts.close()
+
+
 def test_counter_warmup_reset_and_cpu_guest_accounting():
     assert counter_rate(None, 10, 1) is None
     assert counter_rate(10, 9, 1) is None

@@ -2,13 +2,13 @@
 
 简体中文 | [English](README.en.md)
 
-版本 **0.1.4** 默认使用 Windows GPU WebView，支持多个 Top 实例同时运行。
-需要 ComfortableTUI **0.1.3** 和本次配套的新 Windows 运行时，见[安装说明](docs/installation.md)。
+版本 **0.1.5** 默认使用 Windows GPU WebView，支持多个 Top 实例同时运行。
+需要 ComfortableTUI **0.1.4** 和本次配套的新 Windows 运行时，见[安装说明](docs/installation.md)。
 
 一个独立的混合系统监视器：实时进程表、资源趋势、固定对比、进程树、调查笔记，
 以及可选 C++ CPU/GPU 画布和独立浏览器分析页。当前仅支持 Windows；Apache-2.0。
 
-当前版本 **0.1.4**，依赖 **ComfortableTUI 0.1.3**。升级混合模式时还需同时更新
+当前版本 **0.1.5**，依赖 **ComfortableTUI 0.1.4**。升级混合模式时还需同时更新
 完整的安全协议 2 浏览器运行时；发布页提供匹配平台的运行时归档，见安装文档。
 
 本项目依赖 ComfortableTUI，但不依赖它的 examples 目录、源码位置或原来的虚拟环境。

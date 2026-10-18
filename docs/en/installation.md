@@ -4,8 +4,8 @@
 
 ## Platforms and versions
 
-ComfortableTop **0.1.4** supports Windows x64 only, with Python 3.10+, psutil and
-ComfortableTUI **0.1.3**. The bundled native runtime and TUI native wheel target
+ComfortableTop **0.1.5** supports Windows x64 only, with Python 3.10+, psutil and
+ComfortableTUI **0.1.4**. The bundled native runtime and TUI native wheel target
 CPython 3.12 x64. Other Python ABIs require rebuilding native modules.
 Linux and macOS are not supported. Old Linux archives are historical artifacts,
 not a current installation or upgrade path.
@@ -19,12 +19,12 @@ completion waits required by CEF's callback lifetime remain.
 ## Install release packages
 
 Download the app and matching TUI wheels from the
-[v0.1.4 release](https://github.com/JDK8u341/ComfortableTop/releases/tag/v0.1.4).
+[v0.1.5 release](https://github.com/JDK8u341/ComfortableTop/releases/tag/v0.1.5).
 Terminal mode uses the universal TUI wheel without Qt or CEF:
 
 ```powershell
 python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install .\comfortable_tui-0.1.3-py3-none-any.whl .\comfortable_top-0.1.4-py3-none-win_amd64.whl
+.\.venv\Scripts\python.exe -m pip install .\comfortable_tui-0.1.4-py3-none-any.whl .\comfortable_top-0.1.5-py3-none-win_amd64.whl
 .\.venv\Scripts\comfortable-top.exe --version
 .\.venv\Scripts\comfortable-top.exe --lang en
 ```
@@ -32,11 +32,11 @@ python -m venv .venv
 For full GPU hybrid mode, use **CPython 3.12 x64**:
 
 ```powershell
-.\.venv\Scripts\python.exe -m pip install --upgrade .\comfortable_tui-0.1.3-cp312-cp312-win_amd64.whl .\comfortable_top-0.1.4-py3-none-win_amd64.whl
+.\.venv\Scripts\python.exe -m pip install --upgrade .\comfortable_tui-0.1.4-cp312-cp312-win_amd64.whl .\comfortable_top-0.1.5-py3-none-win_amd64.whl
 .\.venv\Scripts\python.exe -m pip install "PySide6-Essentials>=6.7,<7" "comtypes>=1.4"
 ```
 
-Extract `comfortable_top-runtime-windows-x64-cp312-0.1.4.zip` into
+Extract `comfortable_top-runtime-windows-x64-cp312-0.1.5.zip` into
 `.runtime/windows-x64` for an editable checkout, or
 `%LOCALAPPDATA%/ComfortableTop/runtime/windows-x64` for a normal wheel installation.
 The directory must directly contain `browser/`, `native/`, `licenses/` and

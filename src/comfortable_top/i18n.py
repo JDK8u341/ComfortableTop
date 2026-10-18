@@ -30,7 +30,7 @@ ZH = {
         "使用 --mode hybrid 启用交互式网页分析，--mode native 启用原生 CPU/GPU 图表。"
         "当前模式通过 Kitty 图像或盲文点阵绘制相同的真实指标。",
     "System CPU · 0..100%": "系统 CPU · 0..100%", "Independent browser analytics": "独立网页分析",
-    "Rendering modes": "渲染模式", "Logical cores · relative bars / numeric %": "逻辑核心 · 相对条形 / 实际百分比",
+    "Rendering modes": "渲染模式", "Logical cores · 0..100%": "逻辑核心 · 0..100%",
     "Network and disks": "网络与磁盘", "Watch": "固定项", "Independent analysis": "独立分析",
     "Watch list": "固定列表", "Pinned histories · up to four": "固定历史 · 最多四项",
     "Per-process pages · Enter interact / Esc leave": "独立进程页面 · Enter 交互 / Esc 返回",
