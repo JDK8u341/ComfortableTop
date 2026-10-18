@@ -68,7 +68,7 @@ Producer frame counts in the GIL test do not represent screen FPS.
 Validate a built wheel in a fresh environment outside the checkout:
 
 ```powershell
-python tools/verify_distribution.py --wheel dist/comfortable_top-0.1.4-py3-none-win_amd64.whl --tui-wheel PATH/comfortable_tui-WHEEL.whl --report .build/wheel-check.json
+python tools/verify_distribution.py --wheel dist/comfortable_top-0.1.5-py3-none-win_amd64.whl --tui-wheel PATH/comfortable_tui-WHEEL.whl --report .build/wheel-check.json
 ```
 
 This creates a separate venv, verifies package imports, web assets, Apache notices,

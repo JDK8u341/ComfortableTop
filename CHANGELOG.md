@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.1.5 — 2026-10-18
 
 - Fix per-core CPU bars to use an absolute 0..100% scale instead of filling the track at the busiest core's value; update English/Chinese labels and documentation.
 

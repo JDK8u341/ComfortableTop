@@ -1,3 +1,3 @@
 # The library is currently distributed on GitHub, not assumed to be on PyPI.
 # Access to this repository and Git HTTPS authentication are required.
-comfortable-tui @ git+https://github.com/JDK8u341/ComfortableTUI.git@9b300be33ef6cbb725738e145eafd14ef5d6572a
+comfortable-tui @ git+https://github.com/JDK8u341/ComfortableTUI.git@a43da465525414fde0b39c51fd4651ecebc47451
