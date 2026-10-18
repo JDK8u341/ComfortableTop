@@ -65,8 +65,7 @@ def main():
             web = None
             if args.mode == "hybrid":
                 from .web import WebPanels
-                web = WebPanels(args.platform, temporary=args.self_test, language=language,
-                                render_mode=web_render_mode)
+                web = WebPanels(args.platform, language=language, render_mode=web_render_mode)
                 stack.callback(web.close)
             collector = Collector(psutil)
             stack.callback(collector.close)

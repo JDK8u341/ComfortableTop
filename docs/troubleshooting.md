@@ -77,6 +77,12 @@ WSL 中读取的是 Linux 子系统的进程和资源。
 
 ## 浏览器条款或 CSP 错误
 
+### 多实例提示 browser data is already in use
+
+旧版 Top 为所有进程使用同一个固定浏览器根，即使分析 profile 不持久化也会争用
+CEF 数据目录锁。当前实现改为每个进程独立临时根，可直接重复运行同一条命令。
+不应删除锁或强制共享写入目录；升级 Top 后重启需要修复的旧实例即可。
+
 服务保留 no-first-run 策略与应用私有 profile。不要自动接受外部网站协议。
 本项目页面保留严格 CSP；自测通过 probe/proof 主题确认布局和消息，不调用动态 eval。
 若手动在 page.evaluate() 中求值，CEF 服务的执行方式仍受页面 CSP 约束。

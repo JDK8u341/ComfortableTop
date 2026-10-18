@@ -30,8 +30,8 @@ Windows GPU textures, stopping when unchanged. Producer and display consumer rem
 separate; Python does not acquire frame leases on every display frame.
 
 Web pages are an upper service. URLs, cookies, profiles and topics never enter the
-general frame protocol. Browser transport remains shared CPU frames; `--canvas gpu`
-only affects this app's native trend charts.
+general frame protocol. `--web-render-mode` controls browser transport independently
+(Windows defaults to GPU, Linux to CPU); `--canvas gpu` only affects native trend charts.
 
 ## Collection and identity
 
@@ -58,8 +58,10 @@ explicit topics are authorized.
 `monitor.sample` carries telemetry; `monitor.select` returns stable identities.
 `monitor.locale` updates the display language, including while sampling is paused.
 `monitor.probe/proof` validates the normal message bridge without eval or relaxing CSP.
-Notes and process-detail command lines are not sent to webpages. Self-tests use a
-temporary browser root to avoid locking the running user's profile.
+Notes and process-detail command lines are not sent to webpages. Each Top process,
+including self-tests, owns a separate temporary browser root, removed after CEF
+closes. Instances can run concurrently without sharing cookies, caches or messages.
+The library still locks each individual data directory.
 
 ResponsiveWebView divides full canvas pixels by DPI and waits 120ms before resizing
 the page source. Moving/clipping does not resize it. Old sources remain alive until

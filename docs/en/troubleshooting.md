@@ -85,6 +85,13 @@ XDG_RUNTIME_DIR or silently switch to X11. WSL metrics refer to the Linux subsys
 
 ## Browser terms or CSP errors
 
+### Multiple instances report browser data is already in use
+
+Older Top code gave all processes one fixed browser root, so even nonpersistent
+analytics profiles competed for CEF's data-directory lock. Each process now uses
+its own temporary root; repeat the same launch command to run multiple instances.
+Do not delete the lock or force shared writes. Update Top and restart affected old instances.
+
 The service keeps its no-first-run policy and application-private profile. It does not
 automatically accept external website agreements. Local pages retain strict CSP;
 self-tests use probe/proof messages, not dynamic eval. Manual page.evaluate() calls
