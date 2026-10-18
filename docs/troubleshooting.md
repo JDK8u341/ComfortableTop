@@ -4,7 +4,7 @@
 
 ## 升级后浏览器提示 security protocol
 
-Top 0.1.4 使用 TUI 0.1.3，要求协议 2 helper。更新 Python wheel 后，旧的
+Top 0.1.6 使用 TUI 0.1.5，要求协议 2 helper。更新 Python wheel 后，旧的
 `.runtime/<platform>/browser` 也必须替换为完整的新运行时；不能只复制 exe。
 若曾设置 COMFORTABLE_TUI_BROWSER_EXECUTABLE，清除旧覆盖或改为新路径。
 此次发布不需要借用 `tui/.venv`；使用 Top 自己的 `.venv` 即可。

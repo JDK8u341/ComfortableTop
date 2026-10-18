@@ -4,8 +4,8 @@
 
 ## Platforms and versions
 
-ComfortableTop **0.1.5** supports Windows x64 only, with Python 3.10+, psutil and
-ComfortableTUI **0.1.4**. The bundled native runtime and TUI native wheel target
+ComfortableTop **0.1.6** supports Windows x64 only, with Python 3.10+, psutil and
+ComfortableTUI **0.1.5**. The bundled native runtime and TUI native wheel target
 CPython 3.12 x64. Other Python ABIs require rebuilding native modules.
 Linux and macOS are not supported. Old Linux archives are historical artifacts,
 not a current installation or upgrade path.
@@ -19,12 +19,12 @@ completion waits required by CEF's callback lifetime remain.
 ## Install release packages
 
 Download the app and matching TUI wheels from the
-[v0.1.5 release](https://github.com/JDK8u341/ComfortableTop/releases/tag/v0.1.5).
+[v0.1.6 release](https://github.com/JDK8u341/ComfortableTop/releases/tag/v0.1.6).
 Terminal mode uses the universal TUI wheel without Qt or CEF:
 
 ```powershell
 python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install .\comfortable_tui-0.1.4-py3-none-any.whl .\comfortable_top-0.1.5-py3-none-win_amd64.whl
+.\.venv\Scripts\python.exe -m pip install .\comfortable_tui-0.1.5-py3-none-any.whl .\comfortable_top-0.1.6-py3-none-win_amd64.whl
 .\.venv\Scripts\comfortable-top.exe --version
 .\.venv\Scripts\comfortable-top.exe --lang en
 ```
@@ -32,11 +32,11 @@ python -m venv .venv
 For full GPU hybrid mode, use **CPython 3.12 x64**:
 
 ```powershell
-.\.venv\Scripts\python.exe -m pip install --upgrade .\comfortable_tui-0.1.4-cp312-cp312-win_amd64.whl .\comfortable_top-0.1.5-py3-none-win_amd64.whl
+.\.venv\Scripts\python.exe -m pip install --upgrade .\comfortable_tui-0.1.5-cp312-cp312-win_amd64.whl .\comfortable_top-0.1.6-py3-none-win_amd64.whl
 .\.venv\Scripts\python.exe -m pip install "PySide6-Essentials>=6.7,<7" "comtypes>=1.4"
 ```
 
-Extract `comfortable_top-runtime-windows-x64-cp312-0.1.5.zip` into
+Extract `comfortable_top-runtime-windows-x64-cp312-0.1.6.zip` into
 `.runtime/windows-x64` for an editable checkout, or
 `%LOCALAPPDATA%/ComfortableTop/runtime/windows-x64` for a normal wheel installation.
 The directory must directly contain `browser/`, `native/`, `licenses/` and
@@ -84,3 +84,9 @@ stale development overrides before testing. Native precedence is `--native-modul
 `COMFORTABLE_TOP_NATIVE_DIR`, runtime native directory, then local build directories.
 Normal launches need neither a `--browser` option nor the TUI build directory.
 Use `--lang en/zh/auto` or F9; see [language settings](localization.md) for preferences.
+
+## 0.1.6 update
+
+This release requires TUI 0.1.5 to reduce overlay tracking delay while moving the terminal.
+Restart Top after upgrading its wheels. Native/browser code and protocols are unchanged;
+the matching runtime updates version and provenance metadata.

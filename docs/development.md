@@ -56,7 +56,7 @@ verify_pacing 默认用 12 秒测试实际 App.run 调度，剔除前 3 秒，
 也应测试 wheel 在独立 venv、仓库之外的工作目录中启动，确认资源与导入独立。
 
 ```powershell
-python tools/verify_distribution.py --wheel dist/comfortable_top-0.1.5-py3-none-win_amd64.whl --tui-wheel PATH/comfortable_tui-WHEEL.whl --report .build/wheel-check.json
+python tools/verify_distribution.py --wheel dist/comfortable_top-0.1.6-py3-none-win_amd64.whl --tui-wheel PATH/comfortable_tui-WHEEL.whl --report .build/wheel-check.json
 ```
 
 这个检查会创建独立测试 venv，在空工作目录中验证包／网页／许可证和命令行，并真实

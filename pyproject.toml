@@ -4,20 +4,20 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "comfortable-top"
-version = "0.1.5"
+version = "0.1.6"
 description = "A hybrid system monitor with a spring-driven TUI, native charts and isolated browser analytics"
 readme = "README.md"
 requires-python = ">=3.10"
 license = "Apache-2.0"
 authors = [{name = "ComfortableTop contributors"}]
-dependencies = ["comfortable-tui>=0.1.4,<0.2", "psutil>=5.9"]
+dependencies = ["comfortable-tui>=0.1.5,<0.2", "psutil>=5.9"]
 classifiers = [
   "Development Status :: 3 - Alpha", "Environment :: Console",
   "Programming Language :: Python :: 3", "Operating System :: Microsoft :: Windows",
 ]
 
 [project.optional-dependencies]
-overlay = ["comfortable-tui[overlay]>=0.1.4,<0.2"]
+overlay = ["comfortable-tui[overlay]>=0.1.5,<0.2"]
 dev = ["pytest>=8", "ruff>=0.9", "build>=1", "pybind11>=2.13", "setuptools>=77", "wheel>=0.43"]
 docs = ["mkdocs>=1.6"]
 
