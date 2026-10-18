@@ -1,6 +1,6 @@
 # Validation scope and records
 
-> Release 0.1.4 is Windows-only. Historical Linux/performance results below retain their original versions; current release checks ship in release-validation.json.
+> Release 0.1.6 is Windows-only. Historical Linux/performance results below retain their original versions; current release checks ship in release-validation.json.
 
 > Current scope: Top supports Windows only; the Linux distribution is withdrawn. Old X11/Wayland results describe the withdrawn app-owned window. See [installation](installation.md).
 

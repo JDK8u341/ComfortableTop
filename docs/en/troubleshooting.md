@@ -4,7 +4,7 @@
 
 ## Browser security-protocol error after upgrading
 
-Top 0.1.4 uses TUI 0.1.3 and requires a protocol-2 helper. Replace the complete
+Top 0.1.6 uses TUI 0.1.5 and requires a protocol-2 helper. Replace the complete
 `.runtime/<platform>/browser` directory as well as the Python wheels; copying only
 the executable is insufficient. Clear an old COMFORTABLE_TUI_BROWSER_EXECUTABLE
 override or point it at the new runtime. Use Top's own venv; the TUI checkout's

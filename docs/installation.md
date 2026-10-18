@@ -4,8 +4,8 @@
 
 ## 支持范围与版本
 
-ComfortableTop **0.1.5** 仅支持 Windows x64，需要 Python 3.10+、psutil 和
-ComfortableTUI **0.1.4**。发布的完整原生运行时与 TUI 原生 wheel 针对 CPython 3.12 x64。
+ComfortableTop **0.1.6** 仅支持 Windows x64，需要 Python 3.10+、psutil 和
+ComfortableTUI **0.1.5**。发布的完整原生运行时与 TUI 原生 wheel 针对 CPython 3.12 x64。
 其他 Python ABI 需要自行构建原生部分。当前不提供 Linux 或 macOS 版本；旧 Linux
 归档仅保留历史记录，不能作为当前支持或升级路径。
 
@@ -16,13 +16,13 @@ GPU 输出仍包含 CEF 生命周期要求的 GPU 内部复制和同步。
 
 ## 从发布页安装
 
-从 [v0.1.5 发布页](https://github.com/JDK8u341/ComfortableTop/releases/tag/v0.1.5)
+从 [v0.1.6 发布页](https://github.com/JDK8u341/ComfortableTop/releases/tag/v0.1.6)
 下载应用 wheel、匹配的 TUI wheel；混合模式另需 Windows 运行时 zip。
 基础终端模式可安装 TUI 通用 wheel，无需 Qt/CEF：
 
 ```powershell
 python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install .\comfortable_tui-0.1.4-py3-none-any.whl .\comfortable_top-0.1.5-py3-none-win_amd64.whl
+.\.venv\Scripts\python.exe -m pip install .\comfortable_tui-0.1.5-py3-none-any.whl .\comfortable_top-0.1.6-py3-none-win_amd64.whl
 .\.venv\Scripts\comfortable-top.exe --version
 .\.venv\Scripts\comfortable-top.exe
 ```
@@ -30,11 +30,11 @@ python -m venv .venv
 完整 GPU 混合模式使用 **CPython 3.12 x64**：
 
 ```powershell
-.\.venv\Scripts\python.exe -m pip install --upgrade .\comfortable_tui-0.1.4-cp312-cp312-win_amd64.whl .\comfortable_top-0.1.5-py3-none-win_amd64.whl
+.\.venv\Scripts\python.exe -m pip install --upgrade .\comfortable_tui-0.1.5-cp312-cp312-win_amd64.whl .\comfortable_top-0.1.6-py3-none-win_amd64.whl
 .\.venv\Scripts\python.exe -m pip install "PySide6-Essentials>=6.7,<7" "comtypes>=1.4"
 ```
 
-将 `comfortable_top-runtime-windows-x64-cp312-0.1.5.zip` 解压到：
+将 `comfortable_top-runtime-windows-x64-cp312-0.1.6.zip` 解压到：
 源码 editable 安装为本项目 `.runtime/windows-x64`；普通 wheel 安装为
 `%LOCALAPPDATA%/ComfortableTop/runtime/windows-x64`。
 解压后该目录直接包含 `browser/`、`native/`、`licenses/` 和 `runtime-manifest.json`。
@@ -79,3 +79,8 @@ python -m venv .venv
 原生模块依次查找 `--native-module`、`COMFORTABLE_TOP_NATIVE_DIR`、运行时 native 目录和
 本项目构建目录。正常启动不需要 `--browser`，也不依赖 TUI 的构建目录。
 使用 `--lang zh/en/auto` 或 F9 切换语言，偏好路径见[语言设置](localization.md)。
+
+## 0.1.6 更新
+
+本版要求 TUI 0.1.5，修复窗口拖动时附加层跟踪延迟。升级 wheel 后重启 Top；
+CEF/图表原生源码和协议未变，配套运行时只更新版本与来源清单。
