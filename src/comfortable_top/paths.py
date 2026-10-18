@@ -32,13 +32,12 @@ def runtime_dir():
 
 
 def configure_runtime():
+    if os.name != "nt":
+        return  # Top is Windows-only; never activate archived Linux runtimes.
     root = runtime_dir()
-    browser = root / "browser" / ("ctui_browser.exe" if os.name == "nt" else "ctui_browser")
-    host = root / "host" / "ctui_linux_canvas"
+    browser = root / "browser" / "ctui_browser.exe"
     if browser.is_file():
         os.environ.setdefault("COMFORTABLE_TUI_BROWSER_EXECUTABLE", str(browser))
-    if host.is_file():
-        os.environ.setdefault("COMFORTABLE_TUI_LINUX_HOST_EXECUTABLE", str(host))
 
 
 def native_dirs(override=None):

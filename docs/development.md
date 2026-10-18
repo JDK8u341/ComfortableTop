@@ -47,12 +47,7 @@ python tools/verify_chart_resize.py --canvas gpu --report .build/resize-check.js
 verify_pacing 默认用 12 秒测试实际 App.run 调度，剔除前 3 秒，
 与离屏 verify_motion 的 CPU 耗时互补；生产循环频率仍不等于屏幕呈现 FPS。
 该工具要求 Windows Terminal，默认混合模式包含 GPU 和浏览器运行时。
-Linux 分别执行：
-
-```bash
-comfortable-top --mode hybrid --platform x11 --self-test --smoke-seconds 14 --report .build/x11.json
-comfortable-top --mode hybrid --platform wayland --self-test --smoke-seconds 14 --report .build/wayland.json
-```
+当前仅在 Windows 上构建和运行；历史 Linux 验证不再是操作指引。
 
 真实显示验证不以 offscreen/minimal 结果代替。生产者 GIL 检查不是屏幕 FPS。
 动效工具使用真实 Monitor 与已安装的库，支持 `--motion subtle` 和 `--reduced-motion`；
@@ -61,12 +56,11 @@ comfortable-top --mode hybrid --platform wayland --self-test --smoke-seconds 14 
 也应测试 wheel 在独立 venv、仓库之外的工作目录中启动，确认资源与导入独立。
 
 ```powershell
-python tools/verify_distribution.py --wheel dist/comfortable_top-0.1.3-py3-none-any.whl --tui-wheel PATH/comfortable_tui-WHEEL.whl --report .build/wheel-check.json
+python tools/verify_distribution.py --wheel dist/comfortable_top-0.1.4-py3-none-win_amd64.whl --tui-wheel PATH/comfortable_tui-WHEEL.whl --report .build/wheel-check.json
 ```
 
 这个检查会创建独立测试 venv，在空工作目录中验证包／网页／许可证和命令行，并真实
-采样两次。Windows、Linux 的构建／运行时／校验 venv 按平台分目录，支持同一源码
-在 Windows 和 WSL 之间共享；不要把不同平台的二进制互相覆盖。
+采样两次。当前发行和校验只针对 Windows x64；应用 wheel 不在 Linux 安装或运行。
 
 ## 构建发行包
 
@@ -79,8 +73,7 @@ python -m build --no-isolation
 需要 GPU 的 ComfortableTUI 平台 wheel 由 bootstrap 构建，Python ABI／平台必须匹配。
 
 发布到 GitHub 的应用包并不等于发布到 PyPI。依赖访问方式、native／CEF 构建及运行时
-位置必须随版本说明保留。CEF 运行时较大，应用初始发布不附带它；可从 SDK 构建或
-将合法的既有运行时复制到配置目录，并保留第三方许可证。
+位置必须随版本说明保留。发布页提供匹配的完整 Windows 运行时；也可从 SDK 构建，始终保留第三方许可证。
 
 Git 标签与版本号应一致，先通过测试和独立 wheel 安装，再创建 GitHub release。
 原项目许可证与来源保留在 NOTICE。变更应用时不需要修改库；若要求改动控件／帧

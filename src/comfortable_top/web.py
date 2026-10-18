@@ -3,6 +3,7 @@ from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 import threading
+import tempfile
 from urllib.parse import urlencode
 
 from comfortable_tui import BrowserService, WebView
@@ -45,8 +46,8 @@ class ResponsiveWebView(WebView):
 class WebPanels:
     group = "comfortable-top-analytics"
 
-    def __init__(self, platform=None, *, temporary=False, language="en"):
-        self.language = language
+    def __init__(self, platform=None, *, language="en", render_mode="cpu"):
+        self.language, self.render_mode = language, render_mode
         class Handler(SimpleHTTPRequestHandler):
             def log_message(self, *_):
                 pass
@@ -55,12 +56,16 @@ class WebPanels:
         self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
         self.thread.start()
         self.service = None
+        self._browser_root = None
         self.pages = {}
         self.on_select = None
         self.probes = {}
         self.loaded = set()
         try:
-            self.service = BrowserService(None if temporary else "org.comfortabletop.app",
+            # Analytics has no persistent cookies or login state. Each instance
+            # owns its CEF root; processes must never share a writable profile.
+            self._browser_root = tempfile.TemporaryDirectory(prefix="comfortable-top-browser-")
+            self.service = BrowserService("org.comfortabletop.app", data_root=self._browser_root.name,
                                           display_platform=platform)
             self.profile = self.service.profile("local-analytics", persistent=False)
             self.service.on_event(self._event)
@@ -75,12 +80,14 @@ class WebPanels:
             query["lang"] = self.language
             origin = f"http://127.0.0.1:{self.server.server_port}"
             self.pages[key] = self.service.open(origin + "/analytics.html?" + urlencode(query),
-                profile=self.profile, width=720, height=400, fps=60, origins=[origin],
+                profile=self.profile, width=720, height=400, fps=60, origins=[origin], render_mode=self.render_mode,
                 subscribe_topics=["monitor.sample", "monitor.probe", "monitor.locale"],
                 publish_topics=["monitor.select", "monitor.proof"], message_group=self.group)
         return ResponsiveWebView(self.pages[key])
 
     def _event(self, event):
+        if event["event"] in ("error", "crashed"):
+            raise RuntimeError("Browser renderer: " + event.get("data", {}).get("message", "render process exited"))
         if event["event"] == "loaded":
             self.loaded.add(event["view"])
             # Also covers a language switch while a new/hidden page was loading.
@@ -115,8 +122,14 @@ class WebPanels:
                              profile=self.profile, message_group=self.group)
 
     def close(self):
-        if self.service:
-            self.service.close()
-        self.server.shutdown()
-        self.server.server_close()
-        self.thread.join(timeout=2)
+        try:
+            if self.service:
+                self.service.close()
+        finally:
+            try:
+                if self._browser_root:
+                    self._browser_root.cleanup()
+            finally:
+                self.server.shutdown()
+                self.server.server_close()
+                self.thread.join(timeout=2)

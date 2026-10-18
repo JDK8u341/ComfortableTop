@@ -6,12 +6,12 @@
 
 ComfortableTop 拥有 `src/comfortable_top` Python 包、命令行入口、网页资源、C++ 图表
 模块、测试和文档。ComfortableTUI 是外部库依赖，提供控件、终端渲染、共享帧 SDK、
-Windows 附加层、CEF 服务及 Linux WindowHost。正常安装的库 wheel 不引用其源码
+Windows 附加层及 CEF 服务；Top 当前仅支持 Windows。正常安装的库 wheel 不引用其源码
 目录；本项目原生模块通过已安装的 ComfortableFrames CMake package 链接。
 
 安装脚本可读取任意位置的依赖源码或获取锁定 Git 提交，将 wheel、SDK、宿主分别
 安装到本项目环境／忽略目录。它不会重置用户提供的依赖仓库。复制后的运行时自包含
-应用所需的浏览器文件，Linux 系统 Qt／图形库仍由系统提供。
+应用所需的 Windows 浏览器文件；当前不提供 Linux 版本。
 
 ## 三条数据路径
 
@@ -27,7 +27,8 @@ native/hybrid 中 Python 只提交最多 180 个数值、握手描述符和布�
 窗口显示消费者与 C++ 生产者分离，不要求 Python 每帧获取租约。
 
 网页是图像层之上的服务，URL、Cookie、profile、主题不进入通用帧协议。
-浏览器继续走 CPU 共享帧，`--canvas gpu` 只改变本项目趋势图。
+`--web-render-mode` 单独控制浏览器传输（Windows 默认 GPU），
+`--canvas gpu` 只改变本项目趋势图。
 
 ## 采样与身份
 
@@ -48,7 +49,8 @@ unavailable，状态 alive 仅表示存在，交换区为 n/a。
 
 `monitor.sample` 发送指标，`monitor.select` 返回稳定身份；`monitor.probe/proof`
 用于正常消息桥验证，不放开 CSP 或使用 eval。笔记和进程详情命令行不发送给网页。
-自测采用临时根，不占用实际实例的数据锁。
+每个 Top 进程（包括自测）使用独立临时浏览器根，退出时关闭 CEF 后删除。
+多个实例可同时运行，不共享 Cookie、缓存或消息；库仍锁定各自的数据目录。
 
 ResponsiveWebView 使用完整画布尺寸除以 DPI 作为网页视口，等待 120ms 稳定后
 更换源尺寸；移动／裁剪不改变视口。旧源等待显示端确认解除附加后再回收。

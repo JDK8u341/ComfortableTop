@@ -1,6 +1,28 @@
 # 验证范围
 
+> 0.1.4 当前发布只支持 Windows。以下旧 Linux 与旧版本性能记录保留原始版本号；本次发布的验证结果随 release-validation.json 提供。
+
+> 当前范围：Top 仅支持 Windows，Linux 版本已停止提供。旧 X11/Wayland 结果对应已撤下的自有窗口，见[安装说明](installation.md)。
+
 简体中文 | [English](en/validation.md)
+
+## Windows GPU WebView 测试分支
+
+当前分支锁定 TUI `e25f1f62c26ec99684f5b6e0ba1cf472930665f2`，Windows 普通 `.venv`
+安装对应的非 editable GPU wheel；CEF 完整运行时复制进本项目自己的 `.runtime/windows-x64`。
+WSL 普通环境也升级了匹配的 CPU wheel/helper。测试清除开发环境覆盖，通过本项目运行时自动发现。
+
+- [Windows 默认 GPU 网页](validation/standalone/webview-gpu.json)：十项混合检查通过；
+  两个独立页面均为 native_gpu_d3d11、cpu_paints=0，并实际收到加速帧。
+- [Windows 显式 CPU 对照](validation/standalone/webview-cpu.json)：十项通过，两页均为 native_cpu。
+- [X11](validation/standalone/webview-x11-cpu.json)、[Wayland](validation/standalone/webview-wayland-cpu.json)：
+  各十项通过，网页默认 CPU。没有新增 Linux GPU 支持。
+- Windows 30 项单元测试通过；WSL 29 项通过、1 项平台跳过。Ruff、MkDocs strict、pip check 通过。
+
+这是本项目 CLI 的真实模式选择，没有 monkeypatch BrowserService.open，也不使用 TUI 源码的
+editable 导入或其构建目录作为启动依赖。测试入口仅清除开发覆盖，使用本项目 `.venv` 的
+标准 main 和自测参数。新增 browser_frames 报告会核对 GPU 后端、CPU 绘制为零和有效加速回调，
+不会仅凭相同返回值判定通过。正式发布的 v0.1.3 归档尚未包含此测试分支功能。
 
 ## v0.1.3 / ComfortableTUI v0.1.2 发布复测
 

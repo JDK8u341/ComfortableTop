@@ -6,14 +6,13 @@
 
 ComfortableTop owns its Python package, command, web assets, C++ chart module, tests
 and documentation. ComfortableTUI is an external dependency supplying widgets,
-terminal rendering, the shared-frame SDK, Windows overlay, CEF service and Linux
-WindowHost. Its installed wheel does not reference a source checkout. This app links
+terminal rendering, the shared-frame SDK, Windows overlay and CEF service. Top currently supports Windows only. Its installed wheel does not reference a source checkout. This app links
 the installed ComfortableFrames CMake package using `find_package`.
 
 Setup may read user-provided dependency source or fetch a pinned commit. It installs
 the wheel, SDK and hosts into this project's environment and ignored directories
 without resetting a user checkout. Copied browser runtimes contain the files needed
-by the app; Linux Qt and graphics libraries remain system dependencies.
+by the Windows app; Linux is no longer supported by Top.
 
 ## Data paths
 
@@ -30,8 +29,8 @@ Windows GPU textures, stopping when unchanged. Producer and display consumer rem
 separate; Python does not acquire frame leases on every display frame.
 
 Web pages are an upper service. URLs, cookies, profiles and topics never enter the
-general frame protocol. Browser transport remains shared CPU frames; `--canvas gpu`
-only affects this app's native trend charts.
+general frame protocol. `--web-render-mode` controls browser transport independently
+(Windows defaults to GPU); `--canvas gpu` only affects native trend charts.
 
 ## Collection and identity
 
@@ -58,8 +57,10 @@ explicit topics are authorized.
 `monitor.sample` carries telemetry; `monitor.select` returns stable identities.
 `monitor.locale` updates the display language, including while sampling is paused.
 `monitor.probe/proof` validates the normal message bridge without eval or relaxing CSP.
-Notes and process-detail command lines are not sent to webpages. Self-tests use a
-temporary browser root to avoid locking the running user's profile.
+Notes and process-detail command lines are not sent to webpages. Each Top process,
+including self-tests, owns a separate temporary browser root, removed after CEF
+closes. Instances can run concurrently without sharing cookies, caches or messages.
+The library still locks each individual data directory.
 
 ResponsiveWebView divides full canvas pixels by DPI and waits 120ms before resizing
 the page source. Moving/clipping does not resize it. Old sources remain alive until

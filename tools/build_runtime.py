@@ -49,9 +49,13 @@ def main(argv=None):
     parser.add_argument("--sdk-prefix", type=Path, default=ROOT / ".deps" / "frame-sdk" / PLATFORM)
     parser.add_argument("--runtime", type=Path, default=ROOT / ".runtime" / PLATFORM)
     parser.add_argument("--browser-runtime", type=Path, help="Copy an already built, complete CEF runtime directory")
-    parser.add_argument("--host-binary", type=Path, help="Copy an already built Linux WindowHost")
+    parser.add_argument("--host-binary", type=Path, help="Withdrawn Linux WindowHost option")
     parser.add_argument("--cef-root", type=Path, help="Build the browser using this extracted CEF SDK")
     args = parser.parse_args(argv)
+    if os.name != "nt":
+        parser.error("ComfortableTop currently supports Windows only; Linux distribution is withdrawn")
+    if args.host_binary:
+        parser.error("Linux WindowHost support has been withdrawn; --host-binary is no longer available")
     runtime, prefix = args.runtime.resolve(), args.sdk_prefix.resolve()
     runtime.mkdir(parents=True, exist_ok=True)
     if args.tui_source:
@@ -61,9 +65,7 @@ def main(argv=None):
         sdk_build = BUILD / "frame-sdk"
         configure(source, sdk_build, "-DCMAKE_BUILD_TYPE=Release", f"-DCMAKE_INSTALL_PREFIX={prefix}",
                   "-DCOMFORTABLE_TUI_BUILD_BROWSER=OFF", "-DCOMFORTABLE_TUI_BUILD_LINUX_HOST=OFF")
-        targets = ["comfortable_cpu_frames"]
-        if os.name == "nt":
-            targets += ["comfortable_frames", "comfortable_compositor", "ctui_gpu_producer"]
+        targets = ["comfortable_cpu_frames", "comfortable_frames", "comfortable_compositor", "ctui_gpu_producer"]
         run("cmake", "--build", sdk_build, "--config", "Release", "--target", *targets, "--parallel", "4")
         run("cmake", "--install", sdk_build, "--config", "Release")
 
@@ -74,27 +76,18 @@ def main(argv=None):
     run("cmake", "--build", native_build, "--config", "Release", "--target", "_ctui_top_native", "--parallel", "4")
     run("cmake", "--install", native_build, "--config", "Release")
 
-    browser_runtime, host_binary = args.browser_runtime, args.host_binary
+    browser_runtime = args.browser_runtime
     if args.cef_root:
         if not args.tui_source:
             parser.error("--cef-root requires --tui-source")
         host_build = BUILD / "hosts"
         configure(args.tui_source.resolve(), host_build, "-DCMAKE_BUILD_TYPE=Release",
             f"-DCEF_ROOT={args.cef_root.resolve()}", "-DCOMFORTABLE_TUI_BUILD_BROWSER=ON",
-            f"-DCOMFORTABLE_TUI_BUILD_LINUX_HOST={'OFF' if os.name == 'nt' else 'ON'}")
-        targets = ["ctui_browser"] + ([] if os.name == "nt" else ["ctui_linux_canvas"])
-        run("cmake", "--build", host_build, "--config", "Release", "--target", *targets, "--parallel", "4")
-        browser_runtime = host_build / "native" / "browser"
-        if os.name == "nt":
-            browser_runtime /= "Release"
-        else:
-            host_binary = host_build / "native" / "host" / "ctui_linux_canvas"
+            "-DCOMFORTABLE_TUI_BUILD_LINUX_HOST=OFF")
+        run("cmake", "--build", host_build, "--config", "Release", "--target", "ctui_browser", "--parallel", "4")
+        browser_runtime = host_build / "native" / "browser" / "Release"
     if browser_runtime:
         copy_browser(browser_runtime, runtime)
-    if host_binary:
-        destination = runtime / "host"
-        destination.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(host_binary, destination / "ctui_linux_canvas")
     print(f"ComfortableTop runtime installed in {runtime}")
     if not browser_runtime:
         print("Native charts ready. Hybrid mode additionally needs --browser-runtime or --cef-root.")

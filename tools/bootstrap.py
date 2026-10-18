@@ -8,7 +8,7 @@ import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-TUI_REVISION = "0480fe7bd62ab1bbc811bab7b46e95d324d4f610"
+TUI_REVISION = "15261c7156ea727947917dd7ccf3e1ecf8156e7c"
 TUI_URL = "https://github.com/JDK8u341/ComfortableTUI.git"
 
 
@@ -22,9 +22,13 @@ def main():
     parser.add_argument("--terminal-only", action="store_true", help="Skip C++ and GUI dependencies")
     parser.add_argument("--gpu", action="store_true", help="Build ComfortableTUI's optional Windows GPU extension")
     parser.add_argument("--browser-runtime", type=Path)
-    parser.add_argument("--host-binary", type=Path)
+    parser.add_argument("--host-binary", type=Path, help="Withdrawn Linux WindowHost option")
     parser.add_argument("--cef-root", type=Path)
     args = parser.parse_args()
+    if os.name != "nt":
+        parser.error("ComfortableTop currently supports Windows only; Linux distribution is withdrawn")
+    if args.host_binary:
+        parser.error("Linux WindowHost support has been withdrawn; --host-binary is no longer available")
     if args.gpu and (os.name != "nt" or args.terminal_only):
         parser.error("--gpu requires Windows native/hybrid setup")
     source = args.tui_source.resolve() if args.tui_source else ROOT / ".deps" / "comfortable-tui-src"
@@ -54,7 +58,7 @@ def main():
     run(sys.executable, "-m", "pip", "install", "-e", str(ROOT) + extras)
     if not args.terminal_only:
         arguments = [sys.executable, ROOT / "tools" / "build_runtime.py", "--tui-source", source]
-        for flag in ("browser_runtime", "host_binary", "cef_root"):
+        for flag in ("browser_runtime", "cef_root"):
             value = getattr(args, flag)
             if value:
                 arguments += ["--" + flag.replace("_", "-"), value.resolve()]

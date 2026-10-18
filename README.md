@@ -2,10 +2,13 @@
 
 简体中文 | [English](README.en.md)
 
-一个独立的混合系统监视器：实时进程表、资源趋势、固定对比、进程树、调查笔记，
-以及可选 C++ CPU/GPU 画布和独立浏览器分析页。支持 Windows 与 Linux；Apache-2.0。
+版本 **0.1.4** 默认使用 Windows GPU WebView，支持多个 Top 实例同时运行。
+需要 ComfortableTUI **0.1.3** 和本次配套的新 Windows 运行时，见[安装说明](docs/installation.md)。
 
-当前版本 **0.1.3**，依赖 **ComfortableTUI 0.1.2**。升级混合模式时还需同时更新
+一个独立的混合系统监视器：实时进程表、资源趋势、固定对比、进程树、调查笔记，
+以及可选 C++ CPU/GPU 画布和独立浏览器分析页。当前仅支持 Windows；Apache-2.0。
+
+当前版本 **0.1.4**，依赖 **ComfortableTUI 0.1.3**。升级混合模式时还需同时更新
 完整的安全协议 2 浏览器运行时；发布页提供匹配平台的运行时归档，见安装文档。
 
 本项目依赖 ComfortableTUI，但不依赖它的 examples 目录、源码位置或原来的虚拟环境。
@@ -39,8 +42,8 @@ Windows 完整模式：
 资源、locale 和许可证；工具会复制到本项目 `.runtime/<platform>/browser`。也可用 `--cef-root`
 从 CEF SDK 构建。详细步骤见 [安装与构建](docs/installation.md)。
 
-Linux 使用 `--mode hybrid --platform x11` 或 `--platform wayland`；默认终端模式
-不要求桌面。原生 Linux 模式是自有窗口，不是外部终端附加层。macOS 暂不支持。
+当前仅提供 **Windows x64** 安装包和原生运行时，Linux 版本已停止提供；
+macOS 暂不支持。库 ComfortableTUI 的纯 TUI 平台范围与本应用分别管理。
 
 ## 主要功能
 

@@ -1,0 +1,125 @@
+{
+  "mode": "hybrid",
+  "canvas": "gpu",
+  "platform": null,
+  "checks": [
+    "live_non_warmup_metrics",
+    "filter_and_pin_by_identity",
+    "pause_retains_snapshot",
+    "independent_browser_page_and_embedded_enter_escape",
+    "telemetry_message_published",
+    "settings_and_repeatable_help_modal",
+    "chinese_tui_and_all_pages_while_sampling_paused",
+    "browser_viewport_reflows_and_chart_fills_panel",
+    "browser_telemetry_received_and_selection_roundtrip",
+    "english_switch_preserves_native_browser_pages"
+  ],
+  "web_render_mode": "gpu",
+  "browser_viewports": {
+    "overview": {
+      "chartHeight": 57,
+      "chartWidth": 535,
+      "documentWidth": 547,
+      "height": 147,
+      "titleSize": 18,
+      "width": 547
+    },
+    "(55052, 1792299502.8145502)": {
+      "chartHeight": 60,
+      "chartWidth": 516,
+      "documentWidth": 528,
+      "height": 129,
+      "titleSize": 18,
+      "width": 528
+    }
+  },
+  "language": "en",
+  "samples": 14,
+  "processes": 309,
+  "sampler_errors": 0,
+  "native_frames": {
+    "selected": 279,
+    "cpu": 211,
+    "watch-0": 33
+  },
+  "native_errors": {},
+  "canvas_events": {
+    "selected": {
+      "attaching": 1,
+      "layer_status": 4,
+      "ready": 1,
+      "buffer_attached": 1,
+      "show": 2,
+      "transform": 29,
+      "move": 28,
+      "resize": 12,
+      "metrics": 15,
+      "hide": 1,
+      "detached": 1
+    },
+    "cpu": {
+      "attaching": 1,
+      "ready": 1,
+      "show": 1,
+      "buffer_attached": 1,
+      "transform": 17,
+      "move": 17,
+      "resize": 14,
+      "metrics": 10,
+      "layer_status": 2,
+      "hide": 1,
+      "detached": 1
+    },
+    "watch-0": {
+      "attaching": 1,
+      "ready": 1,
+      "show": 1,
+      "buffer_attached": 1,
+      "transform": 20,
+      "move": 20,
+      "resize": 1,
+      "metrics": 13,
+      "hide": 1,
+      "layer_status": 2,
+      "detached": 1
+    }
+  },
+  "browser_pages": 2,
+  "browser_frames": {
+    "overview": {
+      "accelerated_paints": 8.0,
+      "copy_wait_ms": 4.378,
+      "cpu_paints": 0,
+      "dropped_frames": 0.0,
+      "error": "",
+      "frame_backend": "native_gpu_d3d11",
+      "popup": {
+        "height": 0,
+        "visible": false,
+        "width": 0,
+        "x": 0,
+        "y": 0
+      },
+      "popup_paints": 0.0,
+      "published_frames": 8.0
+    },
+    "(55052, 1792299502.8145502)": {
+      "accelerated_paints": 1.0,
+      "copy_wait_ms": 0.4227,
+      "cpu_paints": 0,
+      "dropped_frames": 0.0,
+      "error": "",
+      "frame_backend": "native_gpu_d3d11",
+      "popup": {
+        "height": 0,
+        "visible": false,
+        "width": 0,
+        "x": 0,
+        "y": 0
+      },
+      "popup_paints": 0.0,
+      "published_frames": 1.0
+    }
+  },
+  "result": "passed"
+}

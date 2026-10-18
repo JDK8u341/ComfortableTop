@@ -58,10 +58,7 @@ live samples, rapid reversals, dialogs, notifications and empty settled diffs. I
 accepts `--motion subtle` and `--reduced-motion`. Its CPU timings are not screen FPS.
 See [motion and verification](motion.md).
 
-```bash
-comfortable-top --mode hybrid --platform x11 --self-test --smoke-seconds 14 --report .build/x11.json
-comfortable-top --mode hybrid --platform wayland --self-test --smoke-seconds 14 --report .build/wayland.json
-```
+Current builds and execution target Windows only; old Linux checks are historical.
 
 Self-tests now also change Chinese/English while paused, confirm all browser pages
 receive the setting, and check page identity remains stable. They do not save the test
@@ -71,12 +68,12 @@ Producer frame counts in the GIL test do not represent screen FPS.
 Validate a built wheel in a fresh environment outside the checkout:
 
 ```powershell
-python tools/verify_distribution.py --wheel dist/comfortable_top-0.1.3-py3-none-any.whl --tui-wheel PATH/comfortable_tui-WHEEL.whl --report .build/wheel-check.json
+python tools/verify_distribution.py --wheel dist/comfortable_top-0.1.4-py3-none-win_amd64.whl --tui-wheel PATH/comfortable_tui-WHEEL.whl --report .build/wheel-check.json
 ```
 
 This creates a separate venv, verifies package imports, web assets, Apache notices,
-entry points and two real samples in an empty working directory. Windows/Linux SDKs,
-builds, runtimes and verification environments use platform-specific directories.
+entry points and two real samples in an empty working directory. Current app packages
+and validation target Windows x64 only.
 
 ## Distribution
 
@@ -90,9 +87,8 @@ Chinese/English documentation and tests. Native binaries and CEF are separate fr
 the pure Python wheel. GPU dependency wheels must match the interpreter ABI/platform.
 
 A GitHub release is not a PyPI release. Preserve installation instructions for private
-dependency source, native/CEF builds and runtime locations. The initial release does
-not bundle the large CEF runtime; build from the SDK or copy an authorized existing
-runtime, retaining third-party notices.
+dependency source, native/CEF builds and runtime locations. The release supplies a
+matching complete Windows runtime; retain all third-party notices when rebuilding or copying it.
 
 Keep Git tags and package versions consistent. Run tests and fresh-wheel checks before
 creating a release. Update each Chinese document together with its English counterpart,

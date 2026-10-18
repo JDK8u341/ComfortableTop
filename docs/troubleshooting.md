@@ -1,8 +1,10 @@
 # 故障排查
 
+> 当前范围：Top 仅支持 Windows，Linux 版本已停止提供。旧 X11/Wayland 结果对应已撤下的自有窗口，见[安装说明](installation.md)。
+
 ## 升级后浏览器提示 security protocol
 
-Top 0.1.3 使用 TUI 0.1.2，要求协议 2 helper。更新 Python wheel 后，旧的
+Top 0.1.4 使用 TUI 0.1.3，要求协议 2 helper。更新 Python wheel 后，旧的
 `.runtime/<platform>/browser` 也必须替换为完整的新运行时；不能只复制 exe。
 若曾设置 COMFORTABLE_TUI_BROWSER_EXECUTABLE，清除旧覆盖或改为新路径。
 此次发布不需要借用 `tui/.venv`；使用 Top 自己的 `.venv` 即可。
@@ -11,7 +13,7 @@ Top 0.1.3 使用 TUI 0.1.2，要求协议 2 helper。更新 Python wheel 后，�
 
 ## 进程详情图表不随面板缩放
 
-v0.1.2 修复了“选中进程 CPU”图表的固定 24×5 字符内嵌尺寸。现在画布直接填充
+v0.1.3 修复了“选中进程 CPU”图表的固定 24×5 字符内嵌尺寸。现在画布直接填充
 面板内部，最大化、Alt+Enter 全屏、恢复、连续缩放时同步调整。窗口过窄时侧栏
 按原规则隐藏，放宽后重新填充。此修正只需更新 Top 并重启；TUI 0.1.1 和已有
 GPU／CEF 运行时不需要重建。列表和表格中有意固定尺寸的内嵌画布不受影响。
@@ -58,7 +60,7 @@ Py3.12 的 .pyd 不能给 Py3.10 使用，Windows .pyd 不能用于 Linux。
 已有环境需重新安装更新后的 ComfortableTUI wheel，再重新启动应用；只更新网页资源
 无效。使用源码安装时，按安装文档重新运行 bootstrap；旧的 `.deps/comfortable-tui-src`
 如与新锁定提交不同，使用 `git -C .deps/comfortable-tui-src fetch origin` 和
-`git -C .deps/comfortable-tui-src checkout --detach 0480fe7bd62ab1bbc811bab7b46e95d324d4f610`
+`git -C .deps/comfortable-tui-src checkout --detach e25f1f62c26ec99684f5b6e0ba1cf472930665f2`
 显式更新缓存后再运行 bootstrap。应用已经退出时，可用 Ctrl+C 清空当前提示符输入。
 强制终止进程和高延迟远程连接仍可能无法完成退出清理。
 
@@ -76,6 +78,12 @@ warmup/n/a。状态 alive 只表示在快照中存在；RSS 并非独占内存�
 WSL 中读取的是 Linux 子系统的进程和资源。
 
 ## 浏览器条款或 CSP 错误
+
+### 多实例提示 browser data is already in use
+
+旧版 Top 为所有进程使用同一个固定浏览器根，即使分析 profile 不持久化也会争用
+CEF 数据目录锁。当前实现改为每个进程独立临时根，可直接重复运行同一条命令。
+不应删除锁或强制共享写入目录；升级 Top 后重启需要修复的旧实例即可。
 
 服务保留 no-first-run 策略与应用私有 profile。不要自动接受外部网站协议。
 本项目页面保留严格 CSP；自测通过 probe/proof 主题确认布局和消息，不调用动态 eval。

@@ -121,3 +121,81 @@ def test_browser_language_sync_does_not_recreate_pages_or_depend_on_sampling(bro
         assert panels.pages["overview"] is page
     finally:
         panels.close()
+
+
+def test_web_panels_pass_selected_transport_to_every_independent_page(monkeypatch):
+    from comfortable_top import web
+
+    opened = []
+
+    class Service:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def profile(self, *args, **kwargs):
+            return "profile"
+
+        def on_event(self, callback):
+            pass
+
+        def open(self, *args, **kwargs):
+            opened.append(kwargs)
+            return object()
+
+        def close(self):
+            pass
+
+    monkeypatch.setattr(web, "BrowserService", Service)
+    monkeypatch.setattr(web, "ResponsiveWebView", lambda page: page)
+    panels = web.WebPanels(render_mode="gpu")
+    try:
+        panels.widget()
+        panels.widget((42, 1.))
+        assert len(opened) == 2 and all(call["render_mode"] == "gpu" for call in opened)
+        with pytest.raises(RuntimeError, match="GPU import failed"):
+            panels._event({"event": "error", "data": {"message": "GPU import failed"}})
+    finally:
+        panels.close()
+
+
+def test_concurrent_top_instances_have_separate_locked_roots_and_cleanup(monkeypatch, tmp_path):
+    from comfortable_top.web import WebPanels
+
+    monkeypatch.setattr(browser, "NativeProcess", FakeProcess)
+    executable = tmp_path / "ctui_browser"
+    executable.touch()
+    monkeypatch.setenv("COMFORTABLE_TUI_BROWSER_EXECUTABLE", str(executable))
+    first, second = WebPanels(), WebPanels()
+    roots = [panels.service.root for panels in (first, second)]
+    try:
+        assert roots[0] != roots[1]
+        assert first.service.application_id == second.service.application_id == "org.comfortabletop.app"
+        assert not first.profile.persistent and not second.profile.persistent
+        # Retain the library's protection against concurrent writes to one root.
+        with pytest.raises(RuntimeError, match="already in use"):
+            browser.BrowserService("org.comfortabletop.app", data_root=second._browser_root.name,
+                                   executable=executable)
+        first.widget()
+        first.close()
+        assert not roots[0].exists() and roots[1].exists()
+        assert second.widget().page.service is second.service
+    finally:
+        first.close()
+        second.close()
+    assert all(not root.exists() for root in roots)
+
+
+def test_top_browser_startup_failure_cleans_instance_root(monkeypatch):
+    from pathlib import Path
+    from comfortable_top import web
+
+    roots = []
+
+    def fail(*args, **kwargs):
+        roots.append(Path(kwargs["data_root"]))
+        raise RuntimeError("browser startup failed")
+
+    monkeypatch.setattr(web, "BrowserService", fail)
+    with pytest.raises(RuntimeError, match="browser startup failed"):
+        web.WebPanels()
+    assert len(roots) == 1 and not roots[0].exists()

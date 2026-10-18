@@ -1,8 +1,10 @@
 # Troubleshooting
 
+> Current scope: Top supports Windows only; the Linux distribution is withdrawn. Old X11/Wayland results describe the withdrawn app-owned window. See [installation](installation.md).
+
 ## Browser security-protocol error after upgrading
 
-Top 0.1.3 uses TUI 0.1.2 and requires a protocol-2 helper. Replace the complete
+Top 0.1.4 uses TUI 0.1.3 and requires a protocol-2 helper. Replace the complete
 `.runtime/<platform>/browser` directory as well as the Python wheels; copying only
 the executable is insufficient. Clear an old COMFORTABLE_TUI_BROWSER_EXECUTABLE
 override or point it at the new runtime. Use Top's own venv; the TUI checkout's
@@ -12,7 +14,7 @@ development venv is not required.
 
 ## Selected-process chart does not follow panel size
 
-v0.1.2 removes the selected CPU chart's fixed 24×5-cell inline sizing. Its canvas now
+v0.1.3 removes the selected CPU chart's fixed 24×5-cell inline sizing. Its canvas now
 fills the panel interior after maximize, Alt+Enter fullscreen, restore and resizing.
 The sidebar still hides in narrow windows and fills again when shown. Update Top
 and restart; TUI 0.1.1 and existing GPU/CEF runtimes need no rebuild. Intentionally
@@ -65,7 +67,7 @@ Reinstall an updated ComfortableTUI wheel and restart the app; updating web asse
 alone does not apply this fix. For source installation, rerun bootstrap as described
 in the installation guide. If the cached `.deps/comfortable-tui-src` revision differs,
 explicitly update it with `git -C .deps/comfortable-tui-src fetch origin` followed by
-`git -C .deps/comfortable-tui-src checkout --detach 0480fe7bd62ab1bbc811bab7b46e95d324d4f610`.
+`git -C .deps/comfortable-tui-src checkout --detach e25f1f62c26ec99684f5b6e0ba1cf472930665f2`.
 After the app has exited, Ctrl+C clears the current shell input. Forced termination
 and high-latency remote connections can still prevent complete cleanup.
 
@@ -84,6 +86,13 @@ links. Without an available socket it reports an error; it does not modify the s
 XDG_RUNTIME_DIR or silently switch to X11. WSL metrics refer to the Linux subsystem.
 
 ## Browser terms or CSP errors
+
+### Multiple instances report browser data is already in use
+
+Older Top code gave all processes one fixed browser root, so even nonpersistent
+analytics profiles competed for CEF's data-directory lock. Each process now uses
+its own temporary root; repeat the same launch command to run multiple instances.
+Do not delete the lock or force shared writes. Update Top and restart affected old instances.
 
 The service keeps its no-first-run policy and application-private profile. It does not
 automatically accept external website agreements. Local pages retain strict CSP;
