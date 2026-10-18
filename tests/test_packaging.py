@@ -18,7 +18,7 @@ def test_installed_web_assets():
 def test_cli_works_outside_checkout(tmp_path):
     result = subprocess.run([sys.executable, "-m", "comfortable_top", "--version"], cwd=tmp_path,
                             capture_output=True, text=True, check=True)
-    assert result.stdout.strip() == "ComfortableTop 0.1.4"
+    assert result.stdout.strip() == "ComfortableTop 0.1.5"
     result = subprocess.run([sys.executable, "-m", "comfortable_top", "--help"], cwd=tmp_path,
                             capture_output=True, text=True, check=True)
     assert "--mode" in result.stdout and "--canvas" in result.stdout and "--web-render-mode" in result.stdout

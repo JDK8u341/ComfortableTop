@@ -129,7 +129,7 @@ class Monitor:
             HBox(self.i18n.make(Button, "Inspect", self.inspect), self.i18n.make(Button, "Pin/unpin", self.pin), height=1, gap=1), gap=1, width=32)
         processes = ResponsiveSplit(self.i18n.make(Panel, self.table, "Processes · arrows scroll · Enter inspect"), sidebar, gap=1)
 
-        self.core_chart = BarChart({}, height=12)
+        self.core_chart = BarChart({}, maximum=100, height=12)
         self.network = self.i18n.make(DataTable, ["Interface", "Receive/s", "Send/s"], column_widths=[18, 14, 14])
         self.disks = self.i18n.make(DataTable, ["Device", "Read/s", "Write/s"], column_widths=[18, 14, 14])
         resource_graph = web.widget() if web else self.i18n.make(Paragraph,
@@ -137,7 +137,7 @@ class Monitor:
             "This mode already plots the same real metrics using Kitty graphics or braille.")
         resources = VBox(HBox(self.i18n.make(Panel, self.cpu_chart.widget(), "System CPU · 0..100%"),
             self.i18n.make(Panel, resource_graph, "Independent browser analytics" if web else "Rendering modes"), gap=1),
-            Grid(self.i18n.make(Panel, self.core_chart, "Logical cores · relative bars / numeric %"),
+            Grid(self.i18n.make(Panel, self.core_chart, "Logical cores · 0..100%"),
                  self.i18n.make(Panel, VBox(self.network, self.disks), "Network and disks"), columns=2), gap=1)
 
         self.watch = ListView([], item_height=5, item_widget=self.watch_row,

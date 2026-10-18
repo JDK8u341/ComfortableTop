@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Fix per-core CPU bars to use an absolute 0..100% scale instead of filling the track at the busiest core's value; update English/Chinese labels and documentation.
+
 ## 0.1.4 — 2026-10-18
 
 - Default Windows hybrid WebViews to GPU textures, with explicit CPU comparison mode and native frame diagnostics.

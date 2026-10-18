@@ -2,6 +2,9 @@
 
 简体中文 | [English](README.en.md)
 
+当前修复分支为 **0.1.5（未发布）**，配合 ComfortableTUI **0.1.4** 将逐核条形图
+固定到 0..100%。bootstrap 已锁定匹配的库提交；下方发布包安装说明仍对应正式版。
+
 版本 **0.1.4** 默认使用 Windows GPU WebView，支持多个 Top 实例同时运行。
 需要 ComfortableTUI **0.1.3** 和本次配套的新 Windows 运行时，见[安装说明](docs/installation.md)。
 
