@@ -4,10 +4,10 @@
 
 ## Current branch: GPU WebView testing
 
-Windows hybrid mode now defaults to GPU WebView textures; Linux still defaults to CPU.
+Windows hybrid mode now defaults to GPU WebView textures; Linux graphical modes are suspended.
 `--canvas` selects native chart transport, while `--web-render-mode cpu|gpu` selects browser output.
 Published v0.1.3 / TUI 0.1.2 stable assets do not contain this new API. Use the current pinned
-TUI commit `e25f1f62c26ec99684f5b6e0ba1cf472930665f2` and rebuild/copy its complete CEF runtime.
+TUI commit `6069afed2934af9137fe7fe3fa12fc8b04e3acb8` and rebuild/copy its complete CEF runtime.
 Security protocol 2 alone is insufficient; the helper must advertise `gpu_texture_transport=1`.
 
 The local project `.venv` and `.runtime/windows-x64/browser` have been updated:
@@ -41,7 +41,7 @@ still require the native runtimes described below; the universal wheel contains 
 GPU extensions nor CEF. The offline documentation zip includes both languages.
 
 Requires Python 3.10+ on Windows or Linux, psutil and ComfortableTUI. The tested dependency
-is pinned to commit `e25f1f62c26ec99684f5b6e0ba1cf472930665f2` in both bootstrap and
+is pinned to commit `6069afed2934af9137fe7fe3fa12fc8b04e3acb8` in both bootstrap and
 requirements-tui.txt. Do not assume it is published on PyPI. Access to its private GitHub
 source requires local Git credentials; no tokens are stored in this project.
 
@@ -96,7 +96,7 @@ The runtime directory must include ctui_browser.exe, ctui_browser.dll, libcef.dl
 pak files, locales, snapshots and CEF licenses. The tool copies the whole directory
 into `.runtime/<platform>/browser`; subsequent launches use that copy. This branch defaults
 to GPU browser frames on Windows, with `--web-render-mode cpu` for CPU comparison.
-Linux uses CPU frames. The separate `--canvas` flag controls charts only.
+Linux graphical modes are suspended. The separate `--canvas` flag controls charts only.
 
 To build CEF, the tested SDK version is
 `152.0.14+g8a0b5b9+chromium-152.0.7977.167`. Download it using the dependency's helper:
@@ -110,49 +110,30 @@ CEF requires C++20. The frame SDK and this app's chart producer use C++17. Sandb
 and no-first-run policies remain enabled; setup does not click through external terms,
 allow unsafe eval, or disable the sandbox.
 
-## Linux and WSL2
+## Linux and WSL2: terminal mode only
 
-`comfortable_top-runtime-linux-x64-cp310-0.1.3.tar.gz` targets Ubuntu 22.04 and
-CPython 3.10. Extract into `.runtime/linux-x64`; it contains CEF, the CPU chart module
-and the Qt host. System Qt/GTK dependencies are still required. Rebuild for other
-Python ABIs or distributions; arbitrary binary compatibility is not promised.
-
-Requires GCC 11+, CMake, Qt 6 development packages and a real X11 or Wayland session.
-CEF also requires system graphics libraries. For Ubuntu 22.04:
+Linux native/hybrid and the separate Qt WindowHost are withdrawn. They did not
+integrate with an existing terminal. The old v0.1.3 Linux graphical runtime archive
+is a historical artifact, not current support; do not install it for this branch.
 
 ```bash
-sudo apt-get update
-sudo apt-get install -y build-essential cmake ninja-build python3-venv python3-dev \
-  qt6-base-dev qt6-wayland libgl1-mesa-dev libopengl-dev libgtk-3-dev libnss3 libgbm1 libasound2 \
-  libatk-bridge2.0-0 libxkbcommon-x11-0
 python3 -m venv .venv
-.venv/bin/python tools/bootstrap.py --tui-source /path/to/ComfortableTUI
-.venv/bin/python tools/build_runtime.py --tui-source /path/to/ComfortableTUI --cef-root /path/to/cef-sdk
-.venv/bin/comfortable-top --mode hybrid --platform x11 --lang en
-.venv/bin/comfortable-top --mode hybrid --platform wayland --lang zh
+.venv/bin/python tools/bootstrap.py --terminal-only
+.venv/bin/comfortable-top --mode terminal
 ```
 
-Use `--platform linux64` with fetch_cef.py. Existing binaries can be copied using
-`--browser-runtime DIR --host-binary /path/to/ctui_linux_canvas`. Qt and other shared
-libraries must still be installed on the target system. Builds are not guaranteed to
-work across arbitrary Linux distributions. WSL monitors Linux subsystem processes,
-not Windows host processes. Prefer the Linux filesystem for WSL builds and virtual
-environments. Linux native modes use an app-owned WindowHost, not an external terminal overlay.
+No Qt, CEF or desktop session is required. WSL reports Linux subsystem processes,
+not Windows host processes. CLI rejects graphical modes before starting resources;
+the runtime builder rejects Linux graphical builds.
+See the [research decision](https://github.com/JDK8u341/ComfortableTUI/blob/codex/webview-gpu-textures/docs/linux-support-decision.md).
 
 ## Runtime discovery after wheel installation
 
-Editable installs use this checkout's `.runtime/<platform>`. Regular wheel installs
-look in `%LOCALAPPDATA%/ComfortableTop/runtime/windows-x64` on Windows, and
-`$XDG_DATA_HOME/ComfortableTop/runtime/linux-x64` on Linux, defaulting to
-`~/.local/share/ComfortableTop/runtime/linux-x64`. Set `COMFORTABLE_TOP_RUNTIME` to
-override the runtime root and pass the same path to `tools/build_runtime.py --runtime`.
-
-Native module precedence: `--native-module`, `COMFORTABLE_TOP_NATIVE_DIR`, runtime
-native directory, then this checkout's `.build/<platform>/native/Release` or
-`.build/<platform>/native`. Explicit `COMFORTABLE_TUI_BROWSER_EXECUTABLE` and
-`COMFORTABLE_TUI_LINUX_HOST_EXECUTABLE` settings take precedence over discovery.
-
-Tested platform keys are windows-x64 and linux-x64. SDK and build caches are separated
-by platform, allowing Windows and WSL to share source without overwriting binaries.
-Runtime discovery does not look for a sibling TUI directory. See [language settings](localization.md)
-for UI preferences, which are stored separately from runtime files.
+Windows editable installs use `.runtime/windows-x64`; regular wheels default to
+`%LOCALAPPDATA%/ComfortableTop/runtime/windows-x64`. Override using
+`COMFORTABLE_TOP_RUNTIME`, passing the same path to `build_runtime.py --runtime`.
+Native precedence is `--native-module`, `COMFORTABLE_TOP_NATIVE_DIR`, runtime native
+directory, then local build directories. Explicit `COMFORTABLE_TUI_BROWSER_EXECUTABLE`
+takes precedence over discovery. Linux terminal mode no longer activates old GUI runtimes;
+legacy host environment variables do not restore withdrawn graphical modes.
+See [language settings](localization.md) for preferences stored separately.

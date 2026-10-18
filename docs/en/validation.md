@@ -1,5 +1,7 @@
 # Validation scope and records
 
+> Current scope: Linux graphical modes are suspended; only terminal mode remains. Old X11/Wayland results describe the withdrawn app-owned window. See [installation](installation.md).
+
 [简体中文](../validation.md) | English
 
 ## Windows GPU WebView test branch

@@ -1,5 +1,7 @@
 # 故障排查
 
+> 当前范围：Linux 图形模式已暂停，仅保留终端模式。旧 X11/Wayland 结果对应已撤下的自有窗口，见[安装说明](installation.md)。
+
 ## 升级后浏览器提示 security protocol
 
 Top 0.1.3 使用 TUI 0.1.2，要求协议 2 helper。更新 Python wheel 后，旧的

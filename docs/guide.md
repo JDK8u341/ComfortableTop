@@ -5,7 +5,7 @@
 安装后执行 `comfortable-top` 或 `python -m comfortable_top`。
 
 当前测试分支 Windows 混合模式的网页默认使用 GPU；加 `--web-render-mode cpu`
-可对照 CPU 路径。Linux 仍默认 CPU。原生图表继续由 `--canvas cpu|gpu` 独立控制。
+可对照 CPU 路径。Linux 仅保留终端模式，图像混合模式已暂停。原生图表继续由 `--canvas cpu|gpu` 独立控制。
 需要匹配的新库与运行时，见[安装说明](installation.md)。
 完整安装步骤见 [安装](installation.md)。建议至少 120×38，窄窗口会隐藏详情侧栏；表格可水平滚动。
 

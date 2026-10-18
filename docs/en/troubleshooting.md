@@ -1,5 +1,7 @@
 # Troubleshooting
 
+> Current scope: Linux graphical modes are suspended; only terminal mode remains. Old X11/Wayland results describe the withdrawn app-owned window. See [installation](installation.md).
+
 ## Browser security-protocol error after upgrading
 
 Top 0.1.3 uses TUI 0.1.2 and requires a protocol-2 helper. Replace the complete

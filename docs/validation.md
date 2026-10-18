@@ -1,5 +1,7 @@
 # 验证范围
 
+> 当前范围：Linux 图形模式已暂停，仅保留终端模式。旧 X11/Wayland 结果对应已撤下的自有窗口，见[安装说明](installation.md)。
+
 简体中文 | [English](en/validation.md)
 
 ## Windows GPU WebView 测试分支

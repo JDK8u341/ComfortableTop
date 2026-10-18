@@ -4,10 +4,10 @@
 
 ## 当前分支：GPU WebView 测试
 
-当前源码在 Windows `--mode hybrid` 下默认使用 GPU 网页纹理；Linux 默认仍为 CPU。
+当前源码在 Windows `--mode hybrid` 下默认使用 GPU 网页纹理；Linux 图像混合模式已暂停。
 `--canvas gpu` 单独控制原生图表，网页通过 `--web-render-mode cpu|gpu` 选择。
 发布页的 v0.1.3 / TUI 0.1.2 稳定包没有这个新增接口；测试应使用当前分支锁定的
-TUI 提交 `e25f1f62c26ec99684f5b6e0ba1cf472930665f2` 并重新构建/复制完整 CEF helper。
+TUI 提交 `6069afed2934af9137fe7fe3fa12fc8b04e3acb8` 并重新构建/复制完整 CEF helper。
 安全协议 2 本身不足以证明支持 GPU，helper 还需提供 `gpu_texture_transport=1`。
 
 本机已更新项目自己的 `.venv` 和 `.runtime/windows-x64/browser`，可直接运行：
@@ -39,7 +39,7 @@ comfortable-top
 下面的原生运行时，通用 wheel 不包含 GPU 扩展或 CEF。离线手册 zip 同步提供中英文。
 
 Python 3.10+，Windows 或 Linux。终端模式需要 psutil 与 ComfortableTUI。
-当前源码测试基线为 ComfortableTUI 提交 `e25f1f62c26ec99684f5b6e0ba1cf472930665f2`，
+当前源码测试基线为 ComfortableTUI 提交 `6069afed2934af9137fe7fe3fa12fc8b04e3acb8`，
 bootstrap 和 requirements-tui.txt 均锁定此版本；不会假设 PyPI 上已存在该依赖。
 GitHub 私有依赖需有访问权限，Git 凭证由本机 Git／gh 管理，项目不保存令牌。
 
@@ -91,7 +91,7 @@ CMake SDK，本项目只用 find_package 链接 SDK，不向原仓库 add_subdir
 目录必须包含 ctui_browser.exe、ctui_browser.dll、libcef.dll、pak、locale、快照及
 CEF 许可证。工具复制整个目录到 `.runtime/<platform>/browser`，不只复制 exe；启动不再访问
 原构建目录。当前分支的 Windows 网页默认使用 GPU；`--web-render-mode cpu` 使用 CPU
-共享帧，Linux 保留 CPU 路径。`--canvas` 只控制趋势图。
+共享帧；Linux 图形路径已暂停。`--canvas` 只控制趋势图。
 
 从源码构建浏览器时，CEF 基线为
 `152.0.14+g8a0b5b9+chromium-152.0.7977.167`。依赖源码附带安全下载器：
@@ -105,47 +105,29 @@ CEF 许可证。工具复制整个目录到 `.runtime/<platform>/browser`，不�
 CEF 构建需要 C++20，通用帧 SDK 和本项目图表模块用 C++17。浏览器保留沙箱和
 no-first-run 策略，不通过自动点击、放开 eval 或关闭沙箱来跳过初始化。
 
-## Linux / WSL2
+## Linux / WSL2：仅终端模式
 
-发布页另提供 `comfortable_top-runtime-linux-x64-cp310-0.1.3.tar.gz`，基于 Ubuntu 22.04、
-CPython 3.10 构建，包含 CEF、CPU 图表与 Qt 窗口宿主。解压到 `.runtime/linux-x64`。
-Qt/GTK 等系统依赖仍需安装；其他 Python ABI/发行版按下面步骤重建，不保证二进制兼容。
-
-需要 GCC 11+、CMake、Qt 6 开发包与真实 X11／Wayland 会话；CEF 还需系统图形库。
-Ubuntu 22.04 示例：
+当前撤下 Linux native/hybrid 及 WindowHost；它没有嵌入现有终端。
+旧 v0.1.3 Linux 图形运行时归档属于历史交付，不代表当前支持，也不再推荐安装。
 
 ```bash
-sudo apt-get update
-sudo apt-get install -y build-essential cmake ninja-build python3-venv python3-dev \
-  qt6-base-dev qt6-wayland libgl1-mesa-dev libopengl-dev libgtk-3-dev libnss3 libgbm1 libasound2 \
-  libatk-bridge2.0-0 libxkbcommon-x11-0
 python3 -m venv .venv
-.venv/bin/python tools/bootstrap.py --tui-source /path/to/ComfortableTUI
-# 构建 CEF 和 WindowHost：
-.venv/bin/python tools/build_runtime.py --tui-source /path/to/ComfortableTUI --cef-root /path/to/cef-sdk
-.venv/bin/comfortable-top --mode hybrid --platform x11
-.venv/bin/comfortable-top --mode hybrid --platform wayland
+.venv/bin/python tools/bootstrap.py --terminal-only
+.venv/bin/comfortable-top --mode terminal
 ```
 
-Linux CEF SDK 下载器参数为 `--platform linux64`。已有产物可用
-`--browser-runtime DIR --host-binary /path/to/ctui_linux_canvas` 复制，避免重复构建。
-Qt 等系统动态库仍需安装；不宣称产物可跨任意 Linux 发行版直接运行。
-WSL 显示 Linux 子系统的进程，非 Windows 宿主进程；构建输出和 venv 建议放在 Linux
-文件系统。X11 与 Wayland 分别测试。WindowHost 为自有窗口，不是外部终端附加层。
+不需要 Qt、CEF 或桌面会话。WSL 采集 Linux 子系统进程，不采集 Windows 宿主进程。
+CLI 在启动任何图形资源前拒绝 Linux native/hybrid；构建工具不再构建 Linux 图形运行时。
+研究依据与恢复标准见 [ComfortableTUI 决策报告](https://github.com/JDK8u341/ComfortableTUI/blob/codex/webview-gpu-textures/docs/linux-support-decision.md)。
 
 ## 安装 wheel 后的运行时位置
 
-源码 editable 安装默认使用本项目 `.runtime/<platform>`。普通 wheel 安装在 Windows 默认查找
-`%LOCALAPPDATA%/ComfortableTop/runtime/windows-x64`，Linux 查找
-`$XDG_DATA_HOME/ComfortableTop/runtime/linux-x64` 或 `~/.local/share/ComfortableTop/runtime/linux-x64`。
-可以用 `COMFORTABLE_TOP_RUNTIME` 指定完整运行时根，并将 `tools/build_runtime.py`
-的 `--runtime PATH` 设置到同一目录。
-
-优先级：显式 `--native-module`、`COMFORTABLE_TOP_NATIVE_DIR`、运行时 native 目录、
-本项目 `.build/<platform>/native/Release` 或 `.build/<platform>/native`。显式设置的
-`COMFORTABLE_TUI_BROWSER_EXECUTABLE`／`COMFORTABLE_TUI_LINUX_HOST_EXECUTABLE` 保持优先。
-`<platform>` 在已验证环境中为 windows-x64 或 linux-x64；SDK 和构建缓存也按平台
-分目录，Windows 与 WSL 可共享同一源码目录。运行时不按兄弟目录名查找原 TUI 项目。
+Windows editable 安装读取本项目 `.runtime/windows-x64`；普通 wheel 默认读取
+`%LOCALAPPDATA%/ComfortableTop/runtime/windows-x64`。`COMFORTABLE_TOP_RUNTIME`
+可指定其他目录，构建时向 `tools/build_runtime.py --runtime` 传入相同路径。
+原生模块依次查找 `--native-module`、`COMFORTABLE_TOP_NATIVE_DIR`、运行时 native
+目录和本项目构建目录。显式 `COMFORTABLE_TUI_BROWSER_EXECUTABLE` 优先于自动发现。
+Linux 终端模式不自动激活旧图形运行时；设置旧 host 环境变量也不能恢复已撤下的路径。
 
 ## 界面语言
 

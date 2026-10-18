@@ -7,7 +7,7 @@
 已发布的 v0.1.3 归档尚不包含此功能，见[安装说明](docs/installation.md)。
 
 一个独立的混合系统监视器：实时进程表、资源趋势、固定对比、进程树、调查笔记，
-以及可选 C++ CPU/GPU 画布和独立浏览器分析页。支持 Windows 与 Linux；Apache-2.0。
+以及可选 C++ CPU/GPU 画布和独立浏览器分析页。Windows 支持完整模式，Linux 仅支持终端模式；Apache-2.0。
 
 当前版本 **0.1.3**，依赖 **ComfortableTUI 0.1.2**。升级混合模式时还需同时更新
 完整的安全协议 2 浏览器运行时；发布页提供匹配平台的运行时归档，见安装文档。
@@ -43,8 +43,9 @@ Windows 完整模式：
 资源、locale 和许可证；工具会复制到本项目 `.runtime/<platform>/browser`。也可用 `--cef-root`
 从 CEF SDK 构建。详细步骤见 [安装与构建](docs/installation.md)。
 
-Linux 使用 `--mode hybrid --platform x11` 或 `--platform wayland`；默认终端模式
-不要求桌面。原生 Linux 模式是自有窗口，不是外部终端附加层。macOS 暂不支持。
+Linux 图像混合模式已暂停，仅保留 `comfortable-top --mode terminal`；安装使用
+`tools/bootstrap.py --terminal-only`。旧 WindowHost 是独立 Qt 窗口，未实现现有终端集成。
+macOS 暂不支持，见[安装说明](docs/installation.md)。
 
 ## 主要功能
 

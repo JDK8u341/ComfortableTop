@@ -13,7 +13,7 @@ runtime archives are available with the release; see the installation guide.
 
 An independent hybrid system monitor: live processes, resource trends, pinned
 comparisons, process trees and investigation notes, with optional C++ CPU/GPU charts
-and isolated browser analytics. Windows and Linux; Apache-2.0.
+and isolated browser analytics. Full modes on Windows, terminal mode only on Linux; Apache-2.0.
 
 ComfortableTop depends on ComfortableTUI, but not its examples, source location or
 old virtual environment. This repository owns its Python package, command, native
@@ -49,8 +49,9 @@ The browser runtime must include the executable, libcef.dll, assets, locales and
 licenses. It is copied into `.runtime/<platform>/browser`. Use `--cef-root` to build
 from an SDK instead. See [installation](docs/en/installation.md).
 
-Linux hybrid mode uses `--platform x11` or `--platform wayland`. Terminal mode needs
-no desktop. Linux native modes use an app-owned window, not an external terminal overlay.
+Linux graphical modes are suspended. Use `--mode terminal` and install with
+`tools/bootstrap.py --terminal-only`. The former WindowHost was a separate Qt window,
+not integration with an existing terminal.
 macOS is not supported in the current scope.
 
 ## Features

@@ -25,8 +25,9 @@ def main():
     parser.add_argument("--mode", choices=("terminal", "native", "hybrid"), default="terminal")
     parser.add_argument("--canvas", choices=("cpu", "gpu"), default="cpu")
     parser.add_argument("--web-render-mode", choices=("cpu", "gpu"),
-                        help="WebView frames in hybrid mode (default: Windows gpu, Linux cpu)")
-    parser.add_argument("--platform", choices=("x11", "wayland"))
+                        help="WebView frames in Windows hybrid mode (default: gpu)")
+    parser.add_argument("--platform", choices=("x11", "wayland"),
+                        help="Retired Linux graphical option; only terminal mode is supported on Linux")
     parser.add_argument("--native-module", type=Path)
     parser.add_argument("--interval", type=float, default=1.)
     parser.add_argument("--fps", type=int, default=60)
@@ -36,6 +37,11 @@ def main():
     parser.add_argument("--report", type=Path, help="Write aggregate validation results, without process names")
     parser.add_argument("--self-test", action="store_true", help="Exercise filter/pin/tabs/browser interaction on own UI")
     args = parser.parse_args()
+    if os.name != "nt" and args.mode != "terminal":
+        parser.error("native/hybrid modes currently require Windows; Linux graphical support is suspended. "
+                     "Use --mode terminal")
+    if args.platform:
+        parser.error("--platform belongs to the withdrawn Linux WindowHost; use --mode terminal without it")
     language = resolve_language(args.lang)
     configure_runtime()
     if args.snapshot and hasattr(sys.stdout, "reconfigure"):
@@ -44,13 +50,9 @@ def main():
         parser.error("interval must be .25..5, fps 1..240")
     if args.canvas == "gpu" and (os.name != "nt" or args.mode == "terminal"):
         parser.error("shared GPU charts require Windows --mode native or hybrid")
-    web_render_mode = args.web_render_mode or ("gpu" if os.name == "nt" else "cpu")
-    if args.mode == "hybrid" and web_render_mode == "gpu" and os.name != "nt":
-        parser.error("GPU WebView transport currently requires Windows; use --web-render-mode cpu")
+    web_render_mode = args.web_render_mode or "gpu"
     if args.snapshot and args.mode != "terminal":
         parser.error("--snapshot uses terminal mode; native surfaces need a real display")
-    if os.name != "nt" and args.mode != "terminal" and not args.platform:
-        parser.error("select --platform x11 or --platform wayland for native/hybrid")
     try:
         import psutil
     except ImportError:
@@ -90,13 +92,7 @@ def main():
                     install_checks(monitor, report)
                 if args.smoke_seconds:
                     monitor.app.call_later(args.smoke_seconds, monitor.app.exit)
-                if os.name == "nt" or args.mode == "terminal":
-                    monitor.app.run()
-                else:
-                    from comfortable_tui import WindowHost
-                    with WindowHost(monitor.app, display_platform=args.platform) as host:
-                        report["host"] = host.capabilities
-                        host.run()
+                monitor.app.run()
             report.update(language=monitor.i18n.language, samples=monitor.count, processes=len(monitor.model.sample.processes) if monitor.model.sample else 0,
                 sampler_errors=monitor.failures,
                 native_frames={str(k): v.provider.frames for k, v in charts.items.items() if v.provider},
